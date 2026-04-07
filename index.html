@@ -1,0 +1,2497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPPF Audit Training - Observaciones de Auditoría</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2a4a7f;
+            --accent: #e53e3e;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --info: #3182ce;
+            --bg: #f7fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius: 8px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 { font-size: 1.3rem; font-weight: 600; }
+        .header-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .progress-container {
+            background: var(--card-bg);
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .progress-steps { display: flex; gap: 8px; flex: 1; }
+        .progress-step {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 500;
+            background: #edf2f7; color: var(--text-light);
+            transition: all 0.3s;
+        }
+        .progress-step.active { background: var(--primary); color: white; }
+        .progress-step.completed { background: var(--success); color: white; }
+        .progress-step .step-num {
+            width: 22px; height: 22px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; background: rgba(255,255,255,0.3);
+        }
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 25px; }
+        .card {
+            background: var(--card-bg); border-radius: var(--radius);
+            box-shadow: var(--shadow); padding: 25px; margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 1.1rem; font-weight: 600; color: var(--primary);
+            margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+        }
+        .card-title .icon {
+            width: 28px; height: 28px; background: var(--primary); color: white;
+            border-radius: 6px; display: flex; align-items: center;
+            justify-content: center; font-size: 0.85rem;
+        }
+        .context-box {
+            background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
+            border-left: 4px solid var(--info); padding: 20px;
+            border-radius: 0 var(--radius) var(--radius) 0; margin-bottom: 20px;
+        }
+        .context-box h3 { color: var(--info); margin-bottom: 8px; font-size: 1rem; }
+        .context-box p { font-size: 0.9rem; color: var(--text); margin-bottom: 6px; }
+        .context-box ul { margin-left: 20px; font-size: 0.9rem; }
+        .context-box ul li { margin-bottom: 4px; }
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px; margin: 15px 0;
+        }
+        .stat-card {
+            background: #f7fafc; border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 12px; text-align: center;
+        }
+        .stat-card .stat-value { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+        .stat-card .stat-label {
+            font-size: 0.75rem; color: var(--text-light);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .obs-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .obs-tab {
+            padding: 8px 18px; border-radius: 6px; border: 2px solid var(--border);
+            background: white; cursor: pointer; font-size: 0.85rem;
+            font-weight: 500; transition: all 0.2s;
+        }
+        .obs-tab:hover { border-color: var(--primary); }
+        .obs-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .obs-tab.completed { border-color: var(--success); color: var(--success); }
+        .obs-tab.completed::after { content: " ✓"; }
+        .dnd-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;
+        }
+        @media (max-width: 768px) { .dnd-container { grid-template-columns: 1fr; } }
+        .dnd-section h4 {
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 10px;
+            color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .dnd-pool {
+            min-height: 200px; background: #f7fafc; border: 2px dashed var(--border);
+            border-radius: var(--radius); padding: 10px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .dnd-target {
+            min-height: 400px; background: #f0fff4; border: 2px dashed var(--success);
+            border-radius: var(--radius); padding: 10px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .dnd-target.drag-over { background: #c6f6d5; border-color: var(--success); }
+        .dnd-pool.drag-over { background: #e2e8f0; border-color: var(--primary); }
+        .drag-card {
+            background: white; border: 1px solid var(--border); border-radius: 6px;
+            padding: 12px 14px; cursor: grab; transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); user-select: none; position: relative;
+        }
+        .drag-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+        .drag-card:active { cursor: grabbing; }
+        .drag-card.dragging { opacity: 0.5; transform: rotate(2deg); }
+        .drag-card .drag-handle { color: var(--text-light); font-size: 0.8rem; margin-right: 6px; }
+        .drag-card .card-type {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 2px 8px; border-radius: 3px; margin-bottom: 6px;
+        }
+        .drag-card .card-type.hidden-label { display: none; }
+        .drag-card .card-type.revealed-correct {
+            display: inline-block; background: #c6f6d5; color: #22543d;
+            border: 1px solid #38a169;
+        }
+        .drag-card .card-type.revealed-incorrect {
+            display: inline-block; background: #fed7d7; color: #9b2c2c;
+            border: 1px solid #e53e3e;
+        }
+        .drag-card .card-type.revealed-distractor {
+            display: inline-block; background: #fed7d7; color: #9b2c2c;
+            border: 1px solid #e53e3e;
+        }
+        .drag-card .card-text { font-size: 0.85rem; line-height: 1.5; }
+        .drag-card.correct { border-color: var(--success); background: #f0fff4; }
+        .drag-card.incorrect { border-color: var(--accent); background: #fff5f5; }
+        .drag-card .order-num {
+            position: absolute; top: -8px; left: -8px; width: 24px; height: 24px;
+            border-radius: 50%; background: var(--primary); color: white;
+            font-size: 0.75rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+        }
+        /* Component label selector */
+        .label-selector {
+            margin-bottom: 8px;
+        }
+        .label-selector select {
+            padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border);
+            font-size: 0.8rem; font-weight: 600; background: #f7fafc;
+            cursor: pointer;
+        }
+        .btn {
+            padding: 10px 24px; border: none; border-radius: 6px;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-light); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #2f855a; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--accent); color: white; }
+        .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; flex-wrap: wrap; }
+        .feedback-panel {
+            background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg);
+            padding: 25px; margin-top: 20px; border-left: 4px solid var(--info);
+        }
+        .feedback-panel.error { border-left-color: var(--accent); }
+        .feedback-panel.success { border-left-color: var(--success); }
+        .feedback-panel h3 { margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .feedback-item { padding: 10px 14px; margin: 8px 0; border-radius: 6px; font-size: 0.9rem; }
+        .feedback-item.fb-error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; }
+        .feedback-item.fb-success { background: #f0fff4; border: 1px solid #c6f6d5; color: #276749; }
+        .feedback-item.fb-info { background: #ebf8ff; border: 1px solid #bee3f8; color: #2b6cb0; }
+        .rating-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin: 20px 0; }
+        .rating-card {
+            background: white; border: 2px solid var(--border);
+            border-radius: var(--radius); padding: 20px; transition: all 0.25s;
+        }
+        .rating-card .obs-title { font-weight: 600; margin-bottom: 6px; font-size: 1rem; }
+        .rating-card .obs-summary { font-size: 0.84rem; color: var(--text-light); margin-bottom: 14px; line-height: 1.5; }
+        /* Dimension rating */
+        .dim-rating-section { margin: 4px 0 0; }
+        .dim-row { display: flex; align-items: flex-start; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .dim-row:last-child { border-bottom: none; }
+        .dim-info { flex: 0 0 195px; }
+        .dim-num { display: inline-flex; align-items: center; justify-content: center; width: 21px; height: 21px; background: var(--primary); color: white; border-radius: 50%; font-size: 0.7rem; font-weight: 700; margin-right: 5px; flex-shrink: 0; vertical-align: middle; }
+        .dim-label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+        .dim-sublabel { font-size: 0.73rem; color: var(--text-light); margin-top: 3px; line-height: 1.4; }
+        .dim-scale { flex: 1; }
+        .scale-btns { display: flex; gap: 7px; }
+        .scale-btn { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--border); background: white; cursor: pointer; font-size: 0.88rem; font-weight: 700; color: var(--text-light); transition: all 0.15s; flex-shrink: 0; }
+        .scale-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.1); }
+        .scale-btn.sel { color: white; box-shadow: 0 2px 6px rgba(0,0,0,0.18); transform: scale(1.13); }
+        .scale-btn.sel-1,.scale-btn.sel-2 { background: var(--success); border-color: var(--success); }
+        .scale-btn.sel-3 { background: var(--warning); border-color: var(--warning); }
+        .scale-btn.sel-4,.scale-btn.sel-5 { background: var(--accent); border-color: var(--accent); }
+        .scale-end-labels { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-light); margin-top: 3px; padding: 0 1px; }
+        .scale-desc { font-size: 0.75rem; color: var(--info); margin-top: 4px; min-height: 15px; font-style: italic; }
+        .grade-result-bar { margin-top: 16px; background: #f7fafc; border: 1px solid var(--border); border-radius: 8px; padding: 13px 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .grade-score-label { font-size: 0.8rem; color: var(--text-light); }
+        .grade-score-num { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+        .grade-score-track { width: 130px; height: 8px; background: #e2e8f0; border-radius: 4px; margin-top: 5px; overflow: hidden; }
+        .grade-score-fill { height: 100%; border-radius: 4px; transition: width 0.4s, background 0.3s; }
+        .grade-badge-live { padding: 7px 18px; border-radius: 6px; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.2px; text-align: center; }
+        .grade-live-none { background: #e2e8f0; color: #718096; border: 2px solid #cbd5e0; }
+        .grade-live-high { background: #fed7d7; color: #c53030; border: 2px solid #fc8181; }
+        .grade-live-medium { background: #fefcbf; color: #975a16; border: 2px solid #ecc94b; }
+        .grade-live-low { background: #c6f6d5; color: #276749; border: 2px solid #68d391; }
+        .rating-criteria {
+            background: #f7fafc; border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 15px; margin-bottom: 20px;
+        }
+        .rating-criteria h4 { margin-bottom: 10px; }
+        .criteria-item { display: flex; gap: 10px; margin: 8px 0; font-size: 0.85rem; }
+        .criteria-badge {
+            width: 70px; text-align: center; padding: 3px 8px;
+            border-radius: 4px; font-weight: 600; font-size: 0.8rem; flex-shrink: 0;
+        }
+        .criteria-badge.high { background: #fed7d7; color: #c53030; }
+        .criteria-badge.medium { background: #fefcbf; color: #975a16; }
+        .criteria-badge.low { background: #c6f6d5; color: #276749; }
+        .criteria-detail { font-size: 0.82rem; color: var(--text); margin-top: 4px; }
+        .criteria-detail ol { margin-left: 18px; margin-top: 4px; }
+        .criteria-detail ol li { margin-bottom: 2px; }
+        .level3-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+        @media (max-width: 900px) { .level3-layout { grid-template-columns: 1fr; } }
+        .exec-sidebar {
+            background: #f7fafc; border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 15px; margin-bottom: 15px;
+        }
+        .exec-sidebar .sidebar-stat {
+            display: flex; justify-content: space-between; padding: 6px 0;
+            border-bottom: 1px solid var(--border); font-size: 0.85rem;
+        }
+        .exec-sidebar .sidebar-stat:last-child { border-bottom: none; }
+        .exec-sidebar .sidebar-stat .label { color: var(--text-light); }
+        .exec-sidebar .sidebar-stat .value { font-weight: 600; color: var(--primary); }
+        /* Data pool for Level 3 */
+        .data-pool-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0;
+        }
+        .data-pool, .data-target {
+            min-height: 150px; border: 2px dashed var(--border);
+            border-radius: var(--radius); padding: 10px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .data-pool { background: #f7fafc; }
+        .data-target { background: #fffff0; border-color: var(--warning); }
+        .data-pool.drag-over { background: #e2e8f0; border-color: var(--primary); }
+        .data-target.drag-over { background: #fefcbf; border-color: var(--warning); }
+        .data-card {
+            background: white; border: 1px solid var(--border); border-radius: 4px;
+            padding: 8px 12px; cursor: grab; font-size: 0.82rem;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.2s; user-select: none;
+        }
+        .data-card:hover { box-shadow: var(--shadow); }
+        .data-card.dragging { opacity: 0.5; }
+        .data-card.correct { border-color: var(--success); background: #f0fff4; }
+        .data-card.incorrect { border-color: var(--accent); background: #fff5f5; }
+        .data-card .data-label { color: var(--text-light); font-size: 0.78rem; }
+        .data-card .data-value { font-weight: 700; color: var(--primary); }
+        .completion-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #4c51bf 100%);
+            color: white; border-radius: var(--radius); padding: 30px;
+            text-align: center; margin: 20px 0;
+        }
+        .completion-banner h2 { font-size: 1.5rem; margin-bottom: 8px; }
+        .completion-banner p { opacity: 0.9; }
+        .score-display { text-align: center; padding: 30px; }
+        .score-circle {
+            width: 120px; height: 120px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px; font-size: 2rem; font-weight: 700; color: white;
+        }
+        .score-circle.good { background: linear-gradient(135deg, #38a169, #48bb78); }
+        .score-circle.ok { background: linear-gradient(135deg, #d69e2e, #ecc94b); }
+        .score-circle.bad { background: linear-gradient(135deg, #e53e3e, #fc8181); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .hidden { display: none !important; }
+        .instruction-box {
+            background: #fffff0; border: 1px solid #fefcbf;
+            border-left: 4px solid var(--warning); padding: 12px 16px;
+            border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 0.88rem;
+        }
+        .correct-order-display {
+            background: #f0fff4; border: 1px solid #c6f6d5;
+            border-radius: var(--radius); padding: 15px; margin: 10px 0;
+        }
+        .correct-order-display .order-item {
+            display: flex; gap: 10px; padding: 6px 0;
+            font-size: 0.85rem; align-items: flex-start;
+        }
+        .correct-order-display .order-num-sm {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: var(--success); color: white; font-size: 0.7rem;
+            font-weight: 700; display: flex; align-items: center;
+            justify-content: center; flex-shrink: 0; margin-top: 2px;
+        }
+        .ippf-ref { font-size: 0.8rem; color: var(--info); font-style: italic; margin-top: 4px; }
+        .grade-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.82rem; }
+        .grade-table th, .grade-table td {
+            border: 1px solid var(--border); padding: 10px; text-align: left; vertical-align: top;
+        }
+        .grade-table th { background: #f7fafc; font-weight: 600; width: 130px; }
+        .grade-table td ol { margin-left: 16px; }
+        .grade-table td ol li { margin-bottom: 3px; }
+        .grade-high { border-left: 4px solid #c53030 !important; }
+        .grade-medium { border-left: 4px solid #d69e2e !important; }
+        .grade-low { border-left: 4px solid #38a169 !important; }
+
+        /* ========== AUTH & ADMIN ========== */
+        .login-overlay { position:fixed;inset:0;background:linear-gradient(135deg,var(--primary) 0%,#1a2740 100%);display:flex;align-items:center;justify-content:center;z-index:9999; }
+        .login-card { background:white;border-radius:14px;padding:40px;width:100%;max-width:400px;box-shadow:0 25px 50px rgba(0,0,0,0.4); }
+        .login-card .logo { font-size:2.2rem;margin-bottom:10px; }
+        .login-card h2 { color:var(--primary);margin-bottom:5px;font-size:1.3rem; }
+        .login-card .subtitle { color:var(--text-light);margin-bottom:24px;font-size:0.87rem; }
+        .form-group { margin-bottom:15px; }
+        .form-group label { display:block;font-size:0.82rem;font-weight:600;margin-bottom:5px;color:var(--text); }
+        .form-group input { width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:7px;font-size:0.9rem;transition:border-color 0.2s;font-family:inherit; }
+        .form-group input:focus { outline:none;border-color:var(--primary); }
+        .login-error { background:#fff5f5;border:1px solid #fed7d7;color:#c53030;padding:10px 14px;border-radius:6px;font-size:0.84rem;margin-bottom:14px; }
+        .admin-panel { min-height:100vh;background:var(--bg); }
+        .admin-header { background:linear-gradient(135deg,var(--primary) 0%,#2d3748 100%);color:white;padding:18px 30px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);flex-wrap:wrap;gap:12px; }
+        .admin-nav { display:flex;gap:8px; }
+        .admin-nav-btn { padding:7px 18px;border-radius:6px;border:2px solid rgba(255,255,255,0.3);background:transparent;color:white;cursor:pointer;font-size:0.83rem;font-weight:600;transition:all 0.2s; }
+        .admin-nav-btn:hover,.admin-nav-btn.active { background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.7); }
+        .admin-content { max-width:1300px;margin:0 auto;padding:25px; }
+        .admin-tab-panel { display:none; }
+        .admin-tab-panel.active { display:block; }
+        .admin-stats-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:14px;margin-bottom:25px; }
+        .admin-stat { background:white;border-radius:10px;padding:20px;text-align:center;box-shadow:var(--shadow); }
+        .admin-stat .val { font-size:2rem;font-weight:700;color:var(--primary); }
+        .admin-stat .lbl { font-size:0.74rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px; }
+        .aud-table { width:100%;border-collapse:collapse;background:white;border-radius:10px;overflow:hidden;box-shadow:var(--shadow); }
+        .aud-table th { background:var(--primary);color:white;padding:11px 14px;text-align:left;font-size:0.79rem;font-weight:600; }
+        .aud-table td { padding:11px 14px;border-bottom:1px solid var(--border);font-size:0.83rem;vertical-align:middle; }
+        .aud-table tr:last-child td { border-bottom:none; }
+        .aud-table tr:hover td { background:#f7fafc; }
+        .badge { display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.73rem;font-weight:600; }
+        .badge-success { background:#c6f6d5;color:#22543d; }
+        .badge-info { background:#bee3f8;color:#2a4365; }
+        .badge-gray { background:#e2e8f0;color:#4a5568; }
+        .create-form-card { background:white;border-radius:10px;padding:25px;box-shadow:var(--shadow);margin-bottom:25px; }
+        .create-form-card h3 { margin-bottom:18px;color:var(--primary); }
+        .form-row { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+        @media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+        .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9500;display:flex;align-items:center;justify-content:center; }
+        .modal-box { background:white;border-radius:14px;padding:30px;max-width:460px;width:calc(100% - 30px);box-shadow:0 20px 40px rgba(0,0,0,0.3); }
+        .modal-box h3 { margin-bottom:20px;color:var(--primary); }
+        .cred-field { background:#f7fafc;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:12px; }
+        .cred-field .cred-lbl { font-size:0.74rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px; }
+        .cred-field .cred-val { font-size:1.05rem;font-weight:700;color:var(--primary);font-family:monospace; }
+        /* ---- Comparison / Ranking ---- */
+        .rank-table { width:100%;border-collapse:collapse; }
+        .rank-table td { padding:9px 12px;border-bottom:1px solid var(--border);font-size:0.83rem;vertical-align:middle; }
+        .rank-table tr:last-child td { border-bottom:none; }
+        .rank-table tr:hover td { background:#f7fafc; }
+        .rank-pos { width:36px;text-align:center;font-size:1.15rem; }
+        .bar-chart-row { display:flex;align-items:center;gap:10px;margin:7px 0; }
+        .bar-label { width:110px;font-size:0.8rem;font-weight:600;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;color:var(--text); }
+        .bar-track { flex:1;height:22px;background:#edf2f7;border-radius:5px;overflow:hidden; }
+        .bar-fill { height:100%;border-radius:5px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.72rem;font-weight:700;color:white;transition:width 0.6s ease; }
+        .bar-val { font-size:0.8rem;font-weight:700;min-width:36px;text-align:right; }
+        .comparison-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:24px; }
+        @media(max-width:960px){.comparison-grid{grid-template-columns:1fr;}}
+        .cmp-section-title { font-size:0.82rem;font-weight:700;color:var(--primary);margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid var(--border); }
+        .gs-row { display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f4f8;font-size:0.81rem; }
+        .gs-row:last-child { border-bottom:none; }
+        .gs-lbl { color:var(--text-light); }
+        .gs-val { font-weight:600;color:var(--primary); }
+        .dash-two-col { display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px; }
+        @media(max-width:760px){.dash-two-col{grid-template-columns:1fr;}}
+        .mini-bar { display:flex;align-items:center;gap:8px;margin:5px 0; }
+        .mini-bar-track { flex:1;height:7px;background:#e2e8f0;border-radius:4px;overflow:hidden; }
+        .mini-bar-fill { height:100%;border-radius:4px;transition:width 0.5s; }
+    </style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <div class="logo">🔍</div>
+        <h2>IPPF Audit Training</h2>
+        <p class="subtitle">Ingresa con tus credenciales para acceder a la plataforma</p>
+        <div id="loginError" class="login-error" style="display:none;">Usuario o contraseña incorrectos. Verifica tus datos.</div>
+        <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" id="loginUsername" placeholder="ej: mgonzalez" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="doLogin()">Ingresar →</button>
+    </div>
+</div>
+
+<!-- ===================== ADMIN PANEL ===================== -->
+<div id="adminPanel" style="display:none;" class="admin-panel">
+    <div class="admin-header">
+        <div>
+            <div style="font-size:1.1rem;font-weight:700;">🔍 IPPF Audit Training — Administrador</div>
+            <div id="adminWelcome" style="font-size:0.8rem;opacity:0.7;margin-top:2px;"></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <div class="admin-nav">
+                <button class="admin-nav-btn active" onclick="showAdminTab('dashboard',this)">📊 Dashboard</button>
+                <button class="admin-nav-btn" onclick="showAdminTab('auditores',this)">👥 Auditores</button>
+            </div>
+            <button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);font-size:0.82rem;padding:7px 14px;" onclick="doLogout()">Cerrar sesión</button>
+        </div>
+    </div>
+    <div class="admin-content">
+        <!-- Dashboard Tab -->
+        <div id="adminTab-dashboard" class="admin-tab-panel active">
+            <div id="adminStatsRow" class="admin-stats-row"></div>
+            <div class="card">
+                <div class="card-title"><div class="icon">📊</div> Progreso de Auditores</div>
+                <div id="progressTableContainer"></div>
+            </div>
+            <div class="dash-two-col">
+                <div class="card">
+                    <div class="card-title"><div class="icon">🏆</div> Ranking de Auditores</div>
+                    <div id="rankingContainer"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><div class="icon">📈</div> Estadísticas del Grupo</div>
+                    <div id="groupStatsContainer"></div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:20px;">
+                <div class="card-title"><div class="icon">📊</div> Comparación Visual por Nivel</div>
+                <div id="barChartContainer"></div>
+            </div>
+        </div>
+        <!-- Auditores Tab -->
+        <div id="adminTab-auditores" class="admin-tab-panel">
+            <div class="create-form-card">
+                <h3>➕ Crear Nuevo Auditor</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" id="newAuditorName" placeholder="Ej: María González">
+                    </div>
+                    <div class="form-group">
+                        <label>Usuario <small style="color:var(--text-light);">(letras, números, _)</small></label>
+                        <input type="text" id="newAuditorUsername" placeholder="Ej: mgonzalez" oninput="this.value=this.value.toLowerCase()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="text" id="newAuditorPassword" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
+                        <button class="btn btn-primary" onclick="createAuditor()">✓ Crear Auditor</button>
+                        <button class="btn btn-outline" onclick="generatePassword()" title="Generar contraseña automática">🔑 Auto</button>
+                    </div>
+                </div>
+                <div id="createError" style="color:var(--accent);font-size:0.85rem;margin-top:8px;display:none;"></div>
+                <div id="createSuccess" style="color:var(--success);font-size:0.85rem;margin-top:8px;display:none;"></div>
+            </div>
+            <div class="card">
+                <div class="card-title"><div class="icon">👥</div> Auditores Registrados</div>
+                <div id="auditorListContainer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== CREDENTIALS MODAL ===================== -->
+<div id="credModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeCredModal()">
+    <div class="modal-box">
+        <h3>🔑 Credenciales de Acceso</h3>
+        <div class="cred-field"><div class="cred-lbl">Nombre</div><div class="cred-val" id="credName"></div></div>
+        <div class="cred-field"><div class="cred-lbl">Usuario</div><div class="cred-val" id="credUsername"></div></div>
+        <div class="cred-field"><div class="cred-lbl">Contraseña</div><div class="cred-val" id="credPassword"></div></div>
+        <div style="margin:0 0 14px;font-size:0.8rem;color:var(--text-light);">URL: <strong id="credUrl"></strong></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="copyCredentials()">📋 Copiar credenciales</button>
+        <div id="copyMsg" style="color:var(--success);font-size:0.82rem;text-align:center;margin-bottom:8px;display:none;">✅ Copiado al portapapeles</div>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="closeCredModal()">Cerrar</button>
+    </div>
+</div>
+
+<!-- ===================== APP (AUDITORES) ===================== -->
+<div id="appContent" style="display:none;">
+
+<div class="header">
+    <h1>🔍 IPPF Audit Training Platform</h1>
+    <div class="header-badge" id="levelBadge">Nivel 1 — Observaciones</div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-steps">
+        <div class="progress-step active" id="step1"><span class="step-num">1</span> Observaciones</div>
+        <div class="progress-step" id="step2"><span class="step-num">2</span> Rating de Riesgo</div>
+        <div class="progress-step" id="step3"><span class="step-num">3</span> Resumen Ejecutivo</div>
+    </div>
+</div>
+
+<!-- ===================== LEVEL 1 ===================== -->
+<div class="section active" id="level1">
+    <div class="main-content">
+        <div class="card fade-in">
+            <div class="card-title"><div class="icon">📋</div> Contexto de la Auditoría</div>
+            <div class="context-box">
+                <h3>Auditoría: Proceso de Facturación — Venta de Partes y Piezas de Equipamiento y Maquinaria Pesada</h3>
+                <p><strong>Empresa:</strong> MaquiParts Industrial S.A. — Líder regional en distribución de repuestos y componentes para maquinaria pesada en minería y construcción.</p>
+                <p><strong>Período auditado:</strong> Enero 2025 – Diciembre 2025</p>
+                <p><strong>Contexto:</strong> Durante el período auditado, la compañía procesó <strong>12,450 facturas</strong> de venta de partes y piezas por un monto total de <strong>USD $47.8 millones</strong>. Se identificó que <strong>2,118 facturas (17%)</strong> fueron rechazadas por los clientes, generando reprocesos, retrasos en la cobranza y potenciales impactos en la relación comercial.</p>
+                <p style="margin-top:8px"><strong>Principales causas de rechazo reportadas:</strong></p>
+                <ul>
+                    <li>Discrepancias entre precios cotizados y facturados (38% de rechazos)</li>
+                    <li>Errores en números de parte o descripción de componentes (25%)</li>
+                    <li>Órdenes de compra vencidas o no referenciadas (22%)</li>
+                    <li>Documentación de despacho incompleta o no adjunta (15%)</li>
+                </ul>
+            </div>
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-value">12,450</div><div class="stat-label">Facturas Emitidas</div></div>
+                <div class="stat-card"><div class="stat-value">2,118</div><div class="stat-label">Facturas Rechazadas</div></div>
+                <div class="stat-card"><div class="stat-value">17%</div><div class="stat-label">Tasa de Rechazo</div></div>
+                <div class="stat-card"><div class="stat-value">$8.1M</div><div class="stat-label">Monto Rechazado</div></div>
+                <div class="stat-card"><div class="stat-value">45 días</div><div class="stat-label">Demora Prom. Reproceso</div></div>
+            </div>
+            <div class="ippf-ref">Ref: IPPF — Norma 2300 (Ejecución del Trabajo) / Norma 2400 (Comunicación de Resultados)</div>
+        </div>
+
+        <div class="card fade-in">
+            <div class="card-title"><div class="icon">🎯</div> Instrucciones</div>
+            <div class="instruction-box">
+                <strong>Tu misión:</strong> Construir 4 observaciones de auditoría completas según las mejores prácticas IPPF.
+                <ol style="margin: 8px 0 0 20px; font-size: 0.88rem;">
+                    <li><strong>Lee cada texto</strong> e identifica a qué componente corresponde asignándole la etiqueta correcta con el selector</li>
+                    <li>Arrastra los componentes correctos al panel derecho en el <strong>orden correcto</strong></li>
+                    <li>Descarta los distractores — hay al menos uno por tipo de componente</li>
+                </ol>
+                <p style="margin-top:8px;"><strong>Orden esperado:</strong> Título → Background (criterio) → Condición (datos) → Causa Raíz → Riesgo → Recomendación (SMART)</p>
+            </div>
+        </div>
+
+        <div class="obs-tabs" id="obsTabs"></div>
+
+        <div class="card fade-in" id="dndCard">
+            <div class="card-title" id="currentObsTitle"><div class="icon">📝</div> Observación 1</div>
+            <div class="dnd-container">
+                <div class="dnd-section">
+                    <h4>📦 Componentes Disponibles (lee, clasifica y arrastra)</h4>
+                    <div class="dnd-pool" id="dndPool"></div>
+                </div>
+                <div class="dnd-section">
+                    <h4>📄 Tu Observación (arrastra aquí en orden)</h4>
+                    <div class="dnd-target" id="dndTarget"></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="resetCurrentObs()">↩ Reiniciar</button>
+                <button class="btn btn-primary" onclick="validateObservation()">✓ Validar Observación</button>
+            </div>
+        </div>
+
+        <div id="level1Feedback" class="hidden"></div>
+        <div id="level1Complete" class="hidden">
+            <div class="btn-group" style="justify-content: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="goToLevel2()">Continuar al Nivel 2 — Rating de Riesgo →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== LEVEL 2 ===================== -->
+<div class="section" id="level2">
+    <div class="main-content">
+        <div class="card fade-in">
+            <div class="card-title"><div class="icon">⚖️</div> Nivel 2 — Asignación de Rating de Riesgo</div>
+            <p style="margin-bottom:15px; font-size:0.9rem;">Asigna un nivel de riesgo (Grade) a cada observación según las definiciones del <strong>Appendix A – Grade Definitions for Observations</strong>.</p>
+
+            <div class="rating-criteria">
+                <h4>Appendix A – Grade Definitions for Observations</h4>
+                <table class="grade-table">
+                    <tr class="grade-high">
+                        <th><span class="criteria-badge high">HIGH</span><br><small>Observations to be addressed by management as a matter of urgency.</small></th>
+                        <td>
+                            <ol>
+                                <li>Involve or may lead to <strong>significant misstatement</strong> of the audited entity's assets, liabilities, revenue and expenses; and/or</li>
+                                <li>Observations or weakness <strong>fundamental and material</strong> to the system / control; and/or</li>
+                                <li>Could <strong>significantly impact</strong> operating efficiency and/or effectiveness; and/or</li>
+                                <li>Likely will cause <strong>control objective not being met</strong>.</li>
+                                <li>Non-compliance with group policies <strong>without any mitigating control</strong>.</li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr class="grade-medium">
+                        <th><span class="criteria-badge medium">MEDIUM</span><br><small>Observations that do not require immediate action but should be addressed in near term.</small></th>
+                        <td>
+                            <ol>
+                                <li>Involve or may lead to <strong>moderate misstatement</strong> of the audited entity's assets, liabilities, revenue, and expenses; and/or</li>
+                                <li>Observations or weakness has <strong>important effect</strong> on the system or control; and/or</li>
+                                <li><strong>Moderately impact</strong> operating efficiency and/or effectiveness.</li>
+                                <li>A system objective may still be met in full or in part <strong>with mitigating controls</strong>; and/or</li>
+                                <li>Non-compliance with group policies <strong>with mitigating controls</strong>.</li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr class="grade-low">
+                        <th><span class="criteria-badge low">LOW</span><br><small>Observations that do not appear to have a substantially negative impact on operations or the control environment.</small></th>
+                        <td>
+                            <ol>
+                                <li>Involve or may lead to <strong>minor misstatement</strong> of the audited entity's assets, liabilities, revenue, and expenses; and/or</li>
+                                <li>Would, if corrected, <strong>improve the internal control</strong> but are not vital to the overall system of internal control; and/or</li>
+                                <li><strong>Minimally impact</strong> operational efficiency and effectiveness.</li>
+                            </ol>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="rating-grid" id="ratingGrid"></div>
+        <div id="level2Feedback" class="hidden"></div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="validateRatings()">✓ Validar Ratings</button>
+        </div>
+        <div id="level2Complete" class="hidden">
+            <div class="btn-group" style="justify-content: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="goToLevel3()">Continuar al Nivel 3 — Resumen Ejecutivo →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== LEVEL 3 ===================== -->
+<div class="section" id="level3">
+    <div class="main-content">
+        <div class="card fade-in">
+            <div class="card-title"><div class="icon">📊</div> Nivel 3 — Construcción del Resumen Ejecutivo</div>
+            <div class="instruction-box">
+                <strong>Tu misión:</strong> Construir el resumen ejecutivo del informe de auditoría.
+                <ol style="margin: 8px 0 0 20px; font-size: 0.88rem;">
+                    <li><strong>Lee cada texto</strong>, asígnale la etiqueta correcta del componente y arrástralo al panel derecho en orden</li>
+                    <li><strong>Selecciona los datos numéricos</strong> correctos del pool de datos para el panel lateral del informe</li>
+                    <li>Descarta los distractores en ambos paneles</li>
+                </ol>
+                <p style="margin-top:8px"><strong>Orden esperado:</strong> Background → Why This Audit → Scope → Opinión Obj. Negocio → Opinión Obj. Auditoría → Observaciones → Recomendación</p>
+            </div>
+        </div>
+
+        <div class="level3-layout">
+            <div>
+                <div class="card">
+                    <div class="card-title"><div class="icon">📝</div> Componentes del Resumen</div>
+                    <div class="dnd-container">
+                        <div class="dnd-section">
+                            <h4>📦 Componentes Disponibles</h4>
+                            <div class="dnd-pool" id="execPool"></div>
+                        </div>
+                        <div class="dnd-section">
+                            <h4>📄 Tu Resumen Ejecutivo (en orden)</h4>
+                            <div class="dnd-target" id="execTarget"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><div class="icon">📊</div> Datos Numéricos del Informe</div>
+                    <p style="font-size:0.85rem; margin-bottom:10px; color:var(--text-light);">Selecciona los datos correctos y relevantes para incluir en el panel lateral del informe. Arrastra al panel derecho solo los que correspondan.</p>
+                    <div class="data-pool-container">
+                        <div>
+                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">DATOS DISPONIBLES</h4>
+                            <div class="data-pool" id="dataPool"></div>
+                        </div>
+                        <div>
+                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">DATOS SELECCIONADOS PARA EL INFORME</h4>
+                            <div class="data-target" id="dataTarget"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="resetExecSummary()">↩ Reiniciar</button>
+                    <button class="btn btn-primary" onclick="validateExecSummary()">✓ Validar Resumen Ejecutivo</button>
+                </div>
+                <div id="level3Feedback" class="hidden"></div>
+            </div>
+
+            <div>
+                <div class="exec-sidebar">
+                    <h4 style="margin-bottom:10px; color: var(--primary);">📋 Ref. IPPF</h4>
+                    <p style="font-size:0.8rem; color: var(--text-light);">
+                        <strong>Norma 2400:</strong> Los auditores internos deben comunicar los resultados del trabajo.<br><br>
+                        <strong>Norma 2410:</strong> Las comunicaciones deben incluir objetivos, alcance, y resultados del trabajo.<br><br>
+                        <strong>Norma 2420:</strong> Las comunicaciones deben ser precisas, objetivas, claras, concisas, constructivas, completas y oportunas.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="level3Complete" class="hidden"></div>
+    </div>
+</div>
+
+<!-- ===================== FINAL ===================== -->
+<div class="section" id="finalScreen">
+    <div class="main-content">
+        <div class="completion-banner">
+            <h2>🏆 ¡Entrenamiento Completado!</h2>
+            <p>Has completado los 3 niveles del IPPF Audit Training</p>
+        </div>
+        <div class="card">
+            <div class="card-title"><div class="icon">📊</div> Resumen de Desempeño</div>
+            <div id="finalScores"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><div class="icon">📜</div> Historial Detallado de Intentos</div>
+            <div id="finalHistory"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><div class="icon">💡</div> Recomendaciones de Mejora</div>
+            <div id="finalRecommendations"></div>
+        </div>
+        <div class="btn-group" style="justify-content: center;">
+            <button class="btn btn-primary" onclick="restartAll()">🔄 Reiniciar Entrenamiento</button>
+        </div>
+    </div>
+</div>
+
+</div><!-- /appContent -->
+
+<script>
+// =========================================================
+// AUTH SYSTEM & ADMIN PANEL
+// =========================================================
+
+const ADMIN_CREDS = { username: 'admin', password: 'Admin2024!', name: 'Administrador' };
+
+function getUsers() { return JSON.parse(localStorage.getItem('audit_users') || '{}'); }
+function saveUsers(u) { localStorage.setItem('audit_users', JSON.stringify(u)); }
+function getSession() { return JSON.parse(localStorage.getItem('audit_session') || 'null'); }
+function setSession(s) { localStorage.setItem('audit_session', JSON.stringify(s)); }
+function clearSession() { localStorage.removeItem('audit_session'); }
+function getUserProgress(username) { return JSON.parse(localStorage.getItem('audit_progress_' + username) || 'null'); }
+function setUserProgress(username, data) { localStorage.setItem('audit_progress_' + username, JSON.stringify(data)); }
+
+function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function doLogin() {
+    const user = document.getElementById('loginUsername').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPassword').value;
+    const errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+
+    if (user === ADMIN_CREDS.username && pass === ADMIN_CREDS.password) {
+        setSession({ username: user, role: 'admin', name: ADMIN_CREDS.name });
+        document.getElementById('loginOverlay').style.display = 'none';
+        showAdminPanel();
+        return;
+    }
+
+    const users = getUsers();
+    if (users[user] && users[user].password === pass) {
+        setSession({ username: user, role: 'auditor', name: users[user].name });
+        document.getElementById('loginOverlay').style.display = 'none';
+        initAuditorApp();
+        return;
+    }
+
+    errEl.style.display = 'block';
+}
+
+function doLogout() { clearSession(); location.reload(); }
+
+function checkAuth() {
+    const session = getSession();
+    if (!session) {
+        document.getElementById('loginOverlay').style.display = 'flex';
+        return;
+    }
+    document.getElementById('loginOverlay').style.display = 'none';
+    if (session.role === 'admin') showAdminPanel();
+    else initAuditorApp();
+}
+
+function initAuditorApp() {
+    document.getElementById('appContent').style.display = 'block';
+    const session = getSession();
+    const hdr = document.querySelector('.header');
+    const ui = document.createElement('div');
+    ui.style.cssText = 'display:flex;align-items:center;gap:8px;margin-left:auto;';
+    ui.innerHTML = `<span class="header-badge" style="background:rgba(255,255,255,0.15);">👤 ${escHtml(session.name)}</span><button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:none;font-size:0.78rem;padding:5px 12px;" onclick="doLogout()">Salir</button>`;
+    hdr.appendChild(ui);
+    init();
+}
+
+// ---- Progress persistence ----
+function saveCurrentProgress() {
+    const session = getSession();
+    if (!session || session.role !== 'auditor') return;
+    const fsActive = document.getElementById('finalScreen') && document.getElementById('finalScreen').classList.contains('active');
+    const l3Active = document.getElementById('level3') && document.getElementById('level3').classList.contains('active');
+    const l2Active = document.getElementById('level2') && document.getElementById('level2').classList.contains('active');
+    const currentLevel = fsActive ? 'final' : l3Active ? '3' : l2Active ? '2' : '1';
+    setUserProgress(session.username, {
+        scores: { ...scores },
+        attemptHistory: JSON.parse(JSON.stringify(attemptHistory)),
+        currentLevel,
+        completed: !!fsActive,
+        lastActivity: new Date().toISOString()
+    });
+}
+
+// ---- Admin Panel ----
+function showAdminPanel() {
+    document.getElementById('adminPanel').style.display = 'block';
+    const session = getSession();
+    document.getElementById('adminWelcome').textContent = 'Bienvenido, ' + session.name;
+    document.getElementById('credUrl').textContent = window.location.origin + window.location.pathname;
+    renderAdminDashboard();
+    renderAuditorList();
+}
+
+function showAdminTab(tab, btn) {
+    document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('adminTab-' + tab).classList.add('active');
+    if (btn) btn.classList.add('active');
+    if (tab === 'dashboard') renderAdminDashboard();
+    if (tab === 'auditores') renderAuditorList();
+}
+
+function calcAvgScore(prog) {
+    if (!prog) return null;
+    const vals = [prog.scores.level1, prog.scores.level2, prog.scores.level3].filter(v => v > 0);
+    return vals.length ? Math.round(vals.reduce((a,b) => a+b,0) / vals.length) : null;
+}
+
+function fmtDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('es-CL',{day:'2-digit',month:'short'}) + ' ' + d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+}
+
+function scoreCell(score, attempts) {
+    if (!attempts) return '<span style="color:var(--text-light)">—</span>';
+    const c = score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--warning)' : 'var(--accent)';
+    return `<span style="color:${c};font-weight:700;">${score}%</span> <span style="color:var(--text-light);font-size:0.75rem;">(${attempts} int.)</span>`;
+}
+
+function renderAdminDashboard() {
+    const users = getUsers();
+    const entries = Object.entries(users);
+    let completed = 0, inProg = 0, notStarted = 0;
+    const allAvgs = [];
+
+    entries.forEach(([u]) => {
+        const p = getUserProgress(u);
+        if (!p) notStarted++;
+        else if (p.completed) completed++;
+        else inProg++;
+        const avg = calcAvgScore(p);
+        if (avg !== null) allAvgs.push(avg);
+    });
+
+    const overallAvg = allAvgs.length ? Math.round(allAvgs.reduce((a,b)=>a+b,0)/allAvgs.length) + '%' : '—';
+
+    document.getElementById('adminStatsRow').innerHTML = `
+        <div class="admin-stat"><div class="val">${entries.length}</div><div class="lbl">Total Auditores</div></div>
+        <div class="admin-stat"><div class="val" style="color:var(--success)">${completed}</div><div class="lbl">Completados</div></div>
+        <div class="admin-stat"><div class="val" style="color:var(--warning)">${inProg}</div><div class="lbl">En Progreso</div></div>
+        <div class="admin-stat"><div class="val" style="color:var(--text-light)">${notStarted}</div><div class="lbl">Sin Iniciar</div></div>
+        <div class="admin-stat"><div class="val">${overallAvg}</div><div class="lbl">Prom. General</div></div>
+    `;
+
+    if (!entries.length) {
+        document.getElementById('progressTableContainer').innerHTML = '<p style="padding:25px;text-align:center;color:var(--text-light);">No hay auditores. Créalos en la pestaña "Auditores".</p>';
+        return;
+    }
+
+    const rows = entries.map(([uname, data]) => {
+        const p = getUserProgress(uname);
+        const status = !p ? '<span class="badge badge-gray">Sin iniciar</span>'
+            : p.completed ? '<span class="badge badge-success">Completado ✓</span>'
+            : `<span class="badge badge-info">Nivel ${p.currentLevel}</span>`;
+        const l1att = p ? Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0) : 0;
+        const l2att = p ? (p.attemptHistory.level2||[]).length : 0;
+        const l3att = p ? (p.attemptHistory.level3||[]).length : 0;
+        const avg = calcAvgScore(p);
+        const avgHtml = avg !== null
+            ? `<strong style="color:${avg>=80?'var(--success)':avg>=60?'var(--warning)':'var(--accent)'};">${avg}%</strong>`
+            : '—';
+        return `<tr>
+            <td><strong>${escHtml(data.name)}</strong></td>
+            <td style="font-family:monospace;font-size:0.8rem;color:var(--text-light);">${escHtml(uname)}</td>
+            <td>${status}</td>
+            <td>${scoreCell(p&&p.scores?p.scores.level1:0, l1att)}</td>
+            <td>${scoreCell(p&&p.scores?p.scores.level2:0, l2att)}</td>
+            <td>${scoreCell(p&&p.scores?p.scores.level3:0, l3att)}</td>
+            <td>${avgHtml}</td>
+            <td style="font-size:0.79rem;color:var(--text-light);">${fmtDate(p&&p.lastActivity)}</td>
+            <td><button class="btn btn-outline" style="padding:4px 10px;font-size:0.76rem;" onclick="showCredentials('${escHtml(uname)}')">🔑 Ver acceso</button></td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('progressTableContainer').innerHTML = `
+        <div style="overflow-x:auto;">
+        <table class="aud-table">
+            <thead><tr>
+                <th>Nombre</th><th>Usuario</th><th>Estado</th>
+                <th>Nivel 1</th><th>Nivel 2</th><th>Nivel 3</th>
+                <th>Promedio</th><th>Última Actividad</th><th>Acciones</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+        </table></div>`;
+
+    renderRanking();
+    renderGroupStats();
+    renderBarCharts();
+}
+
+function renderRanking() {
+    const container = document.getElementById('rankingContainer');
+    const users = getUsers();
+    const entries = Object.entries(users);
+
+    if (!entries.length) {
+        container.innerHTML = '<p style="padding:15px;text-align:center;color:var(--text-light);">Sin auditores aún.</p>';
+        return;
+    }
+
+    const ranked = entries.map(([uname, data]) => {
+        const p = getUserProgress(uname);
+        const avg = calcAvgScore(p);
+        const totalAtt = p
+            ? Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0)
+              + (p.attemptHistory.level2||[]).length
+              + (p.attemptHistory.level3||[]).length
+            : 0;
+        return { name: data.name, avg, totalAtt, completed: p?.completed };
+    }).sort((a, b) => {
+        if (a.avg === null && b.avg === null) return 0;
+        if (a.avg === null) return 1;
+        if (b.avg === null) return -1;
+        return b.avg - a.avg;
+    });
+
+    const medals = ['🥇','🥈','🥉'];
+
+    const rows = ranked.map((r, i) => {
+        const pos = i < 3
+            ? `<span style="font-size:1.15rem;">${medals[i]}</span>`
+            : `<span style="font-size:0.82rem;color:var(--text-light);font-weight:700;">#${i+1}</span>`;
+        const avgDisp = r.avg !== null
+            ? `<strong style="color:${r.avg>=80?'var(--success)':r.avg>=60?'var(--warning)':'var(--accent)'};">${r.avg}%</strong>`
+            : '<span style="color:var(--text-light);">—</span>';
+        const doneBadge = r.completed ? ' <span class="badge badge-success" style="font-size:0.68rem;">✓</span>' : '';
+        return `<tr>
+            <td class="rank-pos">${pos}</td>
+            <td>${escHtml(r.name)}${doneBadge}</td>
+            <td style="text-align:right;">${avgDisp}</td>
+            <td style="text-align:right;font-size:0.77rem;color:var(--text-light);">${r.totalAtt ? r.totalAtt+' int.' : '—'}</td>
+        </tr>`;
+    }).join('');
+
+    container.innerHTML = `
+        <table class="rank-table">
+            <thead><tr>
+                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);">#</th>
+                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);">Auditor</th>
+                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Promedio</th>
+                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Intentos</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+}
+
+function renderGroupStats() {
+    const container = document.getElementById('groupStatsContainer');
+    const users = getUsers();
+    const entries = Object.entries(users);
+
+    if (!entries.length) {
+        container.innerHTML = '<p style="padding:15px;text-align:center;color:var(--text-light);">Sin datos aún.</p>';
+        return;
+    }
+
+    const progs = entries.map(([u]) => getUserProgress(u)).filter(Boolean);
+    const l1 = progs.map(p => p.scores.level1).filter(s => s > 0);
+    const l2 = progs.map(p => p.scores.level2).filter(s => s > 0);
+    const l3 = progs.map(p => p.scores.level3).filter(s => s > 0);
+    const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : null;
+    const max = arr => arr.length ? Math.max(...arr) : null;
+    const min = arr => arr.length ? Math.min(...arr) : null;
+
+    const a1=avg(l1), a2=avg(l2), a3=avg(l3);
+    const completionRate = entries.length ? Math.round(progs.filter(p=>p.completed).length/entries.length*100) : 0;
+    const totalAtt = progs.reduce((sum,p) =>
+        sum + Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0)
+        + (p.attemptHistory.level2||[]).length + (p.attemptHistory.level3||[]).length, 0);
+    const avgAtt = progs.length ? (totalAtt/progs.length).toFixed(1) : '—';
+
+    const fv = (v, suffix='%') => v !== null ? v+suffix : '—';
+    const color = v => v>=80?'var(--success)':v>=60?'var(--warning)':v!==null?'var(--accent)':'var(--text-light)';
+
+    container.innerHTML = `
+        <div style="margin-bottom:16px;">
+            <div style="font-size:0.75rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Promedio del grupo por nivel</div>
+            ${[['Nivel 1',a1,'#3182ce'],['Nivel 2',a2,'#38a169'],['Nivel 3',a3,'#d69e2e']].map(([lbl,av,col])=>`
+                <div style="margin-bottom:8px;">
+                    <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:3px;">
+                        <span>${lbl}</span>
+                        <span style="font-weight:700;color:${color(av)};">${fv(av)}</span>
+                    </div>
+                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${av||0}%;background:${col};"></div></div>
+                </div>`).join('')}
+        </div>
+        <div class="gs-row"><span class="gs-lbl">Finalización</span><span class="gs-val">${completionRate}%</span></div>
+        <div class="gs-row"><span class="gs-lbl">Con algún resultado</span><span class="gs-val">${progs.length} / ${entries.length}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Mejor N1 / N2 / N3</span><span class="gs-val">${fv(max(l1))} / ${fv(max(l2))} / ${fv(max(l3))}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Menor N1 / N2 / N3</span><span class="gs-val">${fv(min(l1))} / ${fv(min(l2))} / ${fv(min(l3))}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Prom. intentos/auditor</span><span class="gs-val">${avgAtt}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Total intentos grupo</span><span class="gs-val">${totalAtt}</span></div>`;
+}
+
+function renderBarCharts() {
+    const container = document.getElementById('barChartContainer');
+    const users = getUsers();
+    const entries = Object.entries(users);
+    const withData = entries.filter(([u]) => getUserProgress(u));
+
+    if (!withData.length) {
+        container.innerHTML = '<p style="padding:15px;text-align:center;color:var(--text-light);">Sin datos de progreso aún.</p>';
+        return;
+    }
+
+    // Sort by avg desc
+    const auditors = withData.map(([u, data]) => {
+        const p = getUserProgress(u);
+        return { name: data.name, p };
+    }).sort((a,b) => (calcAvgScore(b.p)||0) - (calcAvgScore(a.p)||0));
+
+    const levels = [
+        { key: 'level1', label: 'Nivel 1 — Observaciones', color: '#3182ce' },
+        { key: 'level2', label: 'Nivel 2 — Risk Rating',   color: '#38a169' },
+        { key: 'level3', label: 'Nivel 3 — Res. Ejecutivo',color: '#d69e2e' }
+    ];
+
+    container.innerHTML = `<div class="comparison-grid">
+        ${levels.map(lv => `
+            <div>
+                <div class="cmp-section-title">${lv.label}</div>
+                ${auditors.map(a => {
+                    const sc = a.p.scores[lv.key] || 0;
+                    const firstName = escHtml(a.name.split(' ')[0]);
+                    const barColor = sc >= 80 ? 'var(--success)' : sc >= 60 ? 'var(--warning)' : sc > 0 ? 'var(--accent)' : lv.color;
+                    return `<div class="bar-chart-row">
+                        <div class="bar-label" title="${escHtml(a.name)}">${firstName}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:${sc}%;background:${barColor};">${sc > 18 ? sc+'%' : ''}</div>
+                        </div>
+                        <div class="bar-val" style="color:${sc>=80?'var(--success)':sc>=60?'var(--warning)':sc>0?'var(--accent)':'var(--text-light)'};">${sc > 0 ? sc+'%' : '—'}</div>
+                    </div>`;
+                }).join('')}
+            </div>`).join('')}
+    </div>`;
+}
+
+function renderAuditorList() {
+    const users = getUsers();
+    const entries = Object.entries(users);
+
+    if (!entries.length) {
+        document.getElementById('auditorListContainer').innerHTML = '<p style="padding:25px;text-align:center;color:var(--text-light);">No hay auditores registrados aún. Usa el formulario para crear cuentas.</p>';
+        return;
+    }
+
+    const rows = entries.map(([uname, data]) => {
+        const p = getUserProgress(uname);
+        const badge = !p ? '<span class="badge badge-gray">Sin iniciar</span>'
+            : p.completed ? '<span class="badge badge-success">Completado ✓</span>'
+            : '<span class="badge badge-info">En progreso</span>';
+        return `<tr>
+            <td><strong>${escHtml(data.name)}</strong></td>
+            <td style="font-family:monospace;">${escHtml(uname)}</td>
+            <td>${badge}</td>
+            <td style="font-size:0.79rem;color:var(--text-light);">${fmtDate(data.createdAt)}</td>
+            <td>
+                <button class="btn btn-outline" style="padding:4px 10px;font-size:0.76rem;margin-right:5px;" onclick="showCredentials('${escHtml(uname)}')">🔑 Ver acceso</button>
+                <button class="btn btn-danger" style="padding:4px 10px;font-size:0.76rem;" onclick="deleteAuditor('${escHtml(uname)}')">🗑 Eliminar</button>
+            </td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('auditorListContainer').innerHTML = `
+        <table class="aud-table">
+            <thead><tr><th>Nombre</th><th>Usuario</th><th>Estado</th><th>Creado</th><th>Acciones</th></tr></thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+}
+
+function createAuditor() {
+    const name = document.getElementById('newAuditorName').value.trim();
+    const uname = document.getElementById('newAuditorUsername').value.trim().toLowerCase();
+    const pass = document.getElementById('newAuditorPassword').value.trim();
+    const errEl = document.getElementById('createError');
+    const okEl = document.getElementById('createSuccess');
+    errEl.style.display = 'none'; okEl.style.display = 'none';
+
+    if (!name||!uname||!pass) { errEl.textContent='Completa todos los campos.'; errEl.style.display='block'; return; }
+    if (pass.length < 6) { errEl.textContent='La contraseña debe tener al menos 6 caracteres.'; errEl.style.display='block'; return; }
+    if (uname==='admin') { errEl.textContent='"admin" está reservado.'; errEl.style.display='block'; return; }
+    if (!/^[a-z0-9_]+$/.test(uname)) { errEl.textContent='Usuario solo puede tener letras minúsculas, números y _.'; errEl.style.display='block'; return; }
+
+    const users = getUsers();
+    if (users[uname]) { errEl.textContent='Ese nombre de usuario ya existe.'; errEl.style.display='block'; return; }
+
+    users[uname] = { name, password: pass, createdAt: new Date().toISOString() };
+    saveUsers(users);
+
+    document.getElementById('newAuditorName').value = '';
+    document.getElementById('newAuditorUsername').value = '';
+    document.getElementById('newAuditorPassword').value = '';
+
+    okEl.textContent = `✅ Auditor "${name}" creado correctamente. Ya puede ingresar con usuario "${uname}".`;
+    okEl.style.display = 'block';
+    setTimeout(() => okEl.style.display = 'none', 5000);
+
+    renderAuditorList();
+    renderAdminDashboard();
+}
+
+function deleteAuditor(uname) {
+    const users = getUsers();
+    if (!users[uname]) return;
+    if (!confirm(`¿Eliminar al auditor "${users[uname].name}" (${uname})?\nSe perderá su progreso guardado.`)) return;
+    delete users[uname];
+    saveUsers(users);
+    localStorage.removeItem('audit_progress_' + uname);
+    renderAuditorList();
+    renderAdminDashboard();
+}
+
+function generatePassword() {
+    const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
+    let p = '';
+    for (let i = 0; i < 8; i++) p += chars[Math.floor(Math.random() * chars.length)];
+    document.getElementById('newAuditorPassword').value = p;
+}
+
+function showCredentials(uname) {
+    const users = getUsers();
+    const u = users[uname]; if (!u) return;
+    document.getElementById('credName').textContent = u.name;
+    document.getElementById('credUsername').textContent = uname;
+    document.getElementById('credPassword').textContent = u.password;
+    document.getElementById('credUrl').textContent = window.location.origin + window.location.pathname;
+    document.getElementById('copyMsg').style.display = 'none';
+    document.getElementById('credModal').style.display = 'flex';
+}
+
+function closeCredModal() { document.getElementById('credModal').style.display = 'none'; }
+
+function copyCredentials() {
+    const name = document.getElementById('credName').textContent;
+    const user = document.getElementById('credUsername').textContent;
+    const pass = document.getElementById('credPassword').textContent;
+    const url = document.getElementById('credUrl').textContent;
+    const txt = `IPPF Audit Training Platform\nNombre: ${name}\nUsuario: ${user}\nContraseña: ${pass}\nURL: ${url}`;
+    navigator.clipboard.writeText(txt).then(() => {
+        const m = document.getElementById('copyMsg');
+        m.style.display = 'block';
+        setTimeout(() => m.style.display = 'none', 2500);
+    }).catch(() => prompt('Copia manualmente:', txt));
+}
+
+// =========================================================
+// COMPONENT LABEL OPTIONS (for selectors)
+// =========================================================
+const componentLabels = [
+    { value: '', text: '-- Selecciona componente --' },
+    { value: 'titulo', text: 'Título' },
+    { value: 'background', text: 'Background / Criterio' },
+    { value: 'condicion', text: 'Condición' },
+    { value: 'causa', text: 'Causa Raíz' },
+    { value: 'riesgo', text: 'Riesgo' },
+    { value: 'recomendacion', text: 'Recomendación' }
+];
+
+const execLabels = [
+    { value: '', text: '-- Selecciona componente --' },
+    { value: 'background_audit', text: 'Background de la Auditoría' },
+    { value: 'why_audit', text: 'Why This Audit' },
+    { value: 'scope', text: 'Scope / Alcance' },
+    { value: 'opinion_negocio', text: 'Opinión sobre Objetivos del Negocio' },
+    { value: 'opinion_auditoria', text: 'Opinión sobre Objetivos de la Auditoría' },
+    { value: 'observaciones_resumen', text: 'Resumen de Observaciones' },
+    { value: 'recomendacion_exec', text: 'Recomendación General' }
+];
+
+// =========================================================
+// DATA: Rating Dimensions (Appendix A — 5 criteria, scale 1–5)
+// =========================================================
+const ratingDimensions = [
+    {
+        label: 'Impacto en estados financieros',
+        sublabel: 'Activos, pasivos, ingresos o gastos',
+        levels: [
+            'Sin impacto financiero medible',
+            'Impacto menor — misstatement menor',
+            'Impacto moderado — misstatement moderado',
+            'Impacto importante en estados financieros',
+            'Impacto significativo — misstatement significativo'
+        ]
+    },
+    {
+        label: 'Gravedad de la debilidad del control',
+        sublabel: 'Fundamental, importante o menor al sistema',
+        levels: [
+            'Sin debilidad relevante en el control',
+            'Debilidad menor — mejorable, no vital',
+            'Efecto importante en el sistema/control',
+            'Debilidad significativa en el sistema',
+            'Debilidad fundamental y material del sistema'
+        ]
+    },
+    {
+        label: 'Impacto en eficiencia operativa',
+        sublabel: 'Efectividad y eficiencia de operaciones',
+        levels: [
+            'Sin impacto en eficiencia operativa',
+            'Impacto mínimo en eficiencia/efectividad',
+            'Impacto moderado en eficiencia operativa',
+            'Impacto importante en eficiencia/efectividad',
+            'Impacto significativo en eficiencia y/o efectividad'
+        ]
+    },
+    {
+        label: 'Cumplimiento del objetivo de control',
+        sublabel: 'El control logra (o no) su propósito',
+        levels: [
+            'Objetivo de control plenamente cumplido',
+            'Objetivo cumplido con desviaciones mínimas',
+            'Objetivo cumplido parcialmente (controles mitigantes)',
+            'Objetivo difícilmente cumplido',
+            'Control objective no se cumplirá — sin control mitigante'
+        ]
+    },
+    {
+        label: 'Cumplimiento de políticas del grupo',
+        sublabel: 'Adherencia a normas internas y del grupo',
+        levels: [
+            'Cumplimiento total de políticas',
+            'Incumplimiento menor con controles mitigantes fuertes',
+            'Incumplimiento con controles mitigantes parciales',
+            'Incumplimiento con controles mitigantes débiles',
+            'Incumplimiento sin controles mitigantes'
+        ]
+    }
+];
+
+// Grading thresholds (sum of 5 dims, max 25):
+// HIGH  ≥ 20  (avg ≥ 4.0 — significant/fundamental across criteria)
+// MEDIUM 11–19 (avg 2.2–3.8 — moderate/important with mitigating controls)
+// LOW   5–10  (avg 1.0–2.0 — minor, improvable but not vital)
+function computeGradeFromSum(sum) {
+    if (sum >= 20) return 'high';
+    if (sum >= 11) return 'medium';
+    return 'low';
+}
+
+function computeGradeFromRatings(obsId) {
+    const dims = userRatings[obsId];
+    if (!dims) return null;
+    const vals = [0,1,2,3,4].map(i => dims[i] || 0);
+    if (vals.some(v => v === 0)) return null; // not all 5 rated
+    return computeGradeFromSum(vals.reduce((a,b) => a+b, 0));
+}
+
+// =========================================================
+// DATA: 4 Observations — each with 1 distractor per component type
+// =========================================================
+const observations = [
+    {
+        id: 1,
+        name: "Observación 1",
+        correctRating: "high",
+        ratingExplanation: "HIGH: Impacto financiero de $3.08M USD, debilidad fundamental en el control automático de precios del ERP (desactivado sin reactivar). 3 de los 10 principales clientes (35% de ingresos) amenazan con cambiar de proveedor. No existe control mitigante. Cumple criterios 1, 2, 3, 4 y 5 de la definición High.",
+        components: [
+            { type: "titulo", text: "Discrepancias sistemáticas entre precios cotizados y precios facturados en venta de repuestos", order: 1 },
+            { type: "background", text: "Según la política comercial COM-012 y el procedimiento de facturación FAC-003, los precios facturados deben coincidir exactamente con los precios aprobados en la cotización vigente aceptada por el cliente. El sistema ERP debe validar automáticamente esta consistencia antes de la emisión de la factura.", order: 2 },
+            { type: "condicion", text: "De las 2,118 facturas rechazadas, 805 (38%) presentaron discrepancias de precios respecto a las cotizaciones aceptadas. El monto afectado asciende a USD $3.08 millones. En una muestra de 120 facturas rechazadas por precios, el 73% mostró diferencias superiores al 5% respecto al precio cotizado, y en 28 casos las diferencias superaron el 15%.", order: 3 },
+            { type: "causa", text: "La validación automática de precios en el ERP fue desactivada en marzo 2025 durante una migración de datos, y no fue reactivada. Adicionalmente, las actualizaciones de lista de precios no se sincronizan con las cotizaciones vigentes, y no existe un control de verificación manual previo a la emisión de facturas.", order: 4 },
+            { type: "riesgo", text: "Pérdida financiera directa por subfacturación y deterioro de la relación comercial con clientes estratégicos que han manifestado formalmente su inconformidad. 3 de los 10 principales clientes (que representan el 35% de los ingresos) han amenazado con cambiar de proveedor.", order: 5 },
+            { type: "recomendacion", text: "Reactivar la validación automática de precios en el ERP dentro de los próximos 15 días. Implementar un proceso de conciliación semanal entre lista de precios y cotizaciones vigentes, asignando a un responsable del área comercial. Establecer un control de doble verificación para facturas superiores a USD $10,000 antes del 30 de junio 2026.", order: 6 }
+        ],
+        distractors: [
+            { type: "titulo", text: "Falta de controles en el proceso de facturación de la empresa" },
+            { type: "background", text: "La empresa cuenta con un sistema ERP que gestiona múltiples procesos de negocio y que fue implementado hace varios años con el objetivo de mejorar la eficiencia operativa general." },
+            { type: "condicion", text: "Los empleados del área de facturación no tienen la capacitación adecuada para realizar su trabajo de manera eficiente y esto genera diversos problemas operativos en toda la organización." },
+            { type: "causa", text: "La causa principal es que la gerencia no ha invertido suficiente presupuesto en tecnología y sistemas durante los últimos años, lo que ha generado atrasos generalizados." },
+            { type: "riesgo", text: "Existe el riesgo general de que la empresa enfrente dificultades financieras si no mejora todos sus procesos internos en el futuro cercano." },
+            { type: "recomendacion", text: "Se recomienda que la empresa contrate una consultoría externa para revisar todos los procesos de negocio y proponer mejoras integrales en toda la organización." }
+        ]
+    },
+    {
+        id: 2,
+        name: "Observación 2",
+        correctRating: "high",
+        ratingExplanation: "HIGH: 529 facturas con errores en componentes críticos de maquinaria pesada. Un incidente reportado causó daño de USD $85,000 a una excavadora. Potencial riesgo de seguridad para operadores. Debilidad fundamental: catálogo no actualizado post-migración con 1,240 códigos obsoletos activos, sin control mitigante. Cumple criterios 1, 2, 3, 4 y 5.",
+        components: [
+            { type: "titulo", text: "Errores en identificación de números de parte y descripción de componentes en facturas", order: 1 },
+            { type: "background", text: "El procedimiento de gestión de catálogo CAT-007 establece que toda factura debe referenciar el número de parte exacto del fabricante (OEM) y la descripción estandarizada del componente según el catálogo maestro. La Norma ISO 8601 de codificación de partes industriales requiere verificación cruzada entre el pedido, la guía de despacho y la factura.", order: 2 },
+            { type: "condicion", text: "529 facturas (25% de los rechazos) contenían errores en números de parte o descripciones incorrectas. En una muestra de 80 facturas rechazadas: 45 tenían números de parte con dígitos transpuestos, 22 referenciaban números de parte obsoletos del catálogo anterior, y 13 tenían descripciones que no correspondían al componente facturado. El monto afectado totaliza USD $2.03 millones.", order: 3 },
+            { type: "causa", text: "El catálogo maestro de partes no fue actualizado tras la migración al nuevo sistema en febrero 2025, manteniendo 1,240 códigos obsoletos activos. El personal de facturación ingresa manualmente los números de parte sin un mecanismo de autocompletado o validación contra el catálogo, y no existe un proceso de verificación previo al envío de la factura.", order: 4 },
+            { type: "riesgo", text: "Despacho de componentes incorrectos que pueden provocar daño a equipos de maquinaria pesada, paradas operativas no programadas en faenas mineras, y potencial riesgo de seguridad para los operadores. Un cliente reportó que un filtro hidráulico erróneo causó daño al sistema hidráulico de una excavadora, con un costo de reparación de USD $85,000.", order: 5 },
+            { type: "recomendacion", text: "Depurar y actualizar el catálogo maestro de partes eliminando los 1,240 códigos obsoletos antes del 31 de mayo 2026. Implementar validación automática de números de parte con autocompletado en el módulo de facturación del ERP, con fecha límite 30 de julio 2026. Capacitar al 100% del personal de facturación en el nuevo catálogo dentro de los próximos 30 días.", order: 6 }
+        ],
+        distractors: [
+            { type: "titulo", text: "Problemas generales de calidad en la gestión del catálogo de productos de la empresa" },
+            { type: "background", text: "La compañía tiene una política general de calidad que menciona que todos los procesos deben ser eficientes y que los errores deben minimizarse en todas las áreas de la organización." },
+            { type: "condicion", text: "Se detectaron varios problemas en el área de sistemas que afectan la operación general, incluyendo lentitud en las consultas y tiempos de respuesta inadecuados del servidor." },
+            { type: "causa", text: "El personal del área de sistemas no tiene las competencias técnicas necesarias y la rotación de personal ha sido alta en los últimos meses." },
+            { type: "riesgo", text: "Si no se mejoran los procesos tecnológicos, la empresa podría perder competitividad en el mercado frente a sus principales competidores." },
+            { type: "recomendacion", text: "Se recomienda mejorar los procesos de la empresa para que sean más eficientes y así reducir los errores que se producen actualmente en todas las áreas." }
+        ]
+    },
+    {
+        id: 3,
+        name: "Observación 3",
+        correctRating: "medium",
+        ratingExplanation: "MEDIUM: Impacto moderado ($1.78M), misstatement moderado en cuentas por cobrar por demora en cobranza. El control de vigencia de OC no funciona pero el sistema objetivo (cobrar) puede cumplirse parcialmente con gestión manual como control mitigante. Moderately impacts eficiencia operativa. Cumple criterios 1, 2, 3 y 4 de Medium.",
+        components: [
+            { type: "titulo", text: "Facturación contra órdenes de compra vencidas o sin referencia válida", order: 1 },
+            { type: "background", text: "La política de crédito y cobranza CYC-005 exige que toda factura incluya el número de orden de compra (OC) vigente del cliente como requisito para su aceptación y pago. Las condiciones generales de venta establecen que las OC tienen una vigencia máxima de 90 días desde su emisión, tras lo cual requieren renovación formal por parte del cliente.", order: 2 },
+            { type: "condicion", text: "466 facturas (22% de los rechazos) fueron emitidas contra órdenes de compra vencidas o sin referencia. Del análisis: 312 referenciaban OC con más de 90 días de antigüedad, 98 no incluían número de OC alguno, y 56 referenciaban OC completamente consumidas. Monto afectado: USD $1.78 millones, con demora promedio de 62 días en resolución.", order: 3 },
+            { type: "causa", text: "El sistema de facturación no valida la vigencia de las órdenes de compra al momento de emisión. El equipo comercial no mantiene un seguimiento actualizado del estatus de las OC de sus clientes, y no existe una alerta automática cuando una OC se aproxima a su fecha de vencimiento o ha consumido más del 80% de su monto.", order: 4 },
+            { type: "riesgo", text: "Retraso significativo en la cobranza que impacta el flujo de caja operativo. La demora promedio de 62 días en resolución de estos casos incrementa el DSO (Days Sales Outstanding) de la compañía en aproximadamente 8 días, afectando el capital de trabajo disponible.", order: 5 },
+            { type: "recomendacion", text: "Implementar validación automática de vigencia y saldo de OC en el ERP antes del 30 de septiembre 2026. Establecer alertas automáticas al equipo comercial cuando una OC alcance el 80% de consumo o falten 15 días para su vencimiento. Designar un responsable en el área de crédito para la revisión semanal del estado de OC activas.", order: 6 }
+        ],
+        distractors: [
+            { type: "titulo", text: "Deficiencias en la gestión comercial y relación con clientes de la empresa" },
+            { type: "background", text: "Las mejores prácticas internacionales sugieren que las empresas deben mantener buenas relaciones con sus clientes y asegurar que los procesos comerciales funcionen de manera óptima." },
+            { type: "condicion", text: "Se observó que el equipo comercial tiene una carga de trabajo excesiva y que no cuenta con suficiente personal para atender adecuadamente a todos los clientes de la cartera." },
+            { type: "causa", text: "Los clientes no envían sus órdenes de compra a tiempo porque tienen procesos internos lentos y burocráticos que la empresa no puede controlar." },
+            { type: "riesgo", text: "El riesgo es que la empresa podría tener problemas financieros si no mejora sus procesos de facturación y cobranza en el futuro cercano." },
+            { type: "recomendacion", text: "Contratar más personal en el área comercial y de cobranzas para poder gestionar de mejor manera el portafolio de clientes y sus órdenes de compra." }
+        ]
+    },
+    {
+        id: 4,
+        name: "Observación 4",
+        correctRating: "low",
+        ratingExplanation: "LOW: Impacto menor — los despachos se realizaron correctamente, solo falta adjuntar documentación. Misstatement menor (retraso administrativo, no pérdida). Resolución promedio de 12 días sin deterioro de relación comercial. Si se corrige, mejoraría el control interno pero no es vital para el sistema general. Minimally impacts eficiencia. Cumple criterios 1, 2 y 3 de Low.",
+        components: [
+            { type: "titulo", text: "Documentación de despacho incompleta o no adjunta a la facturación", order: 1 },
+            { type: "background", text: "El procedimiento logístico LOG-009 requiere que toda factura de venta de partes y piezas incluya como anexo la guía de despacho firmada por el cliente, el certificado de calidad del componente (cuando aplique) y el packing list detallado. Estos documentos son requisito del cliente para procesar el pago de la factura.", order: 2 },
+            { type: "condicion", text: "318 facturas (15% de los rechazos) fueron rechazadas por documentación de despacho incompleta. En detalle: 189 facturas no incluían la guía de despacho firmada (aunque el despacho sí fue realizado), 82 carecían del certificado de calidad requerido, y 47 no adjuntaban el packing list. Monto afectado: USD $1.21 millones.", order: 3 },
+            { type: "causa", text: "El proceso de digitalización y adjunto de documentos de despacho es manual. Las guías firmadas permanecen en la bodega de despacho sin ser digitalizadas oportunamente, y no existe un checklist sistematizado que verifique la completitud de la documentación antes de la emisión de la factura.", order: 4 },
+            { type: "riesgo", text: "Retraso menor en el ciclo de cobranza por reproceso administrativo. A diferencia de otros rechazos, estos casos se resuelven en promedio en 12 días una vez que se recopila la documentación, sin generar deterioro en la relación comercial ya que el despacho fue correctamente realizado.", order: 5 },
+            { type: "recomendacion", text: "Incorporar un checklist digital obligatorio en el módulo de facturación que verifique la completitud de los documentos adjuntos antes de permitir la emisión. Evaluar la implementación de digitalización en punto de despacho mediante dispositivos móviles. Plazo sugerido: primer trimestre 2027.", order: 6 }
+        ],
+        distractors: [
+            { type: "titulo", text: "Falta de documentación adecuada en el proceso logístico y de despacho de la compañía" },
+            { type: "background", text: "La empresa cuenta con varias bodegas de almacenamiento distribuidas en diferentes localidades del país, cada una con su propio equipo de operaciones y sistemas de gestión de inventario." },
+            { type: "condicion", text: "Se observó que el área de logística no cumple con varios procedimientos internos y las bodegas no están ordenadas correctamente, lo que genera ineficiencias generales en la cadena de suministro." },
+            { type: "causa", text: "La empresa no ha invertido en tecnología de digitalización porque el presupuesto de TI ha sido recortado por la gerencia general durante los últimos dos años fiscales." },
+            { type: "riesgo", text: "Si la empresa no moderniza sus procesos logísticos, podría quedar rezagada respecto a la competencia y perder participación de mercado en el mediano plazo." },
+            { type: "recomendacion", text: "Realizar una reingeniería completa del proceso logístico incluyendo rediseño de bodegas, implementación de WMS y automatización de todos los procesos de despacho." }
+        ]
+    }
+];
+
+// =========================================================
+// DATA: Executive Summary Components + Distractors (1 per type)
+// =========================================================
+const execComponents = [
+    { type: "background_audit", label: "Background de la Auditoría", text: "MaquiParts Industrial S.A. es líder regional en distribución de repuestos y componentes para maquinaria pesada en los sectores de minería y construcción. El proceso de facturación de venta de partes y piezas es un proceso core del negocio que sustenta el ciclo de ingresos de la compañía, con un volumen anual de 12,450 facturas por USD $47.8 millones. El objetivo del negocio es mantener una tasa de rechazo inferior al 3% y un DSO no mayor a 45 días para asegurar un flujo de caja saludable.", order: 1, correct: true },
+    { type: "why_audit", label: "Why This Audit", text: "La auditoría fue iniciada en respuesta al incremento sostenido de la tasa de rechazo de facturas, que pasó de 4% en 2024 a 17% en 2025, superando significativamente el umbral de tolerancia del 3%. Adicionalmente, el comité de auditoría identificó este proceso como de alto riesgo en la evaluación anual de riesgos, y se recibieron quejas formales de 3 clientes estratégicos que representan el 35% de los ingresos.", order: 2, correct: true },
+    { type: "scope", label: "Scope", text: "Se revisó el proceso end-to-end de facturación de venta de partes y piezas correspondiente al período enero – diciembre 2025, incluyendo: generación de cotizaciones, validación de precios, referenciación de órdenes de compra, emisión de facturas, documentación de despacho y gestión de rechazos. Se analizaron 2,118 facturas rechazadas y se tomaron muestras representativas por cada causal de rechazo.", order: 3, correct: true },
+    { type: "opinion_negocio", label: "Opinión sobre Objetivos del Negocio", text: "La tasa de rechazo de facturas del 17% supera en más de cinco veces el objetivo del negocio del 3%, comprometiendo directamente la meta de mantener un flujo de caja saludable con un DSO no mayor a 45 días. Las deficiencias en los controles de facturación han generado $8.1M USD en facturación rechazada, deteriorando la relación comercial con clientes estratégicos que representan el 35% de los ingresos y amenazando la posición competitiva de la compañía.", order: 4, correct: true },
+    { type: "opinion_auditoria", label: "Opinión sobre Objetivos de la Auditoría", text: "Los controles internos del proceso de facturación de venta de partes y piezas presentan debilidades significativas en las cuatro áreas evaluadas: validación de precios, gestión de catálogo de partes, control de órdenes de compra y documentación de despacho. Los procesos no operan en conformidad con las políticas internas establecidas, evidenciado por la desactivación no autorizada de controles automáticos del ERP y la falta de actualización del catálogo maestro durante 18 meses. Se identificaron 4 causas raíz principales que requieren atención inmediata, particularmente las 2 observaciones calificadas como alto riesgo.", order: 5, correct: true },
+    { type: "observaciones_resumen", label: "Resumen de Observaciones", text: "Se identificaron 4 observaciones: (1) Discrepancias sistemáticas de precios cotizados vs facturados – Riesgo Alto, con $3.08M afectados y amenaza de pérdida de clientes estratégicos. (2) Errores en números de parte y descripción de componentes – Riesgo Alto, con potencial daño a equipos y riesgo de seguridad. (3) Facturación contra órdenes de compra vencidas – Riesgo Medio, impactando el flujo de caja con $1.78M en demora. (4) Documentación de despacho incompleta – Riesgo Bajo, generando reprocesos administrativos menores.", order: 6, correct: true },
+    { type: "recomendacion_exec", label: "Recomendación General", text: "Se recomienda priorizar la remediación de las observaciones de alto riesgo dentro de los próximos 30 días, enfocándose en la reactivación de controles automáticos del ERP y la actualización del catálogo de partes. Para las observaciones de riesgo medio y bajo, establecer un plan de acción con seguimiento trimestral. Se sugiere una auditoría de seguimiento a los 6 meses para validar la implementación de las recomendaciones.", order: 7, correct: true },
+    // Distractors — one per component type
+    { type: "distractor", label: "Historia de la Compañía", text: "MaquiParts Industrial S.A. fue fundada en 1987 y ha crecido significativamente durante las últimas tres décadas, expandiéndose a 5 países de la región. La empresa cuenta con más de 500 empleados y su sede principal está ubicada en Santiago. Su visión es ser el proveedor de referencia en Latinoamérica.", order: -1, correct: false },
+    { type: "distractor", label: "Análisis de la Competencia", text: "En el mercado actual existen al menos 12 competidores directos en la distribución de repuestos de maquinaria pesada. La cuota de mercado de MaquiParts ha disminuido un 2% respecto al año anterior, lo que indica la necesidad de mejorar la estrategia comercial y de marketing.", order: -1, correct: false },
+    { type: "distractor", label: "Plan Estratégico", text: "Se recomienda que la gerencia general considere una reestructuración completa del departamento comercial, incluyendo cambios en la estructura organizacional, revisión de todos los procesos de la compañía, e implementación de un programa de transformación digital integral.", order: -1, correct: false },
+    { type: "distractor", label: "Satisfacción del Cliente", text: "La última encuesta de satisfacción del cliente realizada en 2024 arrojó un índice de 7.2 sobre 10, lo que representa una disminución de 0.5 puntos respecto al año anterior. Los principales aspectos a mejorar según los clientes son los tiempos de entrega y la atención post-venta.", order: -1, correct: false },
+    { type: "distractor", label: "Metodología de Auditoría", text: "La auditoría fue realizada siguiendo la metodología estándar del departamento de auditoría interna, que incluye planificación, ejecución de pruebas, documentación de papeles de trabajo, revisión de calidad y emisión del informe. Se utilizaron herramientas de análisis de datos como ACL y Excel.", order: -1, correct: false },
+    { type: "distractor", label: "Agradecimientos", text: "El equipo de auditoría interna agradece la colaboración del personal de las áreas de facturación, logística, comercial y sistemas de información durante la ejecución del trabajo. Su disposición facilitó la obtención oportuna de la información requerida.", order: -1, correct: false },
+    { type: "distractor", label: "Proyecciones Financieras", text: "Según las proyecciones del área de finanzas, los ingresos de la compañía crecerán un 12% en 2026, impulsados por nuevos contratos en el sector minero. El EBITDA proyectado es de USD $15.2 millones, representando un margen del 28%.", order: -1, correct: false }
+];
+
+// =========================================================
+// DATA: Numeric data for Level 3 sidebar (correct + distractors)
+// =========================================================
+const numericData = [
+    // Correct data
+    { label: "Facturas emitidas", value: "12,450", correct: true },
+    { label: "Facturas rechazadas", value: "2,118", correct: true },
+    { label: "Tasa de rechazo", value: "17%", correct: true },
+    { label: "Monto rechazado", value: "$8.1M USD", correct: true },
+    { label: "Clientes afectados", value: "87 de 142", correct: true },
+    { label: "Demora promedio reproceso", value: "45 días", correct: true },
+    { label: "Costo de reproceso estimado", value: "$340K USD", correct: true },
+    { label: "Observaciones emitidas", value: "4", correct: true },
+    { label: "Rating Alto", value: "2 observaciones", correct: true },
+    { label: "Rating Medio", value: "1 observación", correct: true },
+    { label: "Rating Bajo", value: "1 observación", correct: true },
+    { label: "Período auditado", value: "Ene - Dic 2025", correct: true },
+    // Distractors
+    { label: "Empleados de la compañía", value: "523", correct: false },
+    { label: "Antigüedad promedio empleados", value: "6.3 años", correct: false },
+    { label: "Satisfacción del cliente", value: "7.2 / 10", correct: false },
+    { label: "Cuota de mercado", value: "18.5%", correct: false },
+    { label: "Rotación de personal", value: "12% anual", correct: false },
+    { label: "Presupuesto de TI", value: "$2.1M USD", correct: false },
+    { label: "Número de bodegas", value: "8 ubicaciones", correct: false },
+    { label: "Proyección ingresos 2026", value: "+12%", correct: false },
+    { label: "Proveedores activos", value: "234", correct: false },
+    { label: "Capacitaciones realizadas", value: "47 sesiones", correct: false },
+    { label: "Auditorías previas", value: "3 en últimos 5 años", correct: false },
+    { label: "NPS Score", value: "42", correct: false }
+];
+
+// =========================================================
+// STATE
+// =========================================================
+let currentObs = 0;
+let completedObs = new Set();
+let obsResults = {};
+let userRatings = {};
+let correctionMode = false;
+let correctionModeExec = false;
+let scores = { level1: 0, level2: 0, level3: 0 };
+
+// Full attempt history for final summary
+let attemptHistory = {
+    level1: {},   // obsId -> [ {attempt, errors[], score} ]
+    level2: [],   // [ {attempt, errors[], score, ratings:{}} ]
+    level3: []    // [ {attempt, errors[], score} ]
+};
+
+// =========================================================
+// INIT
+// =========================================================
+function init() {
+    renderObsTabs();
+    loadObservation(0);
+}
+
+function renderObsTabs() {
+    const tabs = document.getElementById('obsTabs');
+    tabs.innerHTML = observations.map((obs, i) =>
+        `<div class="obs-tab ${i === 0 ? 'active' : ''} ${completedObs.has(i) ? 'completed' : ''}"
+              onclick="switchObs(${i})" id="obsTab${i}">${obs.name}</div>`
+    ).join('');
+}
+
+function switchObs(index) {
+    if (completedObs.has(currentObs) || correctionMode || currentObs === index) {
+        currentObs = index;
+        document.querySelectorAll('.obs-tab').forEach((t, i) => {
+            t.classList.toggle('active', i === index);
+        });
+        document.getElementById('currentObsTitle').innerHTML =
+            `<div class="icon">📝</div> ${observations[index].name}`;
+        document.getElementById('level1Feedback').classList.add('hidden');
+        loadObservation(index);
+    }
+}
+
+function loadObservation(index) {
+    const obs = observations[index];
+    const pool = document.getElementById('dndPool');
+    const target = document.getElementById('dndTarget');
+
+    let allCards = [
+        ...obs.components.map(c => ({ ...c, correct: true, obsId: obs.id })),
+        ...obs.distractors.map(d => ({ ...d, correct: false, obsId: obs.id, order: -1 }))
+    ];
+    shuffle(allCards);
+
+    pool.innerHTML = '';
+    target.innerHTML = '';
+
+    allCards.forEach((card, i) => {
+        const el = createDragCard(card, `card-${index}-${i}`, 'obs');
+        pool.appendChild(el);
+    });
+
+    setupDragAndDrop();
+}
+
+function createDragCard(card, id, mode) {
+    const div = document.createElement('div');
+    div.className = 'drag-card';
+    div.draggable = true;
+    div.id = id;
+    div.dataset.type = card.type;
+    div.dataset.order = card.order || -1;
+    div.dataset.correct = card.correct;
+
+    // Label selector — user must classify the component
+    const labels = mode === 'obs' ? componentLabels : execLabels;
+    const selectOptions = labels.map(l =>
+        `<option value="${l.value}">${l.text}</option>`
+    ).join('');
+
+    div.innerHTML = `
+        <span class="drag-handle">⠿</span>
+        <div class="label-selector">
+            <select class="component-select" onchange="this.closest('.drag-card').dataset.userLabel=this.value">
+                ${selectOptions}
+            </select>
+        </div>
+        <span class="card-type hidden-label" data-real-type="${card.type}">${getTypeLabel(card.type)}</span>
+        <div class="card-text">${card.text}</div>
+    `;
+
+    return div;
+}
+
+function getTypeLabel(type) {
+    const labels = {
+        'titulo': 'Título', 'background': 'Background / Criterio',
+        'condicion': 'Condición', 'causa': 'Causa Raíz',
+        'riesgo': 'Riesgo', 'recomendacion': 'Recomendación',
+        'background_audit': 'Background Auditoría', 'why_audit': 'Why This Audit',
+        'scope': 'Scope / Alcance',
+        'opinion_negocio': 'Opinión Obj. Negocio', 'opinion_auditoria': 'Opinión Obj. Auditoría', 'observaciones_resumen': 'Observaciones',
+        'recomendacion_exec': 'Recomendación General', 'distractor': 'DISTRACTOR'
+    };
+    return labels[type] || type;
+}
+
+// =========================================================
+// DRAG & DROP
+// =========================================================
+let draggedEl = null;
+
+function setupDragAndDrop() {
+    document.querySelectorAll('.drag-card, .data-card').forEach(card => {
+        card.addEventListener('dragstart', handleDragStart);
+        card.addEventListener('dragend', handleDragEnd);
+    });
+
+    ['dndPool', 'dndTarget', 'execPool', 'execTarget', 'dataPool', 'dataTarget'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('dragover', handleDragOver);
+            el.addEventListener('dragenter', handleDragEnter);
+            el.addEventListener('dragleave', handleDragLeave);
+            el.addEventListener('drop', handleDrop);
+        }
+    });
+}
+
+function handleDragStart(e) {
+    draggedEl = e.target.closest('.drag-card, .data-card');
+    draggedEl.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', draggedEl.id);
+}
+
+function handleDragEnd(e) {
+    if (draggedEl) draggedEl.classList.remove('dragging');
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    draggedEl = null;
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const container = e.target.closest('.dnd-pool, .dnd-target, .data-pool, .data-target');
+    if (!container || !draggedEl) return;
+
+    const afterElement = getDragAfterElement(container, e.clientY);
+    if (afterElement) {
+        container.insertBefore(draggedEl, afterElement);
+    } else {
+        container.appendChild(draggedEl);
+    }
+}
+
+function handleDragEnter(e) {
+    e.preventDefault();
+    const container = e.target.closest('.dnd-pool, .dnd-target, .data-pool, .data-target');
+    if (container) container.classList.add('drag-over');
+}
+
+function handleDragLeave(e) {
+    const container = e.target.closest('.dnd-pool, .dnd-target, .data-pool, .data-target');
+    if (container && !container.contains(e.relatedTarget)) container.classList.remove('drag-over');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
+function getDragAfterElement(container, y) {
+    const items = [...container.querySelectorAll('.drag-card:not(.dragging), .data-card:not(.dragging)')];
+    return items.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) return { offset, element: child };
+        return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+// =========================================================
+// VALIDATION - Level 1
+// =========================================================
+function validateObservation() {
+    const target = document.getElementById('dndTarget');
+    const cards = [...target.querySelectorAll('.drag-card')];
+    const obs = observations[currentObs];
+
+    if (cards.length === 0) {
+        alert('Debes arrastrar al menos los componentes correctos al panel de la observación.');
+        return;
+    }
+
+    let errors = [];
+
+    // 1. Check distractors included
+    const distractorsIncluded = cards.filter(c => c.dataset.correct === 'false');
+    if (distractorsIncluded.length > 0) {
+        errors.push({
+            type: 'distractor',
+            message: `Incluiste ${distractorsIncluded.length} componente(s) distractor(es). Los distractores típicamente son vagos, sin datos específicos, usan "falta de" en el título, o proponen soluciones genéricas no SMART.`
+        });
+    }
+
+    // 2. Check missing correct components
+    const correctCards = cards.filter(c => c.dataset.correct === 'true');
+    const expectedTypes = ['titulo', 'background', 'condicion', 'causa', 'riesgo', 'recomendacion'];
+    const missingTypes = expectedTypes.filter(type => !correctCards.find(c => c.dataset.type === type));
+
+    if (missingTypes.length > 0) {
+        errors.push({
+            type: 'missing',
+            message: `Faltan componentes: ${missingTypes.map(t => getTypeLabel(t)).join(', ')}. Una observación IPPF requiere los 6 componentes.`
+        });
+    }
+
+    // 3. Check order
+    const correctOrder = correctCards.map(c => parseInt(c.dataset.order)).filter(o => o > 0);
+    let orderErrors = [];
+    for (let i = 1; i < correctOrder.length; i++) {
+        if (correctOrder[i] < correctOrder[i - 1]) orderErrors.push(i);
+    }
+    if (orderErrors.length > 0) {
+        errors.push({
+            type: 'order',
+            message: `El orden no es correcto. Orden IPPF: Título → Background → Condición → Causa Raíz → Riesgo → Recomendación. Cada componente fluye lógicamente al siguiente.`
+        });
+    }
+
+    // 4. Check label assignments
+    let labelErrors = [];
+    cards.forEach(card => {
+        const userLabel = card.dataset.userLabel || '';
+        const realType = card.dataset.type;
+        const isCorrectCard = card.dataset.correct === 'true';
+
+        if (!userLabel) {
+            labelErrors.push({ card, realType, userLabel: '(sin asignar)', isCorrectCard });
+        } else if (isCorrectCard && userLabel !== realType) {
+            labelErrors.push({ card, realType, userLabel, isCorrectCard });
+        }
+    });
+
+    if (labelErrors.length > 0) {
+        const unassigned = labelErrors.filter(e => e.userLabel === '(sin asignar)');
+        const wrong = labelErrors.filter(e => e.userLabel !== '(sin asignar)');
+        let msg = '';
+        if (unassigned.length > 0) msg += `${unassigned.length} componente(s) sin etiqueta asignada. `;
+        if (wrong.length > 0) msg += `${wrong.length} componente(s) con etiqueta incorrecta. `;
+        msg += 'Debes identificar correctamente cada componente.';
+        errors.push({ type: 'labels', message: msg });
+    }
+
+    // Reveal labels on all cards
+    cards.forEach(card => {
+        const typeSpan = card.querySelector('.card-type');
+        const select = card.querySelector('.component-select');
+        const realType = card.dataset.type;
+        const userLabel = card.dataset.userLabel || '';
+        const isCorrectCard = card.dataset.correct === 'true';
+
+        typeSpan.classList.remove('hidden-label');
+
+        if (isCorrectCard) {
+            if (userLabel === realType) {
+                typeSpan.className = 'card-type revealed-correct';
+                card.classList.add('correct');
+            } else {
+                typeSpan.className = 'card-type revealed-incorrect';
+                typeSpan.textContent = `✗ ${userLabel ? getTypeLabel(userLabel) : '???'} → Correcto: ${getTypeLabel(realType)}`;
+                card.classList.add('incorrect');
+            }
+        } else {
+            typeSpan.className = 'card-type revealed-distractor';
+            typeSpan.textContent = `✗ DISTRACTOR — No pertenece a la observación`;
+            card.classList.add('incorrect');
+        }
+
+        if (select) select.disabled = true;
+    });
+
+    // Also reveal labels on cards left in pool
+    const pool = document.getElementById('dndPool');
+    [...pool.querySelectorAll('.drag-card')].forEach(card => {
+        const typeSpan = card.querySelector('.card-type');
+        const select = card.querySelector('.component-select');
+        const isCorrectCard = card.dataset.correct === 'true';
+        const realType = card.dataset.type;
+
+        typeSpan.classList.remove('hidden-label');
+        if (isCorrectCard) {
+            typeSpan.className = 'card-type revealed-incorrect';
+            typeSpan.textContent = `⚠ ${getTypeLabel(realType)} — Debió incluirse`;
+        } else {
+            typeSpan.className = 'card-type revealed-correct';
+            typeSpan.textContent = `✓ Correcto descartarlo (distractor)`;
+        }
+        if (select) select.disabled = true;
+    });
+
+    // Add order numbers
+    cards.forEach((card, i) => {
+        if (!card.querySelector('.order-num')) {
+            const numEl = document.createElement('div');
+            numEl.className = 'order-num';
+            numEl.textContent = i + 1;
+            card.appendChild(numEl);
+        }
+    });
+
+    // Score
+    let correctCount = 6 - missingTypes.length;
+    if (distractorsIncluded.length === 0) correctCount++;
+    if (orderErrors.length === 0) correctCount++;
+    if (labelErrors.length === 0) correctCount += 2;
+
+    const thisScore = Math.round((correctCount / 10) * 100);
+
+    // Record attempt in history
+    if (!attemptHistory.level1[obs.id]) attemptHistory.level1[obs.id] = [];
+    const attemptNum = attemptHistory.level1[obs.id].length + 1;
+    attemptHistory.level1[obs.id].push({
+        attempt: attemptNum,
+        errors: errors.map(e => ({ type: e.type, message: e.message })),
+        score: thisScore,
+        correct: errors.length === 0
+    });
+
+    obsResults[obs.id] = {
+        correct: errors.length === 0,
+        errors,
+        score: thisScore,
+        attempts: attemptNum
+    };
+
+    showObsFeedback(obs, errors, attemptNum);
+
+    if (errors.length === 0) {
+        completedObs.add(currentObs);
+        renderObsTabs();
+    }
+
+    checkLevel1Progress();
+    saveCurrentProgress();
+}
+
+function showObsFeedback(obs, errors, attemptNum) {
+    const fb = document.getElementById('level1Feedback');
+    fb.classList.remove('hidden');
+    const attemptLabel = attemptNum > 1 ? ` (Intento ${attemptNum})` : '';
+
+    if (errors.length === 0) {
+        fb.innerHTML = `
+            <div class="feedback-panel success fade-in">
+                <h3>✅ ¡Observación ${obs.id} correcta!${attemptLabel}</h3>
+                <div class="feedback-item fb-success">Excelente. Componentes completos, bien clasificados, en orden correcto y sin distractores.${attemptNum > 1 ? ' Corregiste exitosamente los errores del intento anterior.' : ''}</div>
+                <div class="ippf-ref">Cumple con Norma IPPF 2410.A1 — Comunicación de resultados del trabajo</div>
+            </div>`;
+    } else {
+        const iconMap = { distractor: '🚫 Distractor incluido', missing: '📋 Componentes faltantes', order: '🔄 Orden incorrecto', labels: '🏷️ Clasificación incorrecta' };
+        fb.innerHTML = `
+            <div class="feedback-panel error fade-in">
+                <h3>⚠️ Observación ${obs.id} — Errores detectados${attemptLabel}</h3>
+                ${errors.map(e => `<div class="feedback-item fb-error"><strong>${iconMap[e.type] || e.type}:</strong> ${e.message}</div>`).join('')}
+                <div class="correct-order-display">
+                    <strong>Orden y clasificación correcta:</strong>
+                    ${obs.components.map((c, i) => `
+                        <div class="order-item">
+                            <div class="order-num-sm">${i + 1}</div>
+                            <div><strong>${getTypeLabel(c.type)}:</strong> ${c.text.substring(0, 100)}...</div>
+                        </div>`).join('')}
+                </div>
+                <p style="margin-top:10px;color:var(--info);font-weight:600;">Corrige el orden y vuelve a validar.</p>
+            </div>`;
+    }
+}
+
+function checkLevel1Progress() {
+    const attempted = Object.keys(obsResults).length;
+    const allCorrect = Object.values(obsResults).every(r => r.correct);
+
+    // TEST MODE: change to 4 for production
+    const requiredObs = 1;
+
+    if (attempted >= requiredObs && allCorrect) {
+        scores.level1 = Math.round(Object.values(obsResults).reduce((sum, r) => sum + r.score, 0) / attempted);
+        const completeDiv = document.getElementById('level1Complete');
+        completeDiv.classList.remove('hidden');
+        setTimeout(() => completeDiv.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+        return;
+    }
+
+    if (attempted >= requiredObs && !allCorrect && !correctionMode) {
+        correctionMode = true;
+        const fb = document.getElementById('level1Feedback');
+        const errorObs = Object.entries(obsResults).filter(([,r]) => !r.correct);
+        fb.innerHTML += `
+            <div class="feedback-panel fade-in" style="border-left-color: var(--warning); margin-top: 15px;">
+                <h3>🔄 Modo Corrección Activado</h3>
+                <p>Revisa el feedback, haz clic en "Reiniciar" en cada observación con errores, y vuelve a validar.</p>
+                <ul style="margin-left:20px; margin-top:5px;">
+                    ${errorObs.map(([id,]) => `<li>Observación ${id}</li>`).join('')}
+                </ul>
+            </div>`;
+        completedObs = new Set([0, 1, 2, 3]);
+        renderObsTabs();
+        return;
+    }
+
+    if (correctionMode && attempted >= requiredObs && !allCorrect) {
+        const remaining = Object.entries(obsResults).filter(([,r]) => !r.correct);
+        if (remaining.length > 0) {
+            const fb = document.getElementById('level1Feedback');
+            const existing = fb.querySelector('.correction-status');
+            if (existing) existing.remove();
+            fb.innerHTML += `
+                <div class="feedback-panel fade-in correction-status" style="border-left-color: var(--warning); margin-top: 15px;">
+                    <h3>🔄 Pendientes de corrección:</h3>
+                    <ul style="margin-left:20px;">${remaining.map(([id,]) => `<li>Observación ${id}</li>`).join('')}</ul>
+                </div>`;
+        }
+        return;
+    }
+
+    if (attempted < requiredObs && obsResults[observations[currentObs].id]?.correct) {
+        completedObs.add(currentObs);
+        renderObsTabs();
+        const next = observations.findIndex((_, i) => !completedObs.has(i) && !obsResults[observations[i].id]);
+        if (next >= 0) setTimeout(() => switchObs(next), 1000);
+    }
+}
+
+function resetCurrentObs() {
+    document.getElementById('level1Feedback').classList.add('hidden');
+    document.getElementById('level1Complete').classList.add('hidden');
+    // Keep history but mark as needing re-validation
+    const obsId = observations[currentObs].id;
+    if (obsResults[obsId]) {
+        obsResults[obsId].needsRevalidation = true;
+        obsResults[obsId].correct = false;
+    }
+    loadObservation(currentObs);
+}
+
+// =========================================================
+// LEVEL 2: Risk Rating
+// =========================================================
+function goToLevel2() {
+    document.getElementById('level1').classList.remove('active');
+    document.getElementById('level2').classList.add('active');
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step1').classList.add('completed');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('levelBadge').textContent = 'Nivel 2 — Rating de Riesgo';
+    window.scrollTo(0, 0);
+    renderRatingCards();
+}
+
+function renderRatingCards() {
+    const grid = document.getElementById('ratingGrid');
+    grid.innerHTML = observations.map(obs => {
+        const cond = obs.components.find(c => c.type === 'condicion').text;
+        const riesgo = obs.components.find(c => c.type === 'riesgo').text;
+        const dimsHtml = ratingDimensions.map((dim, di) => `
+            <div class="dim-row">
+                <div class="dim-info">
+                    <span class="dim-num">${di + 1}</span>
+                    <span class="dim-label">${dim.label}</span>
+                    <div class="dim-sublabel">${dim.sublabel}</div>
+                </div>
+                <div class="dim-scale">
+                    <div class="scale-btns">
+                        ${[1,2,3,4,5].map(v =>
+                            `<button class="scale-btn" id="sb${obs.id}_${di}_${v}" onclick="setDimRating(${obs.id},${di},${v})">${v}</button>`
+                        ).join('')}
+                    </div>
+                    <div class="scale-end-labels"><span>Sin impacto</span><span>Crítico / Significativo</span></div>
+                    <div class="scale-desc" id="sd${obs.id}_${di}">Selecciona un valor del 1 al 5</div>
+                </div>
+            </div>`).join('');
+
+        return `
+        <div class="rating-card" id="ratingCard${obs.id}">
+            <div class="obs-title">${obs.name}</div>
+            <div class="obs-summary">
+                <strong>Condición:</strong> ${cond}<br><br>
+                <strong>Riesgo identificado:</strong> ${riesgo}
+            </div>
+            <div class="dim-rating-section">${dimsHtml}</div>
+            <div class="grade-result-bar">
+                <div>
+                    <div class="grade-score-label">Puntuación acumulada</div>
+                    <div class="grade-score-num"><span id="gs${obs.id}">0</span><span style="font-size:0.85rem;color:var(--text-light);font-weight:400;">/25</span></div>
+                    <div class="grade-score-track">
+                        <div class="grade-score-fill" id="gsf${obs.id}" style="width:0%;background:#e2e8f0;"></div>
+                    </div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:0.71rem;color:var(--text-light);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;">Grade calculado</div>
+                    <div class="grade-badge-live grade-live-none" id="gb${obs.id}">— Sin calificar —</div>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function setDimRating(obsId, dimIdx, value) {
+    if (!userRatings[obsId]) userRatings[obsId] = {};
+    userRatings[obsId][dimIdx] = value;
+
+    // Update button styles
+    [1,2,3,4,5].forEach(v => {
+        const btn = document.getElementById(`sb${obsId}_${dimIdx}_${v}`);
+        btn.className = 'scale-btn' + (v === value ? ` sel sel-${v}` : '');
+    });
+
+    // Update description
+    document.getElementById(`sd${obsId}_${dimIdx}`).textContent =
+        ratingDimensions[dimIdx].levels[value - 1];
+
+    updateGradeDisplay(obsId);
+}
+
+function updateGradeDisplay(obsId) {
+    const dims = userRatings[obsId] || {};
+    const vals = [0,1,2,3,4].map(i => dims[i] || 0);
+    const rated = vals.filter(v => v > 0).length;
+    const sum = vals.reduce((a,b) => a+b, 0);
+    const grade = rated === 5 ? computeGradeFromSum(sum) : null;
+
+    document.getElementById(`gs${obsId}`).textContent = sum;
+    const pct = Math.round((sum / 25) * 100);
+    const barColor = grade === 'high' ? 'var(--accent)' : grade === 'medium' ? 'var(--warning)' : grade === 'low' ? 'var(--success)' : '#e2e8f0';
+    const fill = document.getElementById(`gsf${obsId}`);
+    fill.style.width = pct + '%';
+    fill.style.background = barColor;
+
+    const badge = document.getElementById(`gb${obsId}`);
+    const gradeLabels = {
+        high: '🔴 HIGH — Urgente',
+        medium: '🟡 MEDIUM — Próximo plazo',
+        low: '🟢 LOW — Mejora'
+    };
+    badge.className = `grade-badge-live grade-live-${grade || 'none'}`;
+    badge.textContent = grade ? gradeLabels[grade] : `${rated}/5 criterios calificados`;
+}
+
+function validateRatings() {
+    // Verify all 5 dimensions rated for all 4 observations
+    const incomplete = observations.filter(obs => {
+        const dims = userRatings[obs.id] || {};
+        return [0,1,2,3,4].some(i => !dims[i]);
+    });
+    if (incomplete.length > 0) {
+        alert('Debes calificar los 5 criterios en todas las observaciones.\nFaltan: ' + incomplete.map(o => o.name).join(', '));
+        return;
+    }
+
+    let errors = [];
+    let correctCount = 0;
+    const gradeLabels = { high: 'HIGH', medium: 'MEDIUM', low: 'LOW' };
+
+    observations.forEach(obs => {
+        const computed = computeGradeFromRatings(obs.id);
+        const correct = obs.correctRating;
+        const dims = userRatings[obs.id];
+        const sum = [0,1,2,3,4].map(i => dims[i]).reduce((a,b) => a+b, 0);
+        const card = document.getElementById(`ratingCard${obs.id}`);
+
+        if (computed === correct) {
+            correctCount++;
+            card.style.borderColor = 'var(--success)';
+            card.style.boxShadow = '0 0 0 3px rgba(56,161,105,0.25)';
+        } else {
+            card.style.borderColor = 'var(--accent)';
+            card.style.boxShadow = '0 0 0 3px rgba(229,62,62,0.2)';
+            errors.push({ name: obs.name, computed, correct, sum, explanation: obs.ratingExplanation });
+        }
+    });
+
+    scores.level2 = Math.round((correctCount / 4) * 100);
+
+    const attemptNum = attemptHistory.level2.length + 1;
+    attemptHistory.level2.push({
+        attempt: attemptNum,
+        errors: errors.map(e => ({ name: e.name, userRating: e.computed, correctRating: e.correct })),
+        score: scores.level2,
+        correct: errors.length === 0,
+        ratings: JSON.parse(JSON.stringify(userRatings))
+    });
+
+    const attemptLabel = attemptNum > 1 ? ` (Intento ${attemptNum})` : '';
+    const fb = document.getElementById('level2Feedback');
+    fb.classList.remove('hidden');
+
+    if (errors.length === 0) {
+        fb.innerHTML = `
+            <div class="feedback-panel success fade-in">
+                <h3>✅ ¡Todos los grades son correctos!${attemptLabel}</h3>
+                <div class="feedback-item fb-success">Excelente. Tu puntuación por criterios refleja correctamente las Grade Definitions del Appendix A.${attemptNum > 1 ? ' Corregiste exitosamente los ratings.' : ''}</div>
+                ${observations.map(obs => {
+                    const dims = userRatings[obs.id];
+                    const sum = [0,1,2,3,4].map(i => dims[i]).reduce((a,b) => a+b, 0);
+                    return `<div class="feedback-item fb-info"><strong>${obs.name} — ${sum}/25 → ${gradeLabels[obs.correctRating]}:</strong> ${obs.ratingExplanation}</div>`;
+                }).join('')}
+            </div>`;
+        document.getElementById('level2Complete').classList.remove('hidden');
+    } else {
+        fb.innerHTML = `
+            <div class="feedback-panel error fade-in">
+                <h3>⚠️ Algunos grades no son correctos${attemptLabel}</h3>
+                ${errors.map(e => `
+                    <div class="feedback-item fb-error">
+                        <strong>${e.name}:</strong> Puntuación <strong>${e.sum}/25</strong> → grade calculado <strong>${gradeLabels[e.computed]}</strong>, correcto es <strong>${gradeLabels[e.correct]}</strong>.
+                        <br><em>${e.explanation}</em>
+                    </div>`).join('')}
+                <p style="margin-top:12px; color:var(--info); font-weight:600;">Ajusta las puntuaciones por criterio y vuelve a validar.</p>
+            </div>`;
+    }
+    saveCurrentProgress();
+}
+
+// =========================================================
+// LEVEL 3: Executive Summary
+// =========================================================
+function goToLevel3() {
+    document.getElementById('level2').classList.remove('active');
+    document.getElementById('level3').classList.add('active');
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step2').classList.add('completed');
+    document.getElementById('step3').classList.add('active');
+    document.getElementById('levelBadge').textContent = 'Nivel 3 — Resumen Ejecutivo';
+    window.scrollTo(0, 0);
+    loadExecSummary();
+}
+
+function loadExecSummary() {
+    // Load text components
+    const pool = document.getElementById('execPool');
+    const target = document.getElementById('execTarget');
+
+    let allCards = [...execComponents];
+    shuffle(allCards);
+
+    pool.innerHTML = '';
+    target.innerHTML = '';
+
+    allCards.forEach((card, i) => {
+        const el = createDragCard(card, `exec-${i}`, 'exec');
+        pool.appendChild(el);
+    });
+
+    // Load numeric data
+    const dataPool = document.getElementById('dataPool');
+    const dataTarget = document.getElementById('dataTarget');
+
+    let allData = [...numericData];
+    shuffle(allData);
+
+    dataPool.innerHTML = '';
+    dataTarget.innerHTML = '';
+
+    allData.forEach((d, i) => {
+        const div = document.createElement('div');
+        div.className = 'data-card';
+        div.draggable = true;
+        div.id = `data-${i}`;
+        div.dataset.correct = d.correct;
+        div.dataset.label = d.label;
+        div.innerHTML = `<span class="data-label">${d.label}</span><span class="data-value">${d.value}</span>`;
+        dataPool.appendChild(div);
+    });
+
+    setupDragAndDrop();
+}
+
+function resetExecSummary() {
+    document.getElementById('level3Feedback').classList.add('hidden');
+    document.getElementById('level3Complete').classList.add('hidden');
+    loadExecSummary();
+}
+
+function validateExecSummary() {
+    const target = document.getElementById('execTarget');
+    const cards = [...target.querySelectorAll('.drag-card')];
+    const dataTarget = document.getElementById('dataTarget');
+    const dataCards = [...dataTarget.querySelectorAll('.data-card')];
+
+    if (cards.length === 0) {
+        alert('Debes arrastrar los componentes al panel del resumen ejecutivo.');
+        return;
+    }
+
+    let errors = [];
+
+    // 1. Check text component distractors
+    const textDistractors = cards.filter(c => c.dataset.correct === 'false');
+    if (textDistractors.length > 0) {
+        errors.push({ type: 'distractor', message: `Incluiste ${textDistractors.length} componente(s) de texto distractor(es). Un resumen ejecutivo IPPF no incluye: historia corporativa, análisis de competencia, metodología detallada, agradecimientos ni proyecciones financieras.` });
+    }
+
+    // 2. Check missing text components
+    const correctCards = cards.filter(c => c.dataset.correct === 'true');
+    const expectedExec = ['background_audit', 'why_audit', 'scope', 'opinion_negocio', 'opinion_auditoria', 'observaciones_resumen', 'recomendacion_exec'];
+    const missing = expectedExec.filter(type => !correctCards.find(c => c.dataset.type === type));
+    if (missing.length > 0) {
+        errors.push({ type: 'missing', message: `Faltan: ${missing.map(t => getTypeLabel(t)).join(', ')}.` });
+    }
+
+    // 3. Check order
+    const correctOrder = correctCards.map(c => parseInt(c.dataset.order)).filter(o => o > 0);
+    let orderErrors = [];
+    for (let i = 1; i < correctOrder.length; i++) {
+        if (correctOrder[i] < correctOrder[i - 1]) orderErrors.push(i);
+    }
+    if (orderErrors.length > 0) {
+        errors.push({ type: 'order', message: `Orden incorrecto. Debe ser: Background → Why This Audit → Scope → Opinión Obj. Negocio → Opinión Obj. Auditoría → Observaciones → Recomendación.` });
+    }
+
+    // 4. Check label assignments
+    let labelErrors = [];
+    cards.forEach(card => {
+        const userLabel = card.dataset.userLabel || '';
+        const realType = card.dataset.type;
+        const isCorrect = card.dataset.correct === 'true';
+        if (!userLabel) {
+            labelErrors.push({ card, realType, userLabel: '(sin asignar)', isCorrect });
+        } else if (isCorrect && userLabel !== realType) {
+            labelErrors.push({ card, realType, userLabel, isCorrect });
+        }
+    });
+    if (labelErrors.length > 0) {
+        const unassigned = labelErrors.filter(e => e.userLabel === '(sin asignar)').length;
+        const wrong = labelErrors.filter(e => e.userLabel !== '(sin asignar)').length;
+        let msg = '';
+        if (unassigned > 0) msg += `${unassigned} sin etiqueta. `;
+        if (wrong > 0) msg += `${wrong} con etiqueta incorrecta. `;
+        errors.push({ type: 'labels', message: msg });
+    }
+
+    // 5. Check numeric data
+    const dataDistractors = dataCards.filter(c => c.dataset.correct === 'false');
+    const correctData = dataCards.filter(c => c.dataset.correct === 'true');
+    const totalCorrectData = numericData.filter(d => d.correct).length;
+    const missingData = totalCorrectData - correctData.length;
+
+    if (dataDistractors.length > 0) {
+        errors.push({ type: 'data_distractor', message: `Incluiste ${dataDistractors.length} dato(s) numérico(s) no relevantes para el informe: ${dataDistractors.map(d => d.dataset.label).join(', ')}.` });
+    }
+    if (missingData > 0) {
+        errors.push({ type: 'data_missing', message: `Faltan ${missingData} dato(s) numérico(s) relevantes para el panel del informe.` });
+    }
+
+    // Reveal labels on target cards
+    cards.forEach(card => {
+        const typeSpan = card.querySelector('.card-type');
+        const select = card.querySelector('.component-select');
+        const realType = card.dataset.type;
+        const userLabel = card.dataset.userLabel || '';
+        const isCorrect = card.dataset.correct === 'true';
+
+        typeSpan.classList.remove('hidden-label');
+        if (isCorrect) {
+            if (userLabel === realType) {
+                typeSpan.className = 'card-type revealed-correct';
+                card.classList.add('correct');
+            } else {
+                typeSpan.className = 'card-type revealed-incorrect';
+                typeSpan.textContent = `✗ ${userLabel ? getTypeLabel(userLabel) : '???'} → Correcto: ${getTypeLabel(realType)}`;
+                card.classList.add('incorrect');
+            }
+        } else {
+            typeSpan.className = 'card-type revealed-distractor';
+            typeSpan.textContent = `✗ DISTRACTOR — No pertenece al resumen ejecutivo`;
+            card.classList.add('incorrect');
+        }
+        if (select) select.disabled = true;
+    });
+
+    // Reveal labels on pool cards
+    const execPool = document.getElementById('execPool');
+    [...execPool.querySelectorAll('.drag-card')].forEach(card => {
+        const typeSpan = card.querySelector('.card-type');
+        const select = card.querySelector('.component-select');
+        const isCorrect = card.dataset.correct === 'true';
+        const realType = card.dataset.type;
+        typeSpan.classList.remove('hidden-label');
+        if (isCorrect) {
+            typeSpan.className = 'card-type revealed-incorrect';
+            typeSpan.textContent = `⚠ ${getTypeLabel(realType)} — Debió incluirse`;
+        } else {
+            typeSpan.className = 'card-type revealed-correct';
+            typeSpan.textContent = `✓ Correcto descartarlo`;
+        }
+        if (select) select.disabled = true;
+    });
+
+    // Mark data cards
+    dataCards.forEach(card => {
+        card.classList.add(card.dataset.correct === 'true' ? 'correct' : 'incorrect');
+    });
+    const dataPool = document.getElementById('dataPool');
+    [...dataPool.querySelectorAll('.data-card')].forEach(card => {
+        card.classList.add(card.dataset.correct === 'true' ? 'incorrect' : 'correct');
+    });
+
+    // Order numbers
+    cards.forEach((card, i) => {
+        if (!card.querySelector('.order-num')) {
+            const numEl = document.createElement('div');
+            numEl.className = 'order-num';
+            numEl.textContent = i + 1;
+            card.appendChild(numEl);
+        }
+    });
+
+    // Score
+    let sc = 7 - missing.length;
+    if (textDistractors.length === 0) sc++;
+    if (orderErrors.length === 0) sc++;
+    if (labelErrors.length === 0) sc += 2;
+    if (dataDistractors.length === 0) sc++;
+    if (missingData === 0) sc++;
+    scores.level3 = Math.round((sc / 13) * 100);
+
+    // Record attempt
+    const attemptNum = attemptHistory.level3.length + 1;
+    attemptHistory.level3.push({
+        attempt: attemptNum,
+        errors: errors.map(e => ({ type: e.type, message: e.message })),
+        score: scores.level3,
+        correct: errors.length === 0
+    });
+    saveCurrentProgress();
+
+    const attemptLabel = attemptNum > 1 ? ` (Intento ${attemptNum})` : '';
+    const fb = document.getElementById('level3Feedback');
+    fb.classList.remove('hidden');
+
+    if (errors.length === 0) {
+        fb.innerHTML = `
+            <div class="feedback-panel success fade-in">
+                <h3>✅ ¡Resumen Ejecutivo correcto!${attemptLabel}</h3>
+                <div class="feedback-item fb-success">Componentes completos, bien clasificados, en orden correcto, datos numéricos correctos y sin distractores. Cumple IPPF 2400, 2410 y 2420.${attemptNum > 1 ? ' Corregiste exitosamente los errores.' : ''}</div>
+            </div>`;
+        document.getElementById('level3Complete').classList.remove('hidden');
+        document.getElementById('level3Complete').innerHTML = `
+            <div class="btn-group" style="justify-content: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="showFinalScreen()">🏆 Ver Resultados Finales</button>
+            </div>`;
+    } else {
+        const iconMap = { distractor: '🚫 Distractor de texto', missing: '📋 Componentes faltantes', order: '🔄 Orden incorrecto', labels: '🏷️ Clasificación incorrecta', data_distractor: '🚫 Dato numérico no relevante', data_missing: '📊 Datos numéricos faltantes' };
+        fb.innerHTML = `
+            <div class="feedback-panel error fade-in">
+                <h3>⚠️ Errores en el Resumen Ejecutivo${attemptLabel}</h3>
+                ${errors.map(e => `<div class="feedback-item fb-error"><strong>${iconMap[e.type] || e.type}:</strong> ${e.message}</div>`).join('')}
+                <div class="correct-order-display">
+                    <strong>Orden correcto:</strong>
+                    ${execComponents.filter(c => c.correct).sort((a,b) => a.order - b.order).map((c, i) => `
+                        <div class="order-item"><div class="order-num-sm">${i + 1}</div><div><strong>${c.label}:</strong> ${c.text.substring(0, 80)}...</div></div>`).join('')}
+                </div>
+                <p style="margin-top:10px;color:var(--info);font-weight:600;">Haz clic en "Reiniciar" para corregir. Tu historial se conserva.</p>
+            </div>`;
+        correctionModeExec = true;
+    }
+}
+
+// =========================================================
+// FINAL SCREEN
+// =========================================================
+function showFinalScreen() {
+    document.getElementById('level3').classList.remove('active');
+    document.getElementById('finalScreen').classList.add('active');
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('step3').classList.add('completed');
+    document.getElementById('levelBadge').textContent = '🏆 Completado';
+    window.scrollTo(0, 0);
+
+    // Calculate first-attempt scores vs final scores
+    const firstAttemptScores = { level1: 0, level2: 0, level3: 0 };
+
+    // Level 1 first attempts
+    const l1FirstScores = [];
+    Object.values(attemptHistory.level1).forEach(attempts => {
+        if (attempts.length > 0) l1FirstScores.push(attempts[0].score);
+    });
+    firstAttemptScores.level1 = l1FirstScores.length > 0 ? Math.round(l1FirstScores.reduce((a,b) => a+b, 0) / l1FirstScores.length) : 0;
+
+    // Level 2 first attempt
+    firstAttemptScores.level2 = attemptHistory.level2.length > 0 ? attemptHistory.level2[0].score : 0;
+
+    // Level 3 first attempt
+    firstAttemptScores.level3 = attemptHistory.level3.length > 0 ? attemptHistory.level3[0].score : 0;
+
+    const firstAvg = Math.round((firstAttemptScores.level1 + firstAttemptScores.level2 + firstAttemptScores.level3) / 3);
+    const finalAvg = Math.round((scores.level1 + scores.level2 + scores.level3) / 3);
+    const scoreClass = firstAvg >= 80 ? 'good' : firstAvg >= 60 ? 'ok' : 'bad';
+
+    // Total attempts across all levels
+    let totalAttempts = 0;
+    Object.values(attemptHistory.level1).forEach(a => totalAttempts += a.length);
+    totalAttempts += attemptHistory.level2.length;
+    totalAttempts += attemptHistory.level3.length;
+
+    const totalFirstAttemptErrors = l1FirstScores.filter(s => s < 100).length
+        + (firstAttemptScores.level2 < 100 ? 1 : 0)
+        + (firstAttemptScores.level3 < 100 ? 1 : 0);
+
+    document.getElementById('finalScores').innerHTML = `
+        <div class="score-display">
+            <div class="score-circle ${scoreClass}">${firstAvg}%</div>
+            <h3>Puntaje Primer Intento</h3>
+            <p style="color:var(--text-light); font-size:0.85rem; margin-top:4px;">Este es tu score real — refleja tu conocimiento antes de ver las correcciones</p>
+        </div>
+        <div class="stats-row">
+            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level1}%</div><div class="stat-label">Nivel 1 (1er intento)</div></div>
+            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level2}%</div><div class="stat-label">Nivel 2 (1er intento)</div></div>
+            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level3}%</div><div class="stat-label">Nivel 3 (1er intento)</div></div>
+            <div class="stat-card"><div class="stat-value">${scores.level1}%</div><div class="stat-label">Nivel 1 (final)</div></div>
+            <div class="stat-card"><div class="stat-value">${scores.level2}%</div><div class="stat-label">Nivel 2 (final)</div></div>
+            <div class="stat-card"><div class="stat-value">${scores.level3}%</div><div class="stat-label">Nivel 3 (final)</div></div>
+        </div>
+        <div class="stats-row" style="margin-top:5px;">
+            <div class="stat-card"><div class="stat-value">${totalAttempts}</div><div class="stat-label">Total Intentos</div></div>
+            <div class="stat-card"><div class="stat-value">${totalFirstAttemptErrors}</div><div class="stat-label">Secciones con Error Inicial</div></div>
+            <div class="stat-card"><div class="stat-value">${finalAvg}%</div><div class="stat-label">Score Final (post-corrección)</div></div>
+        </div>`;
+
+    // Build detailed history
+    let historyHTML = '';
+
+    // Level 1 history
+    historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">📝 Nivel 1 — Historial de Observaciones</h3>';
+    Object.entries(attemptHistory.level1).forEach(([obsId, attempts]) => {
+        const obsName = observations.find(o => o.id == obsId)?.name || `Observación ${obsId}`;
+        historyHTML += `<div style="margin-bottom:15px;">`;
+        historyHTML += `<strong>${obsName}</strong> — ${attempts.length} intento(s)<br>`;
+        attempts.forEach(att => {
+            if (att.correct) {
+                historyHTML += `<div class="feedback-item fb-success" style="margin:4px 0;">Intento ${att.attempt}: ✅ Correcto (${att.score}%)</div>`;
+            } else {
+                const errorTypes = att.errors.map(e => {
+                    const icons = { distractor:'🚫 Distractor', missing:'📋 Faltantes', order:'🔄 Orden', labels:'🏷️ Clasificación' };
+                    return icons[e.type] || e.type;
+                }).join(', ');
+                historyHTML += `<div class="feedback-item fb-error" style="margin:4px 0;">Intento ${att.attempt}: ❌ Score ${att.score}% — ${errorTypes}</div>`;
+            }
+        });
+        historyHTML += '</div>';
+    });
+
+    // Level 2 history
+    if (attemptHistory.level2.length > 0) {
+        historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">⚖️ Nivel 2 — Historial de Ratings</h3>';
+        attemptHistory.level2.forEach(att => {
+            if (att.correct) {
+                historyHTML += `<div class="feedback-item fb-success">Intento ${att.attempt}: ✅ Todos los ratings correctos (${att.score}%)</div>`;
+            } else {
+                const wrongRatings = att.errors.map(e => `${e.name}: asignó ${e.userRating.toUpperCase()}, correcto ${e.correctRating.toUpperCase()}`).join('; ');
+                historyHTML += `<div class="feedback-item fb-error">Intento ${att.attempt}: ❌ Score ${att.score}% — ${wrongRatings}</div>`;
+            }
+        });
+    }
+
+    // Level 3 history
+    if (attemptHistory.level3.length > 0) {
+        historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">📊 Nivel 3 — Historial de Resumen Ejecutivo</h3>';
+        attemptHistory.level3.forEach(att => {
+            if (att.correct) {
+                historyHTML += `<div class="feedback-item fb-success">Intento ${att.attempt}: ✅ Resumen correcto (${att.score}%)</div>`;
+            } else {
+                const errorTypes = att.errors.map(e => {
+                    const icons = { distractor:'🚫 Distractor texto', missing:'📋 Faltantes', order:'🔄 Orden', labels:'🏷️ Clasificación', data_distractor:'🚫 Dato no relevante', data_missing:'📊 Datos faltantes' };
+                    return icons[e.type] || e.type;
+                }).join(', ');
+                historyHTML += `<div class="feedback-item fb-error">Intento ${att.attempt}: ❌ Score ${att.score}% — ${errorTypes}</div>`;
+            }
+        });
+    }
+
+    document.getElementById('finalHistory').innerHTML = historyHTML;
+
+    // Recommendations
+    let recs = [];
+    if (firstAttemptScores.level1 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Nivel 1:</strong> Una observación IPPF requiere 6 componentes conectados lógicamente. El Título debe ser directo (sin "falta de"). El Background establece el criterio. La Condición presenta datos cuantitativos. La Causa Raíz explica el por qué. El Riesgo describe impacto concreto. La Recomendación debe ser SMART. Los distractores típicamente son vagos, sin datos o con soluciones genéricas.</div>`);
+    if (firstAttemptScores.level2 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Nivel 2:</strong> Usa las Grade Definitions del Appendix A. HIGH = debilidad fundamental, sin control mitigante, objetivo de control no se cumple. MEDIUM = efecto importante pero con controles mitigantes parciales, objetivo puede cumplirse parcialmente. LOW = mejora deseable pero no vital, impacto mínimo en eficiencia.</div>`);
+    if (firstAttemptScores.level3 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Nivel 3:</strong> El resumen ejecutivo debe ser autosuficiente. Incluye solo información relevante a la auditoría (no historia, competencia, metodología, agradecimientos ni proyecciones). Los datos numéricos deben reflejar la dimensión de lo auditado, no métricas corporativas generales.</div>`);
+    if (firstAvg === 100) recs.push(`<div class="feedback-item fb-success"><strong>🌟 ¡Desempeño excepcional!</strong> Completaste todo al primer intento. Dominas la construcción de observaciones, evaluación de riesgo y redacción del resumen ejecutivo según IPPF.</div>`);
+    else if (finalAvg === 100 && firstAvg < 100) recs.push(`<div class="feedback-item fb-info"><strong>📈 Buena capacidad de aprendizaje:</strong> Aunque tuviste errores iniciales, lograste corregirlos todos. Revisa las áreas donde cometiste errores al primer intento para reforzar ese conocimiento.</div>`);
+
+    document.getElementById('finalRecommendations').innerHTML = recs.join('');
+    saveCurrentProgress();
+}
+
+function restartAll() {
+    currentObs = 0; completedObs = new Set(); obsResults = {};
+    userRatings = {}; correctionMode = false; correctionModeExec = false;
+    scores = { level1: 0, level2: 0, level3: 0 };
+    attemptHistory = { level1: {}, level2: [], level3: [] };
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('level1').classList.add('active');
+    document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active', 'completed'));
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('levelBadge').textContent = 'Nivel 1 — Observaciones';
+    ['level1Feedback','level1Complete','level2Feedback','level2Complete','level3Feedback','level3Complete'].forEach(id =>
+        document.getElementById(id).classList.add('hidden'));
+    window.scrollTo(0, 0);
+    init();
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+document.addEventListener('DOMContentLoaded', checkAuth);
+</script>
+</body>
+</html>
