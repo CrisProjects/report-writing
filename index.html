@@ -425,8 +425,8 @@
     <div class="login-card">
         <div class="logo">🔍</div>
         <h2>IPPF Audit Training</h2>
-        <p class="subtitle">Ingresa con tus credenciales para acceder a la plataforma</p>
-        <div id="loginError" class="login-error" style="display:none;">Usuario o contraseña incorrectos. Verifica tus datos.</div>
+        <p class="subtitle">Acceso para auditores del IPPF Audit Training Platform</p>
+        <div id="loginError" class="login-error" style="display:none;">Usuario o contraseña incorrectos.</div>
         <div class="form-group">
             <label>Usuario</label>
             <input type="text" id="loginUsername" placeholder="ej: mgonzalez" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
@@ -436,93 +436,7 @@
             <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
         <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="doLogin()">Ingresar →</button>
-    </div>
-</div>
-
-<!-- ===================== ADMIN PANEL ===================== -->
-<div id="adminPanel" style="display:none;" class="admin-panel">
-    <div class="admin-header">
-        <div>
-            <div style="font-size:1.1rem;font-weight:700;">🔍 IPPF Audit Training — Administrador</div>
-            <div id="adminWelcome" style="font-size:0.8rem;opacity:0.7;margin-top:2px;"></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <div class="admin-nav">
-                <button class="admin-nav-btn active" onclick="showAdminTab('dashboard',this)">📊 Dashboard</button>
-                <button class="admin-nav-btn" onclick="showAdminTab('auditores',this)">👥 Auditores</button>
-            </div>
-            <button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);font-size:0.82rem;padding:7px 14px;" onclick="doLogout()">Cerrar sesión</button>
-        </div>
-    </div>
-    <div class="admin-content">
-        <!-- Dashboard Tab -->
-        <div id="adminTab-dashboard" class="admin-tab-panel active">
-            <div id="adminStatsRow" class="admin-stats-row"></div>
-            <div class="card">
-                <div class="card-title"><div class="icon">📊</div> Progreso de Auditores</div>
-                <div id="progressTableContainer"></div>
-            </div>
-            <div class="dash-two-col">
-                <div class="card">
-                    <div class="card-title"><div class="icon">🏆</div> Ranking de Auditores</div>
-                    <div id="rankingContainer"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title"><div class="icon">📈</div> Estadísticas del Grupo</div>
-                    <div id="groupStatsContainer"></div>
-                </div>
-            </div>
-            <div class="card" style="margin-top:20px;">
-                <div class="card-title"><div class="icon">📊</div> Comparación Visual por Nivel</div>
-                <div id="barChartContainer"></div>
-            </div>
-        </div>
-        <!-- Auditores Tab -->
-        <div id="adminTab-auditores" class="admin-tab-panel">
-            <div class="create-form-card">
-                <h3>➕ Crear Nuevo Auditor</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nombre Completo</label>
-                        <input type="text" id="newAuditorName" placeholder="Ej: María González">
-                    </div>
-                    <div class="form-group">
-                        <label>Usuario <small style="color:var(--text-light);">(letras, números, _)</small></label>
-                        <input type="text" id="newAuditorUsername" placeholder="Ej: mgonzalez" oninput="this.value=this.value.toLowerCase()">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Contraseña</label>
-                        <input type="text" id="newAuditorPassword" placeholder="Mínimo 6 caracteres">
-                    </div>
-                    <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
-                        <button class="btn btn-primary" onclick="createAuditor()">✓ Crear Auditor</button>
-                        <button class="btn btn-outline" onclick="generatePassword()" title="Generar contraseña automática">🔑 Auto</button>
-                    </div>
-                </div>
-                <div id="createError" style="color:var(--accent);font-size:0.85rem;margin-top:8px;display:none;"></div>
-                <div id="createSuccess" style="color:var(--success);font-size:0.85rem;margin-top:8px;display:none;"></div>
-            </div>
-            <div class="card">
-                <div class="card-title"><div class="icon">👥</div> Auditores Registrados</div>
-                <div id="auditorListContainer"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ===================== CREDENTIALS MODAL ===================== -->
-<div id="credModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeCredModal()">
-    <div class="modal-box">
-        <h3>🔑 Credenciales de Acceso</h3>
-        <div class="cred-field"><div class="cred-lbl">Nombre</div><div class="cred-val" id="credName"></div></div>
-        <div class="cred-field"><div class="cred-lbl">Usuario</div><div class="cred-val" id="credUsername"></div></div>
-        <div class="cred-field"><div class="cred-lbl">Contraseña</div><div class="cred-val" id="credPassword"></div></div>
-        <div style="margin:0 0 14px;font-size:0.8rem;color:var(--text-light);">URL: <strong id="credUrl"></strong></div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="copyCredentials()">📋 Copiar credenciales</button>
-        <div id="copyMsg" style="color:var(--success);font-size:0.82rem;text-align:center;margin-bottom:8px;display:none;">✅ Copiado al portapapeles</div>
-        <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="closeCredModal()">Cerrar</button>
+        <div style="text-align:center;margin-top:16px;font-size:0.81rem;color:var(--text-light);">¿Administrador? <a href="admin.html" style="color:var(--info);font-weight:600;text-decoration:none;">Panel de administración →</a></div>
     </div>
 </div>
 
@@ -775,32 +689,19 @@
 // AUTH SYSTEM & ADMIN PANEL
 // =========================================================
 
-const ADMIN_CREDS = { username: 'admin', password: 'Admin2024!', name: 'Administrador' };
-
 function getUsers() { return JSON.parse(localStorage.getItem('audit_users') || '{}'); }
-function saveUsers(u) { localStorage.setItem('audit_users', JSON.stringify(u)); }
 function getSession() { return JSON.parse(localStorage.getItem('audit_session') || 'null'); }
 function setSession(s) { localStorage.setItem('audit_session', JSON.stringify(s)); }
 function clearSession() { localStorage.removeItem('audit_session'); }
-function getUserProgress(username) { return JSON.parse(localStorage.getItem('audit_progress_' + username) || 'null'); }
-function setUserProgress(username, data) { localStorage.setItem('audit_progress_' + username, JSON.stringify(data)); }
-
-function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function getUserProgress(u) { return JSON.parse(localStorage.getItem('audit_progress_' + u) || 'null'); }
+function setUserProgress(u, data) { localStorage.setItem('audit_progress_' + u, JSON.stringify(data)); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function doLogin() {
     const user = document.getElementById('loginUsername').value.trim().toLowerCase();
     const pass = document.getElementById('loginPassword').value;
     const errEl = document.getElementById('loginError');
     errEl.style.display = 'none';
-
-    if (user === ADMIN_CREDS.username && pass === ADMIN_CREDS.password) {
-        setSession({ username: user, role: 'admin', name: ADMIN_CREDS.name });
-        document.getElementById('loginOverlay').style.display = 'none';
-        showAdminPanel();
-        return;
-    }
 
     const users = getUsers();
     if (users[user] && users[user].password === pass) {
@@ -810,6 +711,9 @@ function doLogin() {
         return;
     }
 
+    errEl.textContent = user === 'admin'
+        ? 'El admin usa el Panel de Administración → admin.html'
+        : 'Usuario o contraseña incorrectos.';
     errEl.style.display = 'block';
 }
 
@@ -817,43 +721,23 @@ function doLogout() {
     clearSession();
 
     // Reset in-memory app state
-    currentObs = 0;
-    completedObs = new Set();
-    obsResults = {};
-    userRatings = {};
-    correctionMode = false;
-    correctionModeExec = false;
+    currentObs = 0; completedObs = new Set(); obsResults = {};
+    userRatings = {}; correctionMode = false; correctionModeExec = false;
     scores = { level1: 0, level2: 0, level3: 0 };
     attemptHistory = { level1: {}, level2: [], level3: [] };
 
-    // Hide panels
-    document.getElementById('adminPanel').style.display = 'none';
+    // Reset UI
     document.getElementById('appContent').style.display = 'none';
-
-    // Reset app sections to level 1
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    const l1 = document.getElementById('level1');
-    if (l1) l1.classList.add('active');
-    document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active', 'completed'));
-    const step1 = document.getElementById('step1');
-    if (step1) step1.classList.add('active');
-    const badge = document.getElementById('levelBadge');
-    if (badge) badge.textContent = 'Nivel 1 — Observaciones';
+    const l1 = document.getElementById('level1'); if (l1) l1.classList.add('active');
+    document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active','completed'));
+    const step1 = document.getElementById('step1'); if (step1) step1.classList.add('active');
+    const badge = document.getElementById('levelBadge'); if (badge) badge.textContent = 'Nivel 1 — Observaciones';
     ['level1Feedback','level1Complete','level2Feedback','level2Complete','level3Feedback','level3Complete']
         .forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
-
-    // Remove the user-info element appended to header on auditor login
     document.querySelectorAll('.header > div[style*="margin-left:auto"]').forEach(el => el.remove());
 
-    // Reset admin tab state
-    document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
-    const dash = document.getElementById('adminTab-dashboard');
-    if (dash) dash.classList.add('active');
-    document.querySelectorAll('.admin-nav-btn').forEach((b, i) => {
-        b.classList.toggle('active', i === 0);
-    });
-
-    // Show login overlay with clean form
+    // Show login
     document.getElementById('loginUsername').value = '';
     document.getElementById('loginPassword').value = '';
     document.getElementById('loginError').style.display = 'none';
@@ -862,13 +746,13 @@ function doLogout() {
 
 function checkAuth() {
     const session = getSession();
-    if (!session) {
+    if (session && session.role === 'auditor') {
+        document.getElementById('loginOverlay').style.display = 'none';
+        initAuditorApp();
+    } else {
+        if (session) clearSession(); // sesión de otra página, descartarla
         document.getElementById('loginOverlay').style.display = 'flex';
-        return;
     }
-    document.getElementById('loginOverlay').style.display = 'none';
-    if (session.role === 'admin') showAdminPanel();
-    else initAuditorApp();
 }
 
 function initAuditorApp() {
@@ -899,368 +783,6 @@ function saveCurrentProgress() {
     });
 }
 
-// ---- Admin Panel ----
-function showAdminPanel() {
-    document.getElementById('adminPanel').style.display = 'block';
-    const session = getSession();
-    document.getElementById('adminWelcome').textContent = 'Bienvenido, ' + session.name;
-    document.getElementById('credUrl').textContent = window.location.origin + window.location.pathname;
-    renderAdminDashboard();
-    renderAuditorList();
-}
-
-function showAdminTab(tab, btn) {
-    document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('adminTab-' + tab).classList.add('active');
-    if (btn) btn.classList.add('active');
-    if (tab === 'dashboard') renderAdminDashboard();
-    if (tab === 'auditores') renderAuditorList();
-}
-
-function calcAvgScore(prog) {
-    if (!prog) return null;
-    const vals = [prog.scores.level1, prog.scores.level2, prog.scores.level3].filter(v => v > 0);
-    return vals.length ? Math.round(vals.reduce((a,b) => a+b,0) / vals.length) : null;
-}
-
-function fmtDate(iso) {
-    if (!iso) return '—';
-    const d = new Date(iso);
-    return d.toLocaleDateString('es-CL',{day:'2-digit',month:'short'}) + ' ' + d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
-}
-
-function scoreCell(score, attempts) {
-    if (!attempts) return '<span style="color:var(--text-light)">—</span>';
-    const c = score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--warning)' : 'var(--accent)';
-    return `<span style="color:${c};font-weight:700;">${score}%</span> <span style="color:var(--text-light);font-size:0.75rem;">(${attempts} int.)</span>`;
-}
-
-function renderAdminDashboard() {
-    const users = getUsers();
-    const entries = Object.entries(users);
-    let completed = 0, inProg = 0, notStarted = 0;
-    const allAvgs = [];
-
-    entries.forEach(([u]) => {
-        const p = getUserProgress(u);
-        if (!p) notStarted++;
-        else if (p.completed) completed++;
-        else inProg++;
-        const avg = calcAvgScore(p);
-        if (avg !== null) allAvgs.push(avg);
-    });
-
-    const overallAvg = allAvgs.length ? Math.round(allAvgs.reduce((a,b)=>a+b,0)/allAvgs.length) + '%' : '—';
-
-    document.getElementById('adminStatsRow').innerHTML = `
-        <div class="admin-stat"><div class="val">${entries.length}</div><div class="lbl">Total Auditores</div></div>
-        <div class="admin-stat"><div class="val" style="color:var(--success)">${completed}</div><div class="lbl">Completados</div></div>
-        <div class="admin-stat"><div class="val" style="color:var(--warning)">${inProg}</div><div class="lbl">En Progreso</div></div>
-        <div class="admin-stat"><div class="val" style="color:var(--text-light)">${notStarted}</div><div class="lbl">Sin Iniciar</div></div>
-        <div class="admin-stat"><div class="val">${overallAvg}</div><div class="lbl">Prom. General</div></div>
-    `;
-
-    if (!entries.length) {
-        document.getElementById('progressTableContainer').innerHTML = '<p style="padding:25px;text-align:center;color:var(--text-light);">No hay auditores. Créalos en la pestaña "Auditores".</p>';
-        return;
-    }
-
-    const rows = entries.map(([uname, data]) => {
-        const p = getUserProgress(uname);
-        const status = !p ? '<span class="badge badge-gray">Sin iniciar</span>'
-            : p.completed ? '<span class="badge badge-success">Completado ✓</span>'
-            : `<span class="badge badge-info">Nivel ${p.currentLevel}</span>`;
-        const l1att = p ? Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0) : 0;
-        const l2att = p ? (p.attemptHistory.level2||[]).length : 0;
-        const l3att = p ? (p.attemptHistory.level3||[]).length : 0;
-        const avg = calcAvgScore(p);
-        const avgHtml = avg !== null
-            ? `<strong style="color:${avg>=80?'var(--success)':avg>=60?'var(--warning)':'var(--accent)'};">${avg}%</strong>`
-            : '—';
-        return `<tr>
-            <td><strong>${escHtml(data.name)}</strong></td>
-            <td style="font-family:monospace;font-size:0.8rem;color:var(--text-light);">${escHtml(uname)}</td>
-            <td>${status}</td>
-            <td>${scoreCell(p&&p.scores?p.scores.level1:0, l1att)}</td>
-            <td>${scoreCell(p&&p.scores?p.scores.level2:0, l2att)}</td>
-            <td>${scoreCell(p&&p.scores?p.scores.level3:0, l3att)}</td>
-            <td>${avgHtml}</td>
-            <td style="font-size:0.79rem;color:var(--text-light);">${fmtDate(p&&p.lastActivity)}</td>
-            <td><button class="btn btn-outline" style="padding:4px 10px;font-size:0.76rem;" onclick="showCredentials('${escHtml(uname)}')">🔑 Ver acceso</button></td>
-        </tr>`;
-    }).join('');
-
-    document.getElementById('progressTableContainer').innerHTML = `
-        <div style="overflow-x:auto;">
-        <table class="aud-table">
-            <thead><tr>
-                <th>Nombre</th><th>Usuario</th><th>Estado</th>
-                <th>Nivel 1</th><th>Nivel 2</th><th>Nivel 3</th>
-                <th>Promedio</th><th>Última Actividad</th><th>Acciones</th>
-            </tr></thead>
-            <tbody>${rows}</tbody>
-        </table></div>`;
-
-    renderRanking();
-    renderGroupStats();
-    renderBarCharts();
-}
-
-function renderRanking() {
-    const container = document.getElementById('rankingContainer');
-    const users = getUsers();
-    const entries = Object.entries(users);
-
-    if (!entries.length) {
-        container.innerHTML = '<p style="padding:15px;text-align:center;color:var(--text-light);">Sin auditores aún.</p>';
-        return;
-    }
-
-    const ranked = entries.map(([uname, data]) => {
-        const p = getUserProgress(uname);
-        const avg = calcAvgScore(p);
-        const totalAtt = p
-            ? Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0)
-              + (p.attemptHistory.level2||[]).length
-              + (p.attemptHistory.level3||[]).length
-            : 0;
-        return { name: data.name, avg, totalAtt, completed: p?.completed };
-    }).sort((a, b) => {
-        if (a.avg === null && b.avg === null) return 0;
-        if (a.avg === null) return 1;
-        if (b.avg === null) return -1;
-        return b.avg - a.avg;
-    });
-
-    const medals = ['🥇','🥈','🥉'];
-
-    const rows = ranked.map((r, i) => {
-        const pos = i < 3
-            ? `<span style="font-size:1.15rem;">${medals[i]}</span>`
-            : `<span style="font-size:0.82rem;color:var(--text-light);font-weight:700;">#${i+1}</span>`;
-        const avgDisp = r.avg !== null
-            ? `<strong style="color:${r.avg>=80?'var(--success)':r.avg>=60?'var(--warning)':'var(--accent)'};">${r.avg}%</strong>`
-            : '<span style="color:var(--text-light);">—</span>';
-        const doneBadge = r.completed ? ' <span class="badge badge-success" style="font-size:0.68rem;">✓</span>' : '';
-        return `<tr>
-            <td class="rank-pos">${pos}</td>
-            <td>${escHtml(r.name)}${doneBadge}</td>
-            <td style="text-align:right;">${avgDisp}</td>
-            <td style="text-align:right;font-size:0.77rem;color:var(--text-light);">${r.totalAtt ? r.totalAtt+' int.' : '—'}</td>
-        </tr>`;
-    }).join('');
-
-    container.innerHTML = `
-        <table class="rank-table">
-            <thead><tr>
-                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);">#</th>
-                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);">Auditor</th>
-                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Promedio</th>
-                <th style="background:#f7fafc;color:var(--text-light);font-size:0.75rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Intentos</th>
-            </tr></thead>
-            <tbody>${rows}</tbody>
-        </table>`;
-}
-
-function renderGroupStats() {
-    const container = document.getElementById('groupStatsContainer');
-    const users = getUsers();
-    const entries = Object.entries(users);
-
-    if (!entries.length) {
-        container.innerHTML = '<p style="padding:15px;text-align:center;color:var(--text-light);">Sin datos aún.</p>';
-        return;
-    }
-
-    const progs = entries.map(([u]) => getUserProgress(u)).filter(Boolean);
-    const l1 = progs.map(p => p.scores.level1).filter(s => s > 0);
-    const l2 = progs.map(p => p.scores.level2).filter(s => s > 0);
-    const l3 = progs.map(p => p.scores.level3).filter(s => s > 0);
-    const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : null;
-    const max = arr => arr.length ? Math.max(...arr) : null;
-    const min = arr => arr.length ? Math.min(...arr) : null;
-
-    const a1=avg(l1), a2=avg(l2), a3=avg(l3);
-    const completionRate = entries.length ? Math.round(progs.filter(p=>p.completed).length/entries.length*100) : 0;
-    const totalAtt = progs.reduce((sum,p) =>
-        sum + Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0)
-        + (p.attemptHistory.level2||[]).length + (p.attemptHistory.level3||[]).length, 0);
-    const avgAtt = progs.length ? (totalAtt/progs.length).toFixed(1) : '—';
-
-    const fv = (v, suffix='%') => v !== null ? v+suffix : '—';
-    const color = v => v>=80?'var(--success)':v>=60?'var(--warning)':v!==null?'var(--accent)':'var(--text-light)';
-
-    container.innerHTML = `
-        <div style="margin-bottom:16px;">
-            <div style="font-size:0.75rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Promedio del grupo por nivel</div>
-            ${[['Nivel 1',a1,'#3182ce'],['Nivel 2',a2,'#38a169'],['Nivel 3',a3,'#d69e2e']].map(([lbl,av,col])=>`
-                <div style="margin-bottom:8px;">
-                    <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:3px;">
-                        <span>${lbl}</span>
-                        <span style="font-weight:700;color:${color(av)};">${fv(av)}</span>
-                    </div>
-                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${av||0}%;background:${col};"></div></div>
-                </div>`).join('')}
-        </div>
-        <div class="gs-row"><span class="gs-lbl">Finalización</span><span class="gs-val">${completionRate}%</span></div>
-        <div class="gs-row"><span class="gs-lbl">Con algún resultado</span><span class="gs-val">${progs.length} / ${entries.length}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Mejor N1 / N2 / N3</span><span class="gs-val">${fv(max(l1))} / ${fv(max(l2))} / ${fv(max(l3))}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Menor N1 / N2 / N3</span><span class="gs-val">${fv(min(l1))} / ${fv(min(l2))} / ${fv(min(l3))}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Prom. intentos/auditor</span><span class="gs-val">${avgAtt}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Total intentos grupo</span><span class="gs-val">${totalAtt}</span></div>`;
-}
-
-function renderBarCharts() {
-    const container = document.getElementById('barChartContainer');
-    const users = getUsers();
-    const entries = Object.entries(users);
-    const withData = entries.filter(([u]) => getUserProgress(u));
-
-    if (!withData.length) {
-        container.innerHTML = '<p style="padding:15px;text-align:center;color:var(--text-light);">Sin datos de progreso aún.</p>';
-        return;
-    }
-
-    // Sort by avg desc
-    const auditors = withData.map(([u, data]) => {
-        const p = getUserProgress(u);
-        return { name: data.name, p };
-    }).sort((a,b) => (calcAvgScore(b.p)||0) - (calcAvgScore(a.p)||0));
-
-    const levels = [
-        { key: 'level1', label: 'Nivel 1 — Observaciones', color: '#3182ce' },
-        { key: 'level2', label: 'Nivel 2 — Risk Rating',   color: '#38a169' },
-        { key: 'level3', label: 'Nivel 3 — Res. Ejecutivo',color: '#d69e2e' }
-    ];
-
-    container.innerHTML = `<div class="comparison-grid">
-        ${levels.map(lv => `
-            <div>
-                <div class="cmp-section-title">${lv.label}</div>
-                ${auditors.map(a => {
-                    const sc = a.p.scores[lv.key] || 0;
-                    const firstName = escHtml(a.name.split(' ')[0]);
-                    const barColor = sc >= 80 ? 'var(--success)' : sc >= 60 ? 'var(--warning)' : sc > 0 ? 'var(--accent)' : lv.color;
-                    return `<div class="bar-chart-row">
-                        <div class="bar-label" title="${escHtml(a.name)}">${firstName}</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" style="width:${sc}%;background:${barColor};">${sc > 18 ? sc+'%' : ''}</div>
-                        </div>
-                        <div class="bar-val" style="color:${sc>=80?'var(--success)':sc>=60?'var(--warning)':sc>0?'var(--accent)':'var(--text-light)'};">${sc > 0 ? sc+'%' : '—'}</div>
-                    </div>`;
-                }).join('')}
-            </div>`).join('')}
-    </div>`;
-}
-
-function renderAuditorList() {
-    const users = getUsers();
-    const entries = Object.entries(users);
-
-    if (!entries.length) {
-        document.getElementById('auditorListContainer').innerHTML = '<p style="padding:25px;text-align:center;color:var(--text-light);">No hay auditores registrados aún. Usa el formulario para crear cuentas.</p>';
-        return;
-    }
-
-    const rows = entries.map(([uname, data]) => {
-        const p = getUserProgress(uname);
-        const badge = !p ? '<span class="badge badge-gray">Sin iniciar</span>'
-            : p.completed ? '<span class="badge badge-success">Completado ✓</span>'
-            : '<span class="badge badge-info">En progreso</span>';
-        return `<tr>
-            <td><strong>${escHtml(data.name)}</strong></td>
-            <td style="font-family:monospace;">${escHtml(uname)}</td>
-            <td>${badge}</td>
-            <td style="font-size:0.79rem;color:var(--text-light);">${fmtDate(data.createdAt)}</td>
-            <td>
-                <button class="btn btn-outline" style="padding:4px 10px;font-size:0.76rem;margin-right:5px;" onclick="showCredentials('${escHtml(uname)}')">🔑 Ver acceso</button>
-                <button class="btn btn-danger" style="padding:4px 10px;font-size:0.76rem;" onclick="deleteAuditor('${escHtml(uname)}')">🗑 Eliminar</button>
-            </td>
-        </tr>`;
-    }).join('');
-
-    document.getElementById('auditorListContainer').innerHTML = `
-        <table class="aud-table">
-            <thead><tr><th>Nombre</th><th>Usuario</th><th>Estado</th><th>Creado</th><th>Acciones</th></tr></thead>
-            <tbody>${rows}</tbody>
-        </table>`;
-}
-
-function createAuditor() {
-    const name = document.getElementById('newAuditorName').value.trim();
-    const uname = document.getElementById('newAuditorUsername').value.trim().toLowerCase();
-    const pass = document.getElementById('newAuditorPassword').value.trim();
-    const errEl = document.getElementById('createError');
-    const okEl = document.getElementById('createSuccess');
-    errEl.style.display = 'none'; okEl.style.display = 'none';
-
-    if (!name||!uname||!pass) { errEl.textContent='Completa todos los campos.'; errEl.style.display='block'; return; }
-    if (pass.length < 6) { errEl.textContent='La contraseña debe tener al menos 6 caracteres.'; errEl.style.display='block'; return; }
-    if (uname==='admin') { errEl.textContent='"admin" está reservado.'; errEl.style.display='block'; return; }
-    if (!/^[a-z0-9_]+$/.test(uname)) { errEl.textContent='Usuario solo puede tener letras minúsculas, números y _.'; errEl.style.display='block'; return; }
-
-    const users = getUsers();
-    if (users[uname]) { errEl.textContent='Ese nombre de usuario ya existe.'; errEl.style.display='block'; return; }
-
-    users[uname] = { name, password: pass, createdAt: new Date().toISOString() };
-    saveUsers(users);
-
-    document.getElementById('newAuditorName').value = '';
-    document.getElementById('newAuditorUsername').value = '';
-    document.getElementById('newAuditorPassword').value = '';
-
-    okEl.textContent = `✅ Auditor "${name}" creado correctamente. Ya puede ingresar con usuario "${uname}".`;
-    okEl.style.display = 'block';
-    setTimeout(() => okEl.style.display = 'none', 5000);
-
-    renderAuditorList();
-    renderAdminDashboard();
-}
-
-function deleteAuditor(uname) {
-    const users = getUsers();
-    if (!users[uname]) return;
-    if (!confirm(`¿Eliminar al auditor "${users[uname].name}" (${uname})?\nSe perderá su progreso guardado.`)) return;
-    delete users[uname];
-    saveUsers(users);
-    localStorage.removeItem('audit_progress_' + uname);
-    renderAuditorList();
-    renderAdminDashboard();
-}
-
-function generatePassword() {
-    const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
-    let p = '';
-    for (let i = 0; i < 8; i++) p += chars[Math.floor(Math.random() * chars.length)];
-    document.getElementById('newAuditorPassword').value = p;
-}
-
-function showCredentials(uname) {
-    const users = getUsers();
-    const u = users[uname]; if (!u) return;
-    document.getElementById('credName').textContent = u.name;
-    document.getElementById('credUsername').textContent = uname;
-    document.getElementById('credPassword').textContent = u.password;
-    document.getElementById('credUrl').textContent = window.location.origin + window.location.pathname;
-    document.getElementById('copyMsg').style.display = 'none';
-    document.getElementById('credModal').style.display = 'flex';
-}
-
-function closeCredModal() { document.getElementById('credModal').style.display = 'none'; }
-
-function copyCredentials() {
-    const name = document.getElementById('credName').textContent;
-    const user = document.getElementById('credUsername').textContent;
-    const pass = document.getElementById('credPassword').textContent;
-    const url = document.getElementById('credUrl').textContent;
-    const txt = `IPPF Audit Training Platform\nNombre: ${name}\nUsuario: ${user}\nContraseña: ${pass}\nURL: ${url}`;
-    navigator.clipboard.writeText(txt).then(() => {
-        const m = document.getElementById('copyMsg');
-        m.style.display = 'block';
-        setTimeout(() => m.style.display = 'none', 2500);
-    }).catch(() => prompt('Copia manualmente:', txt));
-}
 
 // =========================================================
 // COMPONENT LABEL OPTIONS (for selectors)
