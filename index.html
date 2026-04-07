@@ -813,7 +813,52 @@ function doLogin() {
     errEl.style.display = 'block';
 }
 
-function doLogout() { clearSession(); location.reload(); }
+function doLogout() {
+    clearSession();
+
+    // Reset in-memory app state
+    currentObs = 0;
+    completedObs = new Set();
+    obsResults = {};
+    userRatings = {};
+    correctionMode = false;
+    correctionModeExec = false;
+    scores = { level1: 0, level2: 0, level3: 0 };
+    attemptHistory = { level1: {}, level2: [], level3: [] };
+
+    // Hide panels
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('appContent').style.display = 'none';
+
+    // Reset app sections to level 1
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const l1 = document.getElementById('level1');
+    if (l1) l1.classList.add('active');
+    document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active', 'completed'));
+    const step1 = document.getElementById('step1');
+    if (step1) step1.classList.add('active');
+    const badge = document.getElementById('levelBadge');
+    if (badge) badge.textContent = 'Nivel 1 — Observaciones';
+    ['level1Feedback','level1Complete','level2Feedback','level2Complete','level3Feedback','level3Complete']
+        .forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
+
+    // Remove the user-info element appended to header on auditor login
+    document.querySelectorAll('.header > div[style*="margin-left:auto"]').forEach(el => el.remove());
+
+    // Reset admin tab state
+    document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+    const dash = document.getElementById('adminTab-dashboard');
+    if (dash) dash.classList.add('active');
+    document.querySelectorAll('.admin-nav-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === 0);
+    });
+
+    // Show login overlay with clean form
+    document.getElementById('loginUsername').value = '';
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('loginError').style.display = 'none';
+    document.getElementById('loginOverlay').style.display = 'flex';
+}
 
 function checkAuth() {
     const session = getSession();
