@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPPF Audit Training — Administrador</title>
+    <title>IPPF Audit Training — Administrator</title>
     <style>
         :root {
             --primary: #1a365d; --primary-light: #2a4a7f;
@@ -123,19 +123,19 @@
 <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
         <div class="logo">🔐</div>
-        <h2>Panel de Administración</h2>
-        <p class="subtitle">IPPF Audit Training Platform — acceso exclusivo para administradores</p>
-        <div id="loginError" class="login-error" style="display:none;">Credenciales incorrectas.</div>
+        <h2>Administration Panel</h2>
+        <p class="subtitle">IPPF Audit Training Platform — exclusive access for administrators</p>
+        <div id="loginError" class="login-error" style="display:none;">Incorrect credentials.</div>
         <div class="form-group">
-            <label>Usuario</label>
+            <label>Username</label>
             <input type="text" id="loginUsername" placeholder="admin" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
         <div class="form-group">
-            <label>Contraseña</label>
+            <label>Password</label>
             <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="doLogin()">Ingresar →</button>
-        <div class="login-link">¿Eres auditor? <a href="index.html">Ir al entrenamiento →</a></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="doLogin()">Log in →</button>
+        <div class="login-link">Are you an auditor? <a href="index.html">Go to training →</a></div>
     </div>
 </div>
 
@@ -143,15 +143,15 @@
 <div id="adminPanel" style="display:none;" class="admin-panel">
     <div class="admin-header">
         <div>
-            <div style="font-size:1.1rem;font-weight:700;">🔍 IPPF Audit Training — Administrador</div>
+            <div style="font-size:1.1rem;font-weight:700;">🔍 IPPF Audit Training — Administrator</div>
             <div id="adminWelcome" style="font-size:0.8rem;opacity:0.7;margin-top:2px;"></div>
         </div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
             <div class="admin-nav">
                 <button class="admin-nav-btn active" onclick="showAdminTab('dashboard',this)">📊 Dashboard</button>
-                <button class="admin-nav-btn" onclick="showAdminTab('auditores',this)">👥 Auditores</button>
+                <button class="admin-nav-btn" onclick="showAdminTab('auditores',this)">👥 Auditors</button>
             </div>
-            <button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);font-size:0.82rem;padding:7px 14px;" onclick="doLogout()">Cerrar sesión</button>
+            <button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);font-size:0.82rem;padding:7px 14px;" onclick="doLogout()">Log out</button>
         </div>
     </div>
     <div class="admin-content">
@@ -159,45 +159,45 @@
         <div id="adminTab-dashboard" class="admin-tab-panel active">
             <div id="adminStatsRow" class="admin-stats-row"></div>
             <div class="card">
-                <div class="card-title"><div class="icon">📊</div> Progreso de Auditores</div>
+                <div class="card-title"><div class="icon">📊</div> Auditor Progress</div>
                 <div id="progressTableContainer"></div>
             </div>
             <div class="dash-two-col">
                 <div class="card">
-                    <div class="card-title"><div class="icon">🏆</div> Ranking de Auditores</div>
+                    <div class="card-title"><div class="icon">🏆</div> Auditor Ranking</div>
                     <div id="rankingContainer"></div>
                 </div>
                 <div class="card">
-                    <div class="card-title"><div class="icon">📈</div> Estadísticas del Grupo</div>
+                    <div class="card-title"><div class="icon">📈</div> Group Statistics</div>
                     <div id="groupStatsContainer"></div>
                 </div>
             </div>
             <div class="card" style="margin-top:20px;">
-                <div class="card-title"><div class="icon">📊</div> Comparación Visual por Nivel</div>
+                <div class="card-title"><div class="icon">📊</div> Visual Comparison by Level</div>
                 <div id="barChartContainer"></div>
             </div>
         </div>
-        <!-- Auditores -->
+        <!-- Auditors -->
         <div id="adminTab-auditores" class="admin-tab-panel">
             <div class="create-form-card">
-                <h3>➕ Crear Nuevo Auditor</h3>
+                <h3>➕ Create New Auditor</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Nombre Completo</label>
-                        <input type="text" id="newAuditorName" placeholder="Ej: María González">
+                        <label>Full Name</label>
+                        <input type="text" id="newAuditorName" placeholder="E.g.: Maria Gonzalez">
                     </div>
                     <div class="form-group">
-                        <label>Usuario <small style="color:var(--text-light);">(letras, números, _)</small></label>
-                        <input type="text" id="newAuditorUsername" placeholder="Ej: mgonzalez" oninput="this.value=this.value.toLowerCase()">
+                        <label>Username <small style="color:var(--text-light);">(letters, numbers, _)</small></label>
+                        <input type="text" id="newAuditorUsername" placeholder="E.g.: mgonzalez" oninput="this.value=this.value.toLowerCase()">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Contraseña</label>
-                        <input type="text" id="newAuditorPassword" placeholder="Mínimo 6 caracteres">
+                        <label>Password</label>
+                        <input type="text" id="newAuditorPassword" placeholder="Minimum 6 characters">
                     </div>
                     <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
-                        <button class="btn btn-primary" onclick="createAuditor()">✓ Crear Auditor</button>
+                        <button class="btn btn-primary" onclick="createAuditor()">✓ Create Auditor</button>
                         <button class="btn btn-outline" onclick="generatePassword()">🔑 Auto</button>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
                 <div id="createSuccess" style="color:var(--success);font-size:0.85rem;margin-top:8px;display:none;"></div>
             </div>
             <div class="card">
-                <div class="card-title"><div class="icon">👥</div> Auditores Registrados</div>
+                <div class="card-title"><div class="icon">👥</div> Registered Auditors</div>
                 <div id="auditorListContainer"></div>
             </div>
         </div>
@@ -215,14 +215,14 @@
 <!-- CREDENTIALS MODAL -->
 <div id="credModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeCredModal()">
     <div class="modal-box">
-        <h3>🔑 Credenciales de Acceso</h3>
-        <div class="cred-field"><div class="cred-lbl">Nombre</div><div class="cred-val" id="credName"></div></div>
-        <div class="cred-field"><div class="cred-lbl">Usuario</div><div class="cred-val" id="credUsername"></div></div>
-        <div class="cred-field"><div class="cred-lbl">Contraseña</div><div class="cred-val" id="credPassword"></div></div>
-        <div style="margin:0 0 14px;font-size:0.8rem;color:var(--text-light);">URL de acceso: <strong id="credUrl"></strong></div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="copyCredentials()">📋 Copiar credenciales</button>
-        <div id="copyMsg" style="color:var(--success);font-size:0.82rem;text-align:center;margin-bottom:8px;display:none;">✅ Copiado al portapapeles</div>
-        <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="closeCredModal()">Cerrar</button>
+        <h3>🔑 Access Credentials</h3>
+        <div class="cred-field"><div class="cred-lbl">Name</div><div class="cred-val" id="credName"></div></div>
+        <div class="cred-field"><div class="cred-lbl">Username</div><div class="cred-val" id="credUsername"></div></div>
+        <div class="cred-field"><div class="cred-lbl">Password</div><div class="cred-val" id="credPassword"></div></div>
+        <div style="margin:0 0 14px;font-size:0.8rem;color:var(--text-light);">Login URL: <strong id="credUrl"></strong></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="copyCredentials()">📋 Copy credentials</button>
+        <div id="copyMsg" style="color:var(--success);font-size:0.82rem;text-align:center;margin-bottom:8px;display:none;">✅ Copied to clipboard</div>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="closeCredModal()">Close</button>
     </div>
 </div>
 
@@ -230,7 +230,7 @@
 // =========================================================
 // SHARED STORAGE HELPERS
 // =========================================================
-const ADMIN_CREDS = { username: 'admin', password: 'Admin2024!', name: 'Administrador' };
+const ADMIN_CREDS = { username: 'admin', password: 'Admin2024!', name: 'Administrator' };
 
 function getUsers() { return JSON.parse(localStorage.getItem('audit_users') || '{}'); }
 function saveUsers(u) { localStorage.setItem('audit_users', JSON.stringify(u)); }
@@ -286,7 +286,7 @@ function checkAuth() {
 // =========================================================
 function showAdminPanel() {
     document.getElementById('adminPanel').style.display = 'block';
-    document.getElementById('adminWelcome').textContent = 'Bienvenido, ' + getSession().name;
+    document.getElementById('adminWelcome').textContent = 'Welcome, ' + getSession().name;
     const base = window.location.origin + window.location.pathname.replace('admin.html', '');
     document.getElementById('credUrl').textContent = base + 'index.html';
     renderAdminDashboard();
@@ -311,12 +311,12 @@ function calcAvgScore(p) {
 function fmtDate(iso) {
     if (!iso) return '—';
     const d = new Date(iso);
-    return d.toLocaleDateString('es-CL',{day:'2-digit',month:'short'}) + ' ' + d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+    return d.toLocaleDateString('en-US',{day:'2-digit',month:'short'}) + ' ' + d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 }
 function scoreCell(score, att) {
     if (!att) return '<span style="color:var(--text-light)">—</span>';
     const c = score>=80?'var(--success)':score>=60?'var(--warning)':'var(--accent)';
-    return `<span style="color:${c};font-weight:700;">${score}%</span> <span style="color:var(--text-light);font-size:0.74rem;">(${att} int.)</span>`;
+    return `<span style="color:${c};font-weight:700;">${score}%</span> <span style="color:var(--text-light);font-size:0.74rem;">(${att} att.)</span>`;
 }
 
 // ---- Dashboard ----
@@ -335,21 +335,21 @@ function renderAdminDashboard() {
     });
     const overallAvg = allAvgs.length ? Math.round(allAvgs.reduce((a,b)=>a+b,0)/allAvgs.length)+'%' : '—';
     document.getElementById('adminStatsRow').innerHTML = `
-        <div class="admin-stat"><div class="val">${entries.length}</div><div class="lbl">Total Auditores</div></div>
-        <div class="admin-stat"><div class="val" style="color:var(--success)">${completed}</div><div class="lbl">Completados</div></div>
-        <div class="admin-stat"><div class="val" style="color:var(--warning)">${inProg}</div><div class="lbl">En Progreso</div></div>
-        <div class="admin-stat"><div class="val" style="color:var(--text-light)">${notStarted}</div><div class="lbl">Sin Iniciar</div></div>
-        <div class="admin-stat"><div class="val">${overallAvg}</div><div class="lbl">Prom. General</div></div>`;
+        <div class="admin-stat"><div class="val">${entries.length}</div><div class="lbl">Total Auditors</div></div>
+        <div class="admin-stat"><div class="val" style="color:var(--success)">${completed}</div><div class="lbl">Completed</div></div>
+        <div class="admin-stat"><div class="val" style="color:var(--warning)">${inProg}</div><div class="lbl">In Progress</div></div>
+        <div class="admin-stat"><div class="val" style="color:var(--text-light)">${notStarted}</div><div class="lbl">Not Started</div></div>
+        <div class="admin-stat"><div class="val">${overallAvg}</div><div class="lbl">Overall Avg.</div></div>`;
 
     if (!entries.length) {
-        document.getElementById('progressTableContainer').innerHTML = '<p style="padding:25px;text-align:center;color:var(--text-light);">No hay auditores. Créalos en la pestaña "Auditores".</p>';
+        document.getElementById('progressTableContainer').innerHTML = '<p style="padding:25px;text-align:center;color:var(--text-light);">No auditors yet. Create them in the "Auditors" tab.</p>';
         renderRanking(); renderGroupStats(); renderBarCharts(); return;
     }
     const rows = entries.map(([uname, data]) => {
         const p = getUserProgress(uname);
-        const status = !p ? '<span class="badge badge-gray">Sin iniciar</span>'
-            : p.completed ? '<span class="badge badge-success">Completado ✓</span>'
-            : `<span class="badge badge-info">Nivel ${p.currentLevel}</span>`;
+        const status = !p ? '<span class="badge badge-gray">Not started</span>'
+            : p.completed ? '<span class="badge badge-success">Completed ✓</span>'
+            : `<span class="badge badge-info">Level ${p.currentLevel}</span>`;
         const l1a=p?Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0):0;
         const l2a=p?(p.attemptHistory.level2||[]).length:0;
         const l3a=p?(p.attemptHistory.level3||[]).length:0;
@@ -364,12 +364,12 @@ function renderAdminDashboard() {
             <td>${scoreCell(p&&p.scores?p.scores.level3:0,l3a)}</td>
             <td>${avgH}</td>
             <td style="font-size:0.78rem;color:var(--text-light);">${fmtDate(p&&p.lastActivity)}</td>
-            <td><button class="btn btn-outline" style="padding:4px 10px;font-size:0.75rem;" onclick="showCredentials('${escHtml(uname)}')">🔑 Ver acceso</button></td>
+            <td><button class="btn btn-outline" style="padding:4px 10px;font-size:0.75rem;" onclick="showCredentials('${escHtml(uname)}')">🔑 View access</button></td>
         </tr>`;
     }).join('');
     document.getElementById('progressTableContainer').innerHTML = `
         <div style="overflow-x:auto;"><table class="aud-table">
-            <thead><tr><th>Nombre</th><th>Usuario</th><th>Estado</th><th>Nivel 1</th><th>Nivel 2</th><th>Nivel 3</th><th>Promedio</th><th>Última Actividad</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Name</th><th>Username</th><th>Status</th><th>Level 1</th><th>Level 2</th><th>Level 3</th><th>Average</th><th>Last Activity</th><th>Actions</th></tr></thead>
             <tbody>${rows}</tbody>
         </table></div>`;
     renderRanking(); renderGroupStats(); renderBarCharts();
@@ -378,7 +378,7 @@ function renderAdminDashboard() {
 function renderRanking() {
     const container = document.getElementById('rankingContainer');
     const entries = Object.entries(getUsers());
-    if (!entries.length) { container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">Sin auditores aún.</p>'; return; }
+    if (!entries.length) { container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No auditors yet.</p>'; return; }
     const ranked = entries.map(([u,data]) => {
         const p=getUserProgress(u);
         const avg=calcAvgScore(p);
@@ -390,21 +390,21 @@ function renderRanking() {
         const pos=i<3?`<span style="font-size:1.15rem;">${medals[i]}</span>`:`<span style="font-size:0.82rem;color:var(--text-light);font-weight:700;">#${i+1}</span>`;
         const avgD=r.avg!==null?`<strong style="color:${r.avg>=80?'var(--success)':r.avg>=60?'var(--warning)':'var(--accent)'};">${r.avg}%</strong>`:'<span style="color:var(--text-light);">—</span>';
         const done=r.done?' <span class="badge badge-success" style="font-size:0.68rem;">✓</span>':'';
-        return `<tr><td style="width:36px;text-align:center;">${pos}</td><td>${escHtml(r.name)}${done}</td><td style="text-align:right;">${avgD}</td><td style="text-align:right;font-size:0.76rem;color:var(--text-light);">${r.att?r.att+' int.':'—'}</td></tr>`;
+        return `<tr><td style="width:36px;text-align:center;">${pos}</td><td>${escHtml(r.name)}${done}</td><td style="text-align:right;">${avgD}</td><td style="text-align:right;font-size:0.76rem;color:var(--text-light);">${r.att?r.att+' att.':'—'}</td></tr>`;
     }).join('');
     container.innerHTML=`<table class="rank-table">
         <thead><tr>
             <th style="background:#f7fafc;color:var(--text-light);font-size:0.74rem;padding:6px 12px;border-bottom:1px solid var(--border);">#</th>
             <th style="background:#f7fafc;color:var(--text-light);font-size:0.74rem;padding:6px 12px;border-bottom:1px solid var(--border);">Auditor</th>
-            <th style="background:#f7fafc;color:var(--text-light);font-size:0.74rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Promedio</th>
-            <th style="background:#f7fafc;color:var(--text-light);font-size:0.74rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Intentos</th>
+            <th style="background:#f7fafc;color:var(--text-light);font-size:0.74rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Average</th>
+            <th style="background:#f7fafc;color:var(--text-light);font-size:0.74rem;padding:6px 12px;border-bottom:1px solid var(--border);text-align:right;">Attempts</th>
         </tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function renderGroupStats() {
     const container=document.getElementById('groupStatsContainer');
     const entries=Object.entries(getUsers());
-    if(!entries.length){container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">Sin datos aún.</p>';return;}
+    if(!entries.length){container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No data yet.</p>';return;}
     const progs=entries.map(([u])=>getUserProgress(u)).filter(Boolean);
     const l1=progs.map(p=>p.scores.level1).filter(s=>s>0);
     const l2=progs.map(p=>p.scores.level2).filter(s=>s>0);
@@ -420,8 +420,8 @@ function renderGroupStats() {
     const col=v=>v>=80?'var(--success)':v>=60?'var(--warning)':v!==null?'var(--accent)':'var(--text-light)';
     container.innerHTML=`
         <div style="margin-bottom:16px;">
-            <div style="font-size:0.74rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Promedio del grupo por nivel</div>
-            ${[['Nivel 1',a1,'#3182ce'],['Nivel 2',a2,'#38a169'],['Nivel 3',a3,'#d69e2e']].map(([lbl,av,c])=>`
+            <div style="font-size:0.74rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Group average by level</div>
+            ${[['Level 1',a1,'#3182ce'],['Level 2',a2,'#38a169'],['Level 3',a3,'#d69e2e']].map(([lbl,av,c])=>`
                 <div style="margin-bottom:8px;">
                     <div style="display:flex;justify-content:space-between;font-size:0.79rem;margin-bottom:3px;">
                         <span>${lbl}</span><span style="font-weight:700;color:${col(av)};">${fv(av)}</span>
@@ -429,24 +429,24 @@ function renderGroupStats() {
                     <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${av||0}%;background:${c};"></div></div>
                 </div>`).join('')}
         </div>
-        <div class="gs-row"><span class="gs-lbl">Finalización</span><span class="gs-val">${compRate}%</span></div>
-        <div class="gs-row"><span class="gs-lbl">Con algún resultado</span><span class="gs-val">${progs.length} / ${entries.length}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Mejor N1 / N2 / N3</span><span class="gs-val">${fv(max(l1))} / ${fv(max(l2))} / ${fv(max(l3))}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Menor N1 / N2 / N3</span><span class="gs-val">${fv(min(l1))} / ${fv(min(l2))} / ${fv(min(l3))}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Prom. intentos/auditor</span><span class="gs-val">${avgAtt}</span></div>
-        <div class="gs-row"><span class="gs-lbl">Total intentos grupo</span><span class="gs-val">${totalAtt}</span></div>`;
+        <div class="gs-row"><span class="gs-lbl">Completion rate</span><span class="gs-val">${compRate}%</span></div>
+        <div class="gs-row"><span class="gs-lbl">With any result</span><span class="gs-val">${progs.length} / ${entries.length}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Best L1 / L2 / L3</span><span class="gs-val">${fv(max(l1))} / ${fv(max(l2))} / ${fv(max(l3))}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Lowest L1 / L2 / L3</span><span class="gs-val">${fv(min(l1))} / ${fv(min(l2))} / ${fv(min(l3))}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Avg. attempts/auditor</span><span class="gs-val">${avgAtt}</span></div>
+        <div class="gs-row"><span class="gs-lbl">Total group attempts</span><span class="gs-val">${totalAtt}</span></div>`;
 }
 
 function renderBarCharts() {
     const container=document.getElementById('barChartContainer');
     const entries=Object.entries(getUsers());
     const withData=entries.filter(([u])=>getUserProgress(u));
-    if(!withData.length){container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">Sin datos de progreso aún.</p>';return;}
+    if(!withData.length){container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No progress data yet.</p>';return;}
     const auds=withData.map(([u,d])=>({name:d.name,p:getUserProgress(u)})).sort((a,b)=>(calcAvgScore(b.p)||0)-(calcAvgScore(a.p)||0));
     const levels=[
-        {key:'level1',label:'Nivel 1 — Observaciones',color:'#3182ce'},
-        {key:'level2',label:'Nivel 2 — Risk Rating',color:'#38a169'},
-        {key:'level3',label:'Nivel 3 — Res. Ejecutivo',color:'#d69e2e'}
+        {key:'level1',label:'Level 1 — Findings',color:'#3182ce'},
+        {key:'level2',label:'Level 2 — Risk Rating',color:'#38a169'},
+        {key:'level3',label:'Level 3 — Exec. Summary',color:'#d69e2e'}
     ];
     container.innerHTML=`<div class="comparison-grid">${levels.map(lv=>`
         <div>
@@ -467,23 +467,23 @@ function renderBarCharts() {
 // ---- Auditor Management ----
 function renderAuditorList() {
     const entries=Object.entries(getUsers());
-    if(!entries.length){document.getElementById('auditorListContainer').innerHTML='<p style="padding:25px;text-align:center;color:var(--text-light);">No hay auditores registrados aún.</p>';return;}
+    if(!entries.length){document.getElementById('auditorListContainer').innerHTML='<p style="padding:25px;text-align:center;color:var(--text-light);">No registered auditors yet.</p>';return;}
     const rows=entries.map(([uname,data])=>{
         const p=getUserProgress(uname);
-        const badge=!p?'<span class="badge badge-gray">Sin iniciar</span>':p.completed?'<span class="badge badge-success">Completado ✓</span>':'<span class="badge badge-info">En progreso</span>';
+        const badge=!p?'<span class="badge badge-gray">Not started</span>':p.completed?'<span class="badge badge-success">Completed ✓</span>':'<span class="badge badge-info">In progress</span>';
         return `<tr>
             <td><strong>${escHtml(data.name)}</strong></td>
             <td style="font-family:monospace;">${escHtml(uname)}</td>
             <td>${badge}</td>
             <td style="font-size:0.78rem;color:var(--text-light);">${fmtDate(data.createdAt)}</td>
             <td>
-                <button class="btn btn-outline" style="padding:4px 10px;font-size:0.75rem;margin-right:5px;" onclick="showCredentials('${escHtml(uname)}')">🔑 Ver acceso</button>
-                <button class="btn btn-danger" style="padding:4px 10px;font-size:0.75rem;" onclick="deleteAuditor('${escHtml(uname)}')">🗑 Eliminar</button>
+                <button class="btn btn-outline" style="padding:4px 10px;font-size:0.75rem;margin-right:5px;" onclick="showCredentials('${escHtml(uname)}')">🔑 View access</button>
+                <button class="btn btn-danger" style="padding:4px 10px;font-size:0.75rem;" onclick="deleteAuditor('${escHtml(uname)}')">🗑 Delete</button>
             </td>
         </tr>`;
     }).join('');
     document.getElementById('auditorListContainer').innerHTML=`<table class="aud-table">
-        <thead><tr><th>Nombre</th><th>Usuario</th><th>Estado</th><th>Creado</th><th>Acciones</th></tr></thead>
+        <thead><tr><th>Name</th><th>Username</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
         <tbody>${rows}</tbody></table>`;
 }
 
@@ -494,18 +494,18 @@ function createAuditor() {
     const errEl=document.getElementById('createError');
     const okEl=document.getElementById('createSuccess');
     errEl.style.display='none'; okEl.style.display='none';
-    if(!name||!uname||!pass){errEl.textContent='Completa todos los campos.';errEl.style.display='block';return;}
-    if(pass.length<6){errEl.textContent='La contraseña debe tener al menos 6 caracteres.';errEl.style.display='block';return;}
-    if(uname==='admin'){errEl.textContent='"admin" está reservado.';errEl.style.display='block';return;}
-    if(!/^[a-z0-9_]+$/.test(uname)){errEl.textContent='Usuario: solo letras minúsculas, números y _.';errEl.style.display='block';return;}
+    if(!name||!uname||!pass){errEl.textContent='Please fill in all fields.';errEl.style.display='block';return;}
+    if(pass.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';return;}
+    if(uname==='admin'){errEl.textContent='"admin" is a reserved username.';errEl.style.display='block';return;}
+    if(!/^[a-z0-9_]+$/.test(uname)){errEl.textContent='Username: only lowercase letters, numbers, and _.';errEl.style.display='block';return;}
     const users=getUsers();
-    if(users[uname]){errEl.textContent='Ese nombre de usuario ya existe.';errEl.style.display='block';return;}
+    if(users[uname]){errEl.textContent='That username already exists.';errEl.style.display='block';return;}
     users[uname]={name,password:pass,createdAt:new Date().toISOString()};
     saveUsers(users);
     document.getElementById('newAuditorName').value='';
     document.getElementById('newAuditorUsername').value='';
     document.getElementById('newAuditorPassword').value='';
-    okEl.textContent=`✅ Auditor "${name}" creado. Usuario: "${uname}"`;
+    okEl.textContent=`✅ Auditor "${name}" created. Username: "${uname}"`;
     okEl.style.display='block';
     setTimeout(()=>okEl.style.display='none',5000);
     renderAuditorList(); renderAdminDashboard();
@@ -514,7 +514,7 @@ function createAuditor() {
 function deleteAuditor(uname) {
     const users=getUsers();
     if(!users[uname]) return;
-    if(!confirm(`¿Eliminar al auditor "${users[uname].name}" (${uname})?\nSe perderá su progreso.`)) return;
+    if(!confirm(`Delete auditor "${users[uname].name}" (${uname})?\nTheir progress will be permanently lost.`)) return;
     delete users[uname];
     saveUsers(users);
     localStorage.removeItem('audit_progress_'+uname);
@@ -545,11 +545,11 @@ function copyCredentials(){
     const user=document.getElementById('credUsername').textContent;
     const pass=document.getElementById('credPassword').textContent;
     const url=document.getElementById('credUrl').textContent;
-    const txt=`IPPF Audit Training Platform\nNombre: ${name}\nUsuario: ${user}\nContraseña: ${pass}\nURL: ${url}`;
+    const txt=`IPPF Audit Training Platform\nName: ${name}\nUsername: ${user}\nPassword: ${pass}\nURL: ${url}`;
     navigator.clipboard.writeText(txt).then(()=>{
         const m=document.getElementById('copyMsg'); m.style.display='block';
         setTimeout(()=>m.style.display='none',2500);
-    }).catch(()=>prompt('Copia manualmente:',txt));
+    }).catch(()=>prompt('Copy manually:',txt));
 }
 
 document.addEventListener('DOMContentLoaded', checkAuth);

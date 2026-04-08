@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPPF Audit Training - Observaciones de Auditoría</title>
+    <title>IPPF Audit Training - Audit Findings</title>
     <style>
         :root {
             --primary: #1a365d;
@@ -425,34 +425,34 @@
     <div class="login-card">
         <div class="logo">🔍</div>
         <h2>IPPF Audit Training</h2>
-        <p class="subtitle">Acceso para auditores del IPPF Audit Training Platform</p>
-        <div id="loginError" class="login-error" style="display:none;">Usuario o contraseña incorrectos.</div>
+        <p class="subtitle">Auditor login — IPPF Audit Training Platform</p>
+        <div id="loginError" class="login-error" style="display:none;">Incorrect username or password.</div>
         <div class="form-group">
-            <label>Usuario</label>
-            <input type="text" id="loginUsername" placeholder="ej: mgonzalez" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+            <label>Username</label>
+            <input type="text" id="loginUsername" placeholder="e.g.: mgonzalez" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
         <div class="form-group">
-            <label>Contraseña</label>
+            <label>Password</label>
             <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="doLogin()">Ingresar →</button>
-        <div style="text-align:center;margin-top:16px;font-size:0.81rem;color:var(--text-light);">¿Administrador? <a href="admin.html" style="color:var(--info);font-weight:600;text-decoration:none;">Panel de administración →</a></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="doLogin()">Log in →</button>
+        <div style="text-align:center;margin-top:16px;font-size:0.81rem;color:var(--text-light);">Administrator? <a href="admin.html" style="color:var(--info);font-weight:600;text-decoration:none;">Admin panel →</a></div>
     </div>
 </div>
 
-<!-- ===================== APP (AUDITORES) ===================== -->
+<!-- ===================== APP (AUDITORS) ===================== -->
 <div id="appContent" style="display:none;">
 
 <div class="header">
     <h1>🔍 IPPF Audit Training Platform</h1>
-    <div class="header-badge" id="levelBadge">Nivel 1 — Observaciones</div>
+    <div class="header-badge" id="levelBadge">Level 1 — Findings</div>
 </div>
 
 <div class="progress-container">
     <div class="progress-steps">
-        <div class="progress-step active" id="step1"><span class="step-num">1</span> Observaciones</div>
-        <div class="progress-step" id="step2"><span class="step-num">2</span> Rating de Riesgo</div>
-        <div class="progress-step" id="step3"><span class="step-num">3</span> Resumen Ejecutivo</div>
+        <div class="progress-step active" id="step1"><span class="step-num">1</span> Findings</div>
+        <div class="progress-step" id="step2"><span class="step-num">2</span> Risk Rating</div>
+        <div class="progress-step" id="step3"><span class="step-num">3</span> Executive Summary</div>
     </div>
 </div>
 
@@ -460,67 +460,67 @@
 <div class="section active" id="level1">
     <div class="main-content">
         <div class="card fade-in">
-            <div class="card-title"><div class="icon">📋</div> Contexto de la Auditoría</div>
+            <div class="card-title"><div class="icon">📋</div> Audit Context</div>
             <div class="context-box">
-                <h3>Auditoría: Proceso de Facturación — Venta de Partes y Piezas de Equipamiento y Maquinaria Pesada</h3>
-                <p><strong>Empresa:</strong> MaquiParts Industrial S.A. — Líder regional en distribución de repuestos y componentes para maquinaria pesada en minería y construcción.</p>
-                <p><strong>Período auditado:</strong> Enero 2025 – Diciembre 2025</p>
-                <p><strong>Contexto:</strong> Durante el período auditado, la compañía procesó <strong>12,450 facturas</strong> de venta de partes y piezas por un monto total de <strong>USD $47.8 millones</strong>. Se identificó que <strong>2,118 facturas (17%)</strong> fueron rechazadas por los clientes, generando reprocesos, retrasos en la cobranza y potenciales impactos en la relación comercial.</p>
-                <p style="margin-top:8px"><strong>Principales causas de rechazo reportadas:</strong></p>
+                <h3>Audit: Billing Process — Sale of Heavy Equipment Parts and Components</h3>
+                <p><strong>Company:</strong> MaquiParts Industrial S.A. — Regional leader in the distribution of spare parts and components for heavy machinery in the mining and construction sectors.</p>
+                <p><strong>Audit Period:</strong> January 2025 – December 2025</p>
+                <p><strong>Context:</strong> During the audit period, the company processed <strong>12,450 invoices</strong> for the sale of parts and components totaling <strong>USD $47.8 million</strong>. It was identified that <strong>2,118 invoices (17%)</strong> were rejected by customers, generating rework, collection delays, and potential impacts on commercial relationships.</p>
+                <p style="margin-top:8px"><strong>Main reported rejection causes:</strong></p>
                 <ul>
-                    <li>Discrepancias entre precios cotizados y facturados (38% de rechazos)</li>
-                    <li>Errores en números de parte o descripción de componentes (25%)</li>
-                    <li>Órdenes de compra vencidas o no referenciadas (22%)</li>
-                    <li>Documentación de despacho incompleta o no adjunta (15%)</li>
+                    <li>Discrepancies between quoted and billed prices (38% of rejections)</li>
+                    <li>Errors in part numbers or component descriptions (25%)</li>
+                    <li>Expired or unreferenced purchase orders (22%)</li>
+                    <li>Incomplete or missing shipping documentation (15%)</li>
                 </ul>
             </div>
             <div class="stats-row">
-                <div class="stat-card"><div class="stat-value">12,450</div><div class="stat-label">Facturas Emitidas</div></div>
-                <div class="stat-card"><div class="stat-value">2,118</div><div class="stat-label">Facturas Rechazadas</div></div>
-                <div class="stat-card"><div class="stat-value">17%</div><div class="stat-label">Tasa de Rechazo</div></div>
-                <div class="stat-card"><div class="stat-value">$8.1M</div><div class="stat-label">Monto Rechazado</div></div>
-                <div class="stat-card"><div class="stat-value">45 días</div><div class="stat-label">Demora Prom. Reproceso</div></div>
+                <div class="stat-card"><div class="stat-value">12,450</div><div class="stat-label">Invoices Issued</div></div>
+                <div class="stat-card"><div class="stat-value">2,118</div><div class="stat-label">Invoices Rejected</div></div>
+                <div class="stat-card"><div class="stat-value">17%</div><div class="stat-label">Rejection Rate</div></div>
+                <div class="stat-card"><div class="stat-value">$8.1M</div><div class="stat-label">Amount Rejected</div></div>
+                <div class="stat-card"><div class="stat-value">45 days</div><div class="stat-label">Avg. Rework Delay</div></div>
             </div>
-            <div class="ippf-ref">Ref: IPPF — Norma 2300 (Ejecución del Trabajo) / Norma 2400 (Comunicación de Resultados)</div>
+            <div class="ippf-ref">Ref: IPPF — Standard 2300 (Performing the Engagement) / Standard 2400 (Communicating Results)</div>
         </div>
 
         <div class="card fade-in">
-            <div class="card-title"><div class="icon">🎯</div> Instrucciones</div>
+            <div class="card-title"><div class="icon">🎯</div> Instructions</div>
             <div class="instruction-box">
-                <strong>Tu misión:</strong> Construir 4 observaciones de auditoría completas según las mejores prácticas IPPF.
+                <strong>Your mission:</strong> Build 4 complete audit findings following IPPF best practices.
                 <ol style="margin: 8px 0 0 20px; font-size: 0.88rem;">
-                    <li><strong>Lee cada texto</strong> e identifica a qué componente corresponde asignándole la etiqueta correcta con el selector</li>
-                    <li>Arrastra los componentes correctos al panel derecho en el <strong>orden correcto</strong></li>
-                    <li>Descarta los distractores — hay al menos uno por tipo de componente</li>
+                    <li><strong>Read each text</strong> and identify which component it belongs to by assigning the correct label using the selector</li>
+                    <li>Drag the correct components to the right panel in the <strong>correct order</strong></li>
+                    <li>Discard the distractors — there is at least one per component type</li>
                 </ol>
-                <p style="margin-top:8px;"><strong>Orden esperado:</strong> Título → Background (criterio) → Condición (datos) → Causa Raíz → Riesgo → Recomendación (SMART)</p>
+                <p style="margin-top:8px;"><strong>Expected order:</strong> Title → Background / Criterion → Condition (data) → Root Cause → Risk → Recommendation (SMART)</p>
             </div>
         </div>
 
         <div class="obs-tabs" id="obsTabs"></div>
 
         <div class="card fade-in" id="dndCard">
-            <div class="card-title" id="currentObsTitle"><div class="icon">📝</div> Observación 1</div>
+            <div class="card-title" id="currentObsTitle"><div class="icon">📝</div> Finding 1</div>
             <div class="dnd-container">
                 <div class="dnd-section">
-                    <h4>📦 Componentes Disponibles (lee, clasifica y arrastra)</h4>
+                    <h4>📦 Available Components (read, classify and drag)</h4>
                     <div class="dnd-pool" id="dndPool"></div>
                 </div>
                 <div class="dnd-section">
-                    <h4>📄 Tu Observación (arrastra aquí en orden)</h4>
+                    <h4>📄 Your Finding (drag here in order)</h4>
                     <div class="dnd-target" id="dndTarget"></div>
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn btn-outline" onclick="resetCurrentObs()">↩ Reiniciar</button>
-                <button class="btn btn-primary" onclick="validateObservation()">✓ Validar Observación</button>
+                <button class="btn btn-outline" onclick="resetCurrentObs()">↩ Reset</button>
+                <button class="btn btn-primary" onclick="validateObservation()">✓ Validate Finding</button>
             </div>
         </div>
 
         <div id="level1Feedback" class="hidden"></div>
         <div id="level1Complete" class="hidden">
             <div class="btn-group" style="justify-content: center; margin-top: 20px;">
-                <button class="btn btn-success" onclick="goToLevel2()">Continuar al Nivel 2 — Rating de Riesgo →</button>
+                <button class="btn btn-success" onclick="goToLevel2()">Continue to Level 2 — Risk Rating →</button>
             </div>
         </div>
     </div>
@@ -530,8 +530,8 @@
 <div class="section" id="level2">
     <div class="main-content">
         <div class="card fade-in">
-            <div class="card-title"><div class="icon">⚖️</div> Nivel 2 — Asignación de Rating de Riesgo</div>
-            <p style="margin-bottom:15px; font-size:0.9rem;">Asigna un nivel de riesgo (Grade) a cada observación según las definiciones del <strong>Appendix A – Grade Definitions for Observations</strong>.</p>
+            <div class="card-title"><div class="icon">⚖️</div> Level 2 — Risk Rating Assignment</div>
+            <p style="margin-bottom:15px; font-size:0.9rem;">Assign a risk level (Grade) to each finding based on the definitions in <strong>Appendix A – Grade Definitions for Observations</strong>.</p>
 
             <div class="rating-criteria">
                 <h4>Appendix A – Grade Definitions for Observations</h4>
@@ -577,11 +577,11 @@
         <div class="rating-grid" id="ratingGrid"></div>
         <div id="level2Feedback" class="hidden"></div>
         <div class="btn-group">
-            <button class="btn btn-primary" onclick="validateRatings()">✓ Validar Ratings</button>
+            <button class="btn btn-primary" onclick="validateRatings()">✓ Validate Ratings</button>
         </div>
         <div id="level2Complete" class="hidden">
             <div class="btn-group" style="justify-content: center; margin-top: 20px;">
-                <button class="btn btn-success" onclick="goToLevel3()">Continuar al Nivel 3 — Resumen Ejecutivo →</button>
+                <button class="btn btn-success" onclick="goToLevel3()">Continue to Level 3 — Executive Summary →</button>
             </div>
         </div>
     </div>
@@ -591,63 +591,63 @@
 <div class="section" id="level3">
     <div class="main-content">
         <div class="card fade-in">
-            <div class="card-title"><div class="icon">📊</div> Nivel 3 — Construcción del Resumen Ejecutivo</div>
+            <div class="card-title"><div class="icon">📊</div> Level 3 — Building the Executive Summary</div>
             <div class="instruction-box">
-                <strong>Tu misión:</strong> Construir el resumen ejecutivo del informe de auditoría.
+                <strong>Your mission:</strong> Build the executive summary of the audit report.
                 <ol style="margin: 8px 0 0 20px; font-size: 0.88rem;">
-                    <li><strong>Lee cada texto</strong>, asígnale la etiqueta correcta del componente y arrástralo al panel derecho en orden</li>
-                    <li><strong>Selecciona los datos numéricos</strong> correctos del pool de datos para el panel lateral del informe</li>
-                    <li>Descarta los distractores en ambos paneles</li>
+                    <li><strong>Read each text</strong>, assign it the correct component label and drag it to the right panel in order</li>
+                    <li><strong>Select the correct numeric data</strong> from the data pool for the report's sidebar panel</li>
+                    <li>Discard the distractors in both panels</li>
                 </ol>
-                <p style="margin-top:8px"><strong>Orden esperado:</strong> Background → Why This Audit → Scope → Opinión Obj. Negocio → Opinión Obj. Auditoría → Observaciones → Recomendación</p>
+                <p style="margin-top:8px"><strong>Expected order:</strong> Background → Why This Audit → Scope → Opinion on Business Objectives → Opinion on Audit Objectives → Findings → Recommendation</p>
             </div>
         </div>
 
         <div class="level3-layout">
             <div>
                 <div class="card">
-                    <div class="card-title"><div class="icon">📝</div> Componentes del Resumen</div>
+                    <div class="card-title"><div class="icon">📝</div> Summary Components</div>
                     <div class="dnd-container">
                         <div class="dnd-section">
-                            <h4>📦 Componentes Disponibles</h4>
+                            <h4>📦 Available Components</h4>
                             <div class="dnd-pool" id="execPool"></div>
                         </div>
                         <div class="dnd-section">
-                            <h4>📄 Tu Resumen Ejecutivo (en orden)</h4>
+                            <h4>📄 Your Executive Summary (in order)</h4>
                             <div class="dnd-target" id="execTarget"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><div class="icon">📊</div> Datos Numéricos del Informe</div>
-                    <p style="font-size:0.85rem; margin-bottom:10px; color:var(--text-light);">Selecciona los datos correctos y relevantes para incluir en el panel lateral del informe. Arrastra al panel derecho solo los que correspondan.</p>
+                    <div class="card-title"><div class="icon">📊</div> Numeric Data for the Report</div>
+                    <p style="font-size:0.85rem; margin-bottom:10px; color:var(--text-light);">Select the correct and relevant data to include in the report's sidebar panel. Drag to the right panel only those that apply.</p>
                     <div class="data-pool-container">
                         <div>
-                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">DATOS DISPONIBLES</h4>
+                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">AVAILABLE DATA</h4>
                             <div class="data-pool" id="dataPool"></div>
                         </div>
                         <div>
-                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">DATOS SELECCIONADOS PARA EL INFORME</h4>
+                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">DATA SELECTED FOR THE REPORT</h4>
                             <div class="data-target" id="dataTarget"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-outline" onclick="resetExecSummary()">↩ Reiniciar</button>
-                    <button class="btn btn-primary" onclick="validateExecSummary()">✓ Validar Resumen Ejecutivo</button>
+                    <button class="btn btn-outline" onclick="resetExecSummary()">↩ Reset</button>
+                    <button class="btn btn-primary" onclick="validateExecSummary()">✓ Validate Executive Summary</button>
                 </div>
                 <div id="level3Feedback" class="hidden"></div>
             </div>
 
             <div>
                 <div class="exec-sidebar">
-                    <h4 style="margin-bottom:10px; color: var(--primary);">📋 Ref. IPPF</h4>
+                    <h4 style="margin-bottom:10px; color: var(--primary);">📋 IPPF Ref.</h4>
                     <p style="font-size:0.8rem; color: var(--text-light);">
-                        <strong>Norma 2400:</strong> Los auditores internos deben comunicar los resultados del trabajo.<br><br>
-                        <strong>Norma 2410:</strong> Las comunicaciones deben incluir objetivos, alcance, y resultados del trabajo.<br><br>
-                        <strong>Norma 2420:</strong> Las comunicaciones deben ser precisas, objetivas, claras, concisas, constructivas, completas y oportunas.
+                        <strong>Standard 2400:</strong> Internal auditors must communicate the results of engagements.<br><br>
+                        <strong>Standard 2410:</strong> Communications must include the engagement's objectives, scope, and results.<br><br>
+                        <strong>Standard 2420:</strong> Communications must be accurate, objective, clear, concise, constructive, complete, and timely.
                     </p>
                 </div>
             </div>
@@ -661,23 +661,23 @@
 <div class="section" id="finalScreen">
     <div class="main-content">
         <div class="completion-banner">
-            <h2>🏆 ¡Entrenamiento Completado!</h2>
-            <p>Has completado los 3 niveles del IPPF Audit Training</p>
+            <h2>🏆 Training Complete!</h2>
+            <p>You have completed all 3 levels of the IPPF Audit Training</p>
         </div>
         <div class="card">
-            <div class="card-title"><div class="icon">📊</div> Resumen de Desempeño</div>
+            <div class="card-title"><div class="icon">📊</div> Performance Summary</div>
             <div id="finalScores"></div>
         </div>
         <div class="card">
-            <div class="card-title"><div class="icon">📜</div> Historial Detallado de Intentos</div>
+            <div class="card-title"><div class="icon">📜</div> Detailed Attempt History</div>
             <div id="finalHistory"></div>
         </div>
         <div class="card">
-            <div class="card-title"><div class="icon">💡</div> Recomendaciones de Mejora</div>
+            <div class="card-title"><div class="icon">💡</div> Improvement Recommendations</div>
             <div id="finalRecommendations"></div>
         </div>
         <div class="btn-group" style="justify-content: center;">
-            <button class="btn btn-primary" onclick="restartAll()">🔄 Reiniciar Entrenamiento</button>
+            <button class="btn btn-primary" onclick="restartAll()">🔄 Restart Training</button>
         </div>
     </div>
 </div>
@@ -712,8 +712,8 @@ function doLogin() {
     }
 
     errEl.textContent = user === 'admin'
-        ? 'El admin usa el Panel de Administración → admin.html'
-        : 'Usuario o contraseña incorrectos.';
+        ? 'Admin users must use the Administration Panel → admin.html'
+        : 'Incorrect username or password.';
     errEl.style.display = 'block';
 }
 
@@ -732,7 +732,7 @@ function doLogout() {
     const l1 = document.getElementById('level1'); if (l1) l1.classList.add('active');
     document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active','completed'));
     const step1 = document.getElementById('step1'); if (step1) step1.classList.add('active');
-    const badge = document.getElementById('levelBadge'); if (badge) badge.textContent = 'Nivel 1 — Observaciones';
+    const badge = document.getElementById('levelBadge'); if (badge) badge.textContent = 'Level 1 — Findings';
     ['level1Feedback','level1Complete','level2Feedback','level2Complete','level3Feedback','level3Complete']
         .forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
     document.querySelectorAll('.header > div[style*="margin-left:auto"]').forEach(el => el.remove());
@@ -750,7 +750,7 @@ function checkAuth() {
         document.getElementById('loginOverlay').style.display = 'none';
         initAuditorApp();
     } else {
-        if (session) clearSession(); // sesión de otra página, descartarla
+        if (session) clearSession(); // session from another page, discard it
         document.getElementById('loginOverlay').style.display = 'flex';
     }
 }
@@ -761,7 +761,7 @@ function initAuditorApp() {
     const hdr = document.querySelector('.header');
     const ui = document.createElement('div');
     ui.style.cssText = 'display:flex;align-items:center;gap:8px;margin-left:auto;';
-    ui.innerHTML = `<span class="header-badge" style="background:rgba(255,255,255,0.15);">👤 ${escHtml(session.name)}</span><button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:none;font-size:0.78rem;padding:5px 12px;" onclick="doLogout()">Salir</button>`;
+    ui.innerHTML = `<span class="header-badge" style="background:rgba(255,255,255,0.15);">👤 ${escHtml(session.name)}</span><button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:none;font-size:0.78rem;padding:5px 12px;" onclick="doLogout()">Log out</button>`;
     hdr.appendChild(ui);
     init();
 }
@@ -788,24 +788,24 @@ function saveCurrentProgress() {
 // COMPONENT LABEL OPTIONS (for selectors)
 // =========================================================
 const componentLabels = [
-    { value: '', text: '-- Selecciona componente --' },
-    { value: 'titulo', text: 'Título' },
-    { value: 'background', text: 'Background / Criterio' },
-    { value: 'condicion', text: 'Condición' },
-    { value: 'causa', text: 'Causa Raíz' },
-    { value: 'riesgo', text: 'Riesgo' },
-    { value: 'recomendacion', text: 'Recomendación' }
+    { value: '', text: '-- Select component --' },
+    { value: 'titulo', text: 'Title' },
+    { value: 'background', text: 'Background / Criterion' },
+    { value: 'condicion', text: 'Condition' },
+    { value: 'causa', text: 'Root Cause' },
+    { value: 'riesgo', text: 'Risk' },
+    { value: 'recomendacion', text: 'Recommendation' }
 ];
 
 const execLabels = [
-    { value: '', text: '-- Selecciona componente --' },
-    { value: 'background_audit', text: 'Background de la Auditoría' },
+    { value: '', text: '-- Select component --' },
+    { value: 'background_audit', text: 'Audit Background' },
     { value: 'why_audit', text: 'Why This Audit' },
-    { value: 'scope', text: 'Scope / Alcance' },
-    { value: 'opinion_negocio', text: 'Opinión sobre Objetivos del Negocio' },
-    { value: 'opinion_auditoria', text: 'Opinión sobre Objetivos de la Auditoría' },
-    { value: 'observaciones_resumen', text: 'Resumen de Observaciones' },
-    { value: 'recomendacion_exec', text: 'Recomendación General' }
+    { value: 'scope', text: 'Scope' },
+    { value: 'opinion_negocio', text: 'Opinion on Business Objectives' },
+    { value: 'opinion_auditoria', text: 'Opinion on Audit Objectives' },
+    { value: 'observaciones_resumen', text: 'Findings Summary' },
+    { value: 'recomendacion_exec', text: 'General Recommendation' }
 ];
 
 // =========================================================
@@ -813,58 +813,58 @@ const execLabels = [
 // =========================================================
 const ratingDimensions = [
     {
-        label: 'Impacto en estados financieros',
-        sublabel: 'Activos, pasivos, ingresos o gastos',
+        label: 'Impact on financial statements',
+        sublabel: 'Assets, liabilities, revenue, or expenses',
         levels: [
-            'Sin impacto financiero medible',
-            'Impacto menor — misstatement menor',
-            'Impacto moderado — misstatement moderado',
-            'Impacto importante en estados financieros',
-            'Impacto significativo — misstatement significativo'
+            'No measurable financial impact',
+            'Minor impact — minor misstatement',
+            'Moderate impact — moderate misstatement',
+            'Important impact on financial statements',
+            'Significant impact — significant misstatement'
         ]
     },
     {
-        label: 'Gravedad de la debilidad del control',
-        sublabel: 'Fundamental, importante o menor al sistema',
+        label: 'Severity of the control weakness',
+        sublabel: 'Fundamental, important, or minor to the system',
         levels: [
-            'Sin debilidad relevante en el control',
-            'Debilidad menor — mejorable, no vital',
-            'Efecto importante en el sistema/control',
-            'Debilidad significativa en el sistema',
-            'Debilidad fundamental y material del sistema'
+            'No relevant control weakness',
+            'Minor weakness — improvable, not vital',
+            'Important effect on the system/control',
+            'Significant weakness in the system',
+            'Fundamental and material weakness in the system'
         ]
     },
     {
-        label: 'Impacto en eficiencia operativa',
-        sublabel: 'Efectividad y eficiencia de operaciones',
+        label: 'Impact on operational efficiency',
+        sublabel: 'Effectiveness and efficiency of operations',
         levels: [
-            'Sin impacto en eficiencia operativa',
-            'Impacto mínimo en eficiencia/efectividad',
-            'Impacto moderado en eficiencia operativa',
-            'Impacto importante en eficiencia/efectividad',
-            'Impacto significativo en eficiencia y/o efectividad'
+            'No impact on operational efficiency',
+            'Minimal impact on efficiency/effectiveness',
+            'Moderate impact on operational efficiency',
+            'Important impact on efficiency/effectiveness',
+            'Significant impact on efficiency and/or effectiveness'
         ]
     },
     {
-        label: 'Cumplimiento del objetivo de control',
-        sublabel: 'El control logra (o no) su propósito',
+        label: 'Achievement of the control objective',
+        sublabel: 'Whether the control achieves (or not) its purpose',
         levels: [
-            'Objetivo de control plenamente cumplido',
-            'Objetivo cumplido con desviaciones mínimas',
-            'Objetivo cumplido parcialmente (controles mitigantes)',
-            'Objetivo difícilmente cumplido',
-            'Control objective no se cumplirá — sin control mitigante'
+            'Control objective fully achieved',
+            'Objective achieved with minimal deviations',
+            'Objective partially achieved (with mitigating controls)',
+            'Objective unlikely to be achieved',
+            'Control objective will not be met — no mitigating control'
         ]
     },
     {
-        label: 'Cumplimiento de políticas del grupo',
-        sublabel: 'Adherencia a normas internas y del grupo',
+        label: 'Compliance with group policies',
+        sublabel: 'Adherence to internal and group standards',
         levels: [
-            'Cumplimiento total de políticas',
-            'Incumplimiento menor con controles mitigantes fuertes',
-            'Incumplimiento con controles mitigantes parciales',
-            'Incumplimiento con controles mitigantes débiles',
-            'Incumplimiento sin controles mitigantes'
+            'Full compliance with policies',
+            'Minor non-compliance with strong mitigating controls',
+            'Non-compliance with partial mitigating controls',
+            'Non-compliance with weak mitigating controls',
+            'Non-compliance without mitigating controls'
         ]
     }
 ];
@@ -893,90 +893,90 @@ function computeGradeFromRatings(obsId) {
 const observations = [
     {
         id: 1,
-        name: "Observación 1",
+        name: "Finding 1",
         correctRating: "high",
-        ratingExplanation: "HIGH: Impacto financiero de $3.08M USD, debilidad fundamental en el control automático de precios del ERP (desactivado sin reactivar). 3 de los 10 principales clientes (35% de ingresos) amenazan con cambiar de proveedor. No existe control mitigante. Cumple criterios 1, 2, 3, 4 y 5 de la definición High.",
+        ratingExplanation: "HIGH: Financial impact of USD $3.08M; fundamental weakness in the ERP's automatic price validation control (disabled without being reactivated). 3 of the 10 key customers (35% of revenue) have threatened to switch suppliers. No mitigating control exists. Meets criteria 1, 2, 3, 4, and 5 of the HIGH definition.",
         components: [
-            { type: "titulo", text: "Discrepancias sistemáticas entre precios cotizados y precios facturados en venta de repuestos", order: 1 },
-            { type: "background", text: "Según la política comercial COM-012 y el procedimiento de facturación FAC-003, los precios facturados deben coincidir exactamente con los precios aprobados en la cotización vigente aceptada por el cliente. El sistema ERP debe validar automáticamente esta consistencia antes de la emisión de la factura.", order: 2 },
-            { type: "condicion", text: "De las 2,118 facturas rechazadas, 805 (38%) presentaron discrepancias de precios respecto a las cotizaciones aceptadas. El monto afectado asciende a USD $3.08 millones. En una muestra de 120 facturas rechazadas por precios, el 73% mostró diferencias superiores al 5% respecto al precio cotizado, y en 28 casos las diferencias superaron el 15%.", order: 3 },
-            { type: "causa", text: "La validación automática de precios en el ERP fue desactivada en marzo 2025 durante una migración de datos, y no fue reactivada. Adicionalmente, las actualizaciones de lista de precios no se sincronizan con las cotizaciones vigentes, y no existe un control de verificación manual previo a la emisión de facturas.", order: 4 },
-            { type: "riesgo", text: "Pérdida financiera directa por subfacturación y deterioro de la relación comercial con clientes estratégicos que han manifestado formalmente su inconformidad. 3 de los 10 principales clientes (que representan el 35% de los ingresos) han amenazado con cambiar de proveedor.", order: 5 },
-            { type: "recomendacion", text: "Reactivar la validación automática de precios en el ERP dentro de los próximos 15 días. Implementar un proceso de conciliación semanal entre lista de precios y cotizaciones vigentes, asignando a un responsable del área comercial. Establecer un control de doble verificación para facturas superiores a USD $10,000 antes del 30 de junio 2026.", order: 6 }
+            { type: "titulo", text: "Systematic discrepancies between quoted prices and invoiced prices in spare parts sales", order: 1 },
+            { type: "background", text: "Per commercial policy COM-012 and billing procedure FAC-003, invoiced prices must exactly match the prices approved in the accepted quotation. The ERP system must automatically validate this consistency before an invoice is issued.", order: 2 },
+            { type: "condicion", text: "Of the 2,118 rejected invoices, 805 (38%) showed price discrepancies against accepted quotations. The affected amount totals USD $3.08 million. In a sample of 120 price-rejected invoices, 73% showed differences exceeding 5% of the quoted price, and in 28 cases the differences exceeded 15%.", order: 3 },
+            { type: "causa", text: "The ERP's automatic price validation was disabled in March 2025 during a data migration and was never reactivated. Additionally, price list updates are not synchronized with active quotations, and no manual verification control exists prior to invoice issuance.", order: 4 },
+            { type: "riesgo", text: "Direct financial loss from under-billing and deterioration of commercial relationships with strategic customers who have formally expressed dissatisfaction. 3 of the top 10 customers (representing 35% of revenue) have threatened to switch suppliers.", order: 5 },
+            { type: "recomendacion", text: "Reactivate the ERP's automatic price validation within the next 15 days. Implement a weekly reconciliation process between the price list and active quotations, assigning a responsible owner in the commercial department. Establish a dual-verification control for invoices exceeding USD $10,000 before June 30, 2026.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Incremento sostenido en la tasa de rechazo de facturas durante 2025 por múltiples causas operativas en el ciclo de ingresos" },
-            { type: "background", text: "El procedimiento de gestión de cambios TI-008 establece que toda modificación a parámetros del ERP debe ser autorizada formalmente por el Comité de Tecnología y documentada en el sistema de control de cambios antes de su implementación en producción." },
-            { type: "condicion", text: "Del total de 2,118 facturas rechazadas, la región norte concentró el 42% de los casos (890 facturas), siendo el segmento minería el más afectado. El tiempo promedio de resolución fue de 45 días, con un costo administrativo estimado de USD $160 por factura reprocesada." },
-            { type: "causa", text: "El personal del área de facturación no fue capacitado en el nuevo módulo de precios implementado durante la migración de datos de marzo 2025, lo que generó errores en la aplicación manual de tarifas al momento de emitir las facturas." },
-            { type: "riesgo", text: "El incremento en el tiempo de procesamiento de facturas genera un impacto negativo en la satisfacción del cliente, según la última encuesta de NPS que registró una caída de 0.8 puntos respecto al año anterior, afectando la renovación de contratos." },
-            { type: "recomendacion", text: "Implementar un programa de capacitación semestral para el 100% del personal de facturación en el uso correcto del módulo de precios del ERP, con evaluación de conocimientos posterior y certificación interna antes del 30 de junio 2026." }
+            { type: "titulo", text: "Sustained increase in the invoice rejection rate during 2025 due to multiple operational causes across the revenue cycle" },
+            { type: "background", text: "Change management procedure TI-008 establishes that any modification to ERP parameters must be formally authorized by the Technology Committee and documented in the change control system before implementation in production." },
+            { type: "condicion", text: "Of the 2,118 rejected invoices in total, the northern region concentrated 42% of cases (890 invoices), with the mining segment being the most affected. The average resolution time was 45 days, with an estimated administrative cost of USD $160 per reprocessed invoice." },
+            { type: "causa", text: "Billing department staff were not trained on the new pricing module implemented during the March 2025 data migration, which led to errors in manual tariff application at the time of invoice issuance." },
+            { type: "riesgo", text: "The increase in invoice processing time has a negative impact on customer satisfaction, as reflected by the latest NPS survey showing a 0.8-point decline from the prior year, affecting contract renewals." },
+            { type: "recomendacion", text: "Implement a semi-annual training program for 100% of billing staff on the correct use of the ERP pricing module, including a post-training knowledge assessment and internal certification before June 30, 2026." }
         ]
     },
     {
         id: 2,
-        name: "Observación 2",
+        name: "Finding 2",
         correctRating: "high",
-        ratingExplanation: "HIGH: 529 facturas con errores en componentes críticos de maquinaria pesada. Un incidente reportado causó daño de USD $85,000 a una excavadora. Potencial riesgo de seguridad para operadores. Debilidad fundamental: catálogo no actualizado post-migración con 1,240 códigos obsoletos activos, sin control mitigante. Cumple criterios 1, 2, 3, 4 y 5.",
+        ratingExplanation: "HIGH: 529 invoices with errors in critical heavy machinery components. One reported incident caused USD $85,000 in damage to an excavator. Potential safety risk to operators. Fundamental weakness: master catalog not updated post-migration, with 1,240 obsolete active codes and no mitigating control. Meets criteria 1, 2, 3, 4, and 5.",
         components: [
-            { type: "titulo", text: "Errores en identificación de números de parte y descripción de componentes en facturas", order: 1 },
-            { type: "background", text: "El procedimiento de gestión de catálogo CAT-007 establece que toda factura debe referenciar el número de parte exacto del fabricante (OEM) y la descripción estandarizada del componente según el catálogo maestro. La Norma ISO 8601 de codificación de partes industriales requiere verificación cruzada entre el pedido, la guía de despacho y la factura.", order: 2 },
-            { type: "condicion", text: "529 facturas (25% de los rechazos) contenían errores en números de parte o descripciones incorrectas. En una muestra de 80 facturas rechazadas: 45 tenían números de parte con dígitos transpuestos, 22 referenciaban números de parte obsoletos del catálogo anterior, y 13 tenían descripciones que no correspondían al componente facturado. El monto afectado totaliza USD $2.03 millones.", order: 3 },
-            { type: "causa", text: "El catálogo maestro de partes no fue actualizado tras la migración al nuevo sistema en febrero 2025, manteniendo 1,240 códigos obsoletos activos. El personal de facturación ingresa manualmente los números de parte sin un mecanismo de autocompletado o validación contra el catálogo, y no existe un proceso de verificación previo al envío de la factura.", order: 4 },
-            { type: "riesgo", text: "Despacho de componentes incorrectos que pueden provocar daño a equipos de maquinaria pesada, paradas operativas no programadas en faenas mineras, y potencial riesgo de seguridad para los operadores. Un cliente reportó que un filtro hidráulico erróneo causó daño al sistema hidráulico de una excavadora, con un costo de reparación de USD $85,000.", order: 5 },
-            { type: "recomendacion", text: "Depurar y actualizar el catálogo maestro de partes eliminando los 1,240 códigos obsoletos antes del 31 de mayo 2026. Implementar validación automática de números de parte con autocompletado en el módulo de facturación del ERP, con fecha límite 30 de julio 2026. Capacitar al 100% del personal de facturación en el nuevo catálogo dentro de los próximos 30 días.", order: 6 }
+            { type: "titulo", text: "Errors in part number identification and component description on invoices", order: 1 },
+            { type: "background", text: "Catalog management procedure CAT-007 establishes that every invoice must reference the exact OEM part number and the standardized component description per the master catalog. ISO 8601 industrial parts coding standards require cross-verification between the purchase order, the shipping document, and the invoice.", order: 2 },
+            { type: "condicion", text: "529 invoices (25% of rejections) contained errors in part numbers or incorrect descriptions. In a sample of 80 rejected invoices: 45 had part numbers with transposed digits, 22 referenced obsolete part numbers from the prior catalog, and 13 had descriptions that did not match the invoiced component. Total affected amount: USD $2.03 million.", order: 3 },
+            { type: "causa", text: "The master parts catalog was not updated after the migration to the new system in February 2025, leaving 1,240 obsolete codes active. Billing staff manually enter part numbers without an autocomplete mechanism or catalog validation, and no pre-submission verification process exists.", order: 4 },
+            { type: "riesgo", text: "Shipment of incorrect components that may cause damage to heavy machinery, unplanned operational downtime at mining sites, and potential safety risks for operators. One customer reported that an incorrect hydraulic filter caused damage to an excavator's hydraulic system, with repair costs of USD $85,000.", order: 5 },
+            { type: "recomendacion", text: "Clean up and update the master parts catalog by removing the 1,240 obsolete codes before May 31, 2026. Implement automatic part number validation with autocomplete in the ERP billing module, with a deadline of July 30, 2026. Train 100% of billing staff on the updated catalog within the next 30 days.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Inconsistencias en el catálogo maestro de partes detectadas tras la migración al nuevo sistema ERP en febrero 2025" },
-            { type: "background", text: "El procedimiento de gestión de proveedores PROV-003 establece que todo componente de maquinaria pesada debe contar con homologación del fabricante OEM y certificado de trazabilidad antes de ser incorporado al catálogo activo, requiriendo validación cruzada semestral con los listados oficiales de cada fabricante." },
-            { type: "condicion", text: "La revisión del catálogo maestro identificó 1,240 códigos obsoletos activos, de los cuales 387 corresponden a proveedores que ya no operan con la compañía y 453 tienen precios desactualizados por más de 12 meses. Estos códigos generaron 312 órdenes de reposición incorrectas durante el período." },
-            { type: "causa", text: "El proveedor principal de maquinaria realizó una actualización masiva de sus números de parte en enero 2025, notificando a la empresa con solo 10 días de anticipación, tiempo insuficiente para actualizar el catálogo maestro antes del inicio del período auditado." },
-            { type: "riesgo", text: "La falta de actualización del catálogo podría comprometer el cumplimiento de los compromisos de garantía con clientes, ya que los certificados de calidad referencian los números OEM correctos y su discrepancia podría invalidar reclamaciones de garantía ante los fabricantes." },
-            { type: "recomendacion", text: "Establecer un proceso de revisión trimestral del catálogo maestro con responsable designado en logística, que valide la vigencia de todos los códigos activos contra los catálogos actualizados de los 5 principales fabricantes, con un plazo inicial de depuración de 60 días." }
+            { type: "titulo", text: "Inconsistencies in the master parts catalog detected after the migration to the new ERP system in February 2025" },
+            { type: "background", text: "Supplier management procedure PROV-003 establishes that every heavy machinery component must have OEM manufacturer approval and a traceability certificate before being added to the active catalog, requiring semi-annual cross-validation against each manufacturer's official listings." },
+            { type: "condicion", text: "The master catalog review identified 1,240 active obsolete codes, of which 387 correspond to suppliers no longer working with the company and 453 have prices that have not been updated in more than 12 months. These codes generated 312 incorrect replenishment orders during the period." },
+            { type: "causa", text: "The main machinery supplier performed a mass update of its part numbers in January 2025, notifying the company with only 10 days' notice — insufficient time to update the master catalog before the start of the audit period." },
+            { type: "riesgo", text: "Failure to update the catalog could jeopardize compliance with customer warranty commitments, since quality certificates reference the correct OEM numbers and any discrepancy could invalidate warranty claims with manufacturers." },
+            { type: "recomendacion", text: "Establish a quarterly master catalog review process with a designated owner in logistics, who validates the status of all active codes against the updated catalogs of the 5 main manufacturers, with an initial cleanup deadline of 60 days." }
         ]
     },
     {
         id: 3,
-        name: "Observación 3",
+        name: "Finding 3",
         correctRating: "medium",
-        ratingExplanation: "MEDIUM: Impacto moderado ($1.78M), misstatement moderado en cuentas por cobrar por demora en cobranza. El control de vigencia de OC no funciona pero el sistema objetivo (cobrar) puede cumplirse parcialmente con gestión manual como control mitigante. Moderately impacts eficiencia operativa. Cumple criterios 1, 2, 3 y 4 de Medium.",
+        ratingExplanation: "MEDIUM: Moderate impact ($1.78M); moderate misstatement in accounts receivable due to collection delays. The PO validity control is not functioning, but the system objective (collecting payment) can still be partially achieved through manual management as a mitigating control. Moderately impacts operational efficiency. Meets criteria 1, 2, 3, and 4 of MEDIUM.",
         components: [
-            { type: "titulo", text: "Facturación contra órdenes de compra vencidas o sin referencia válida", order: 1 },
-            { type: "background", text: "La política de crédito y cobranza CYC-005 exige que toda factura incluya el número de orden de compra (OC) vigente del cliente como requisito para su aceptación y pago. Las condiciones generales de venta establecen que las OC tienen una vigencia máxima de 90 días desde su emisión, tras lo cual requieren renovación formal por parte del cliente.", order: 2 },
-            { type: "condicion", text: "466 facturas (22% de los rechazos) fueron emitidas contra órdenes de compra vencidas o sin referencia. Del análisis: 312 referenciaban OC con más de 90 días de antigüedad, 98 no incluían número de OC alguno, y 56 referenciaban OC completamente consumidas. Monto afectado: USD $1.78 millones, con demora promedio de 62 días en resolución.", order: 3 },
-            { type: "causa", text: "El sistema de facturación no valida la vigencia de las órdenes de compra al momento de emisión. El equipo comercial no mantiene un seguimiento actualizado del estatus de las OC de sus clientes, y no existe una alerta automática cuando una OC se aproxima a su fecha de vencimiento o ha consumido más del 80% de su monto.", order: 4 },
-            { type: "riesgo", text: "Retraso significativo en la cobranza que impacta el flujo de caja operativo. La demora promedio de 62 días en resolución de estos casos incrementa el DSO (Days Sales Outstanding) de la compañía en aproximadamente 8 días, afectando el capital de trabajo disponible.", order: 5 },
-            { type: "recomendacion", text: "Implementar validación automática de vigencia y saldo de OC en el ERP antes del 30 de septiembre 2026. Establecer alertas automáticas al equipo comercial cuando una OC alcance el 80% de consumo o falten 15 días para su vencimiento. Designar un responsable en el área de crédito para la revisión semanal del estado de OC activas.", order: 6 }
+            { type: "titulo", text: "Invoicing against expired or unreferenced purchase orders", order: 1 },
+            { type: "background", text: "Credit and collection policy CYC-005 requires that every invoice include a valid, active customer purchase order (PO) number as a condition for acceptance and payment. The general terms of sale establish that POs have a maximum validity of 90 days from issuance, after which they require formal renewal by the customer.", order: 2 },
+            { type: "condicion", text: "466 invoices (22% of rejections) were issued against expired or unreferenced POs. From the analysis: 312 referenced POs older than 90 days, 98 included no PO number at all, and 56 referenced fully consumed POs. Affected amount: USD $1.78 million, with an average resolution delay of 62 days.", order: 3 },
+            { type: "causa", text: "The billing system does not validate PO validity at the time of issuance. The commercial team does not maintain an up-to-date tracking of their customers' PO status, and no automatic alert exists when a PO is approaching its expiration date or has consumed more than 80% of its value.", order: 4 },
+            { type: "riesgo", text: "Significant delay in collections that impacts operating cash flow. The average resolution delay of 62 days in these cases increases the company's DSO (Days Sales Outstanding) by approximately 8 days, reducing available working capital.", order: 5 },
+            { type: "recomendacion", text: "Implement automatic PO validity and balance validation in the ERP before September 30, 2026. Set up automatic alerts to the commercial team when a PO reaches 80% consumption or is 15 days from expiration. Designate a responsible owner in the credit department for weekly review of active PO status.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Debilidades en el proceso de gestión y seguimiento de órdenes de compra de clientes en el ciclo de facturación" },
-            { type: "background", text: "Las condiciones generales de venta de MaquiParts Industrial S.A. establecen que la empresa es responsable de verificar que los documentos comerciales que respaldan cada transacción se encuentren vigentes antes de proceder con el despacho, siendo este un requisito previo a la emisión de la factura." },
-            { type: "condicion", text: "El análisis del portafolio revela que 47 de los 87 clientes afectados corresponden a empresas mineras con ciclos de compra trimestrales, concentrando sus OC en períodos específicos. El monto promedio de las facturas rechazadas por OC vencidas ascendió a USD $3,820, con una resolución promedio de 62 días." },
-            { type: "causa", text: "Los clientes no notifican oportunamente la renovación de sus órdenes de compra, y el proceso de seguimiento depende de gestión informal por parte de cada ejecutivo comercial sin un mecanismo centralizado de control de vigencias ni alertas automáticas." },
-            { type: "riesgo", text: "La demora en la cobranza podría generar provisiones contables adicionales al cierre del ejercicio si los montos pendientes no son recuperados en el plazo de 90 días establecido en la política de crédito CYC-005, afectando el resultado del período y los índices de liquidez." },
-            { type: "recomendacion", text: "Implementar reuniones mensuales de seguimiento entre el área comercial y cobranzas para revisar el estado de las OC activas de los 20 principales clientes, anticipando vencimientos con al menos 30 días de antelación, con responsable designado y reporte a la gerencia comercial." }
+            { type: "titulo", text: "Weaknesses in the management and tracking process for customer purchase orders in the billing cycle" },
+            { type: "background", text: "MaquiParts Industrial S.A.'s general terms of sale establish that the company is responsible for verifying that the commercial documents supporting each transaction are valid before proceeding with shipment, as a prerequisite to invoice issuance." },
+            { type: "condicion", text: "Portfolio analysis reveals that 47 of the 87 affected customers are mining companies with quarterly purchasing cycles, concentrating their POs in specific periods. The average amount of invoices rejected for expired POs was USD $3,820, with an average resolution of 62 days." },
+            { type: "causa", text: "Customers do not notify the company in a timely manner of PO renewals, and the follow-up process relies on informal management by individual account executives without a centralized validity tracking mechanism or automated alerts." },
+            { type: "riesgo", text: "Collection delays could generate additional accounting provisions at year-end if outstanding amounts are not recovered within the 90-day period established in credit policy CYC-005, affecting the period's results and liquidity ratios." },
+            { type: "recomendacion", text: "Implement monthly follow-up meetings between the commercial and collections teams to review the status of active POs for the top 20 customers, anticipating expirations at least 30 days in advance, with a designated owner and reporting to commercial management." }
         ]
     },
     {
         id: 4,
-        name: "Observación 4",
+        name: "Finding 4",
         correctRating: "low",
-        ratingExplanation: "LOW: Impacto menor — los despachos se realizaron correctamente, solo falta adjuntar documentación. Misstatement menor (retraso administrativo, no pérdida). Resolución promedio de 12 días sin deterioro de relación comercial. Si se corrige, mejoraría el control interno pero no es vital para el sistema general. Minimally impacts eficiencia. Cumple criterios 1, 2 y 3 de Low.",
+        ratingExplanation: "LOW: Minor impact — shipments were performed correctly; only the attached documentation is missing. Minor misstatement (administrative delay, not a loss). Average resolution of 12 days with no deterioration in commercial relationships. If corrected, it would improve internal controls but is not vital to the overall system. Minimally impacts efficiency. Meets criteria 1, 2, and 3 of LOW.",
         components: [
-            { type: "titulo", text: "Documentación de despacho incompleta o no adjunta a la facturación", order: 1 },
-            { type: "background", text: "El procedimiento logístico LOG-009 requiere que toda factura de venta de partes y piezas incluya como anexo la guía de despacho firmada por el cliente, el certificado de calidad del componente (cuando aplique) y el packing list detallado. Estos documentos son requisito del cliente para procesar el pago de la factura.", order: 2 },
-            { type: "condicion", text: "318 facturas (15% de los rechazos) fueron rechazadas por documentación de despacho incompleta. En detalle: 189 facturas no incluían la guía de despacho firmada (aunque el despacho sí fue realizado), 82 carecían del certificado de calidad requerido, y 47 no adjuntaban el packing list. Monto afectado: USD $1.21 millones.", order: 3 },
-            { type: "causa", text: "El proceso de digitalización y adjunto de documentos de despacho es manual. Las guías firmadas permanecen en la bodega de despacho sin ser digitalizadas oportunamente, y no existe un checklist sistematizado que verifique la completitud de la documentación antes de la emisión de la factura.", order: 4 },
-            { type: "riesgo", text: "Retraso menor en el ciclo de cobranza por reproceso administrativo. A diferencia de otros rechazos, estos casos se resuelven en promedio en 12 días una vez que se recopila la documentación, sin generar deterioro en la relación comercial ya que el despacho fue correctamente realizado.", order: 5 },
-            { type: "recomendacion", text: "Incorporar un checklist digital obligatorio en el módulo de facturación que verifique la completitud de los documentos adjuntos antes de permitir la emisión. Evaluar la implementación de digitalización en punto de despacho mediante dispositivos móviles. Plazo sugerido: primer trimestre 2027.", order: 6 }
+            { type: "titulo", text: "Incomplete or missing shipping documentation attached to invoices", order: 1 },
+            { type: "background", text: "Logistics procedure LOG-009 requires that every parts and components sales invoice include as attachments the customer-signed shipping document, the component quality certificate (where applicable), and the detailed packing list. These documents are a customer requirement to process invoice payment.", order: 2 },
+            { type: "condicion", text: "318 invoices (15% of rejections) were rejected due to incomplete shipping documentation. In detail: 189 invoices did not include the signed shipping document (even though the shipment was carried out), 82 lacked the required quality certificate, and 47 did not include the packing list. Affected amount: USD $1.21 million.", order: 3 },
+            { type: "causa", text: "The process of digitizing and attaching shipping documents is manual. Signed shipping documents remain in the dispatch warehouse without being digitized in a timely manner, and no systematic checklist exists to verify documentation completeness before invoice issuance.", order: 4 },
+            { type: "riesgo", text: "Minor delay in the collection cycle due to administrative rework. Unlike other rejection types, these cases are resolved on average within 12 days once documentation is gathered, without causing deterioration in commercial relationships since shipments were correctly performed.", order: 5 },
+            { type: "recomendacion", text: "Add a mandatory digital checklist in the billing module that verifies the completeness of attached documents before allowing invoice issuance. Evaluate implementing point-of-dispatch digitization via mobile devices. Suggested deadline: first quarter 2027.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Incumplimiento del procedimiento logístico LOG-009 en la adjunción de documentos de soporte a las facturas de venta de partes y piezas" },
-            { type: "background", text: "El sistema de gestión documental implementado en 2023 permite el almacenamiento digital de todos los documentos de despacho —guías de remisión, certificados de calidad y packing lists— con trazabilidad completa por número de factura, garantizando la disponibilidad inmediata ante requerimientos del cliente o fiscalizaciones externas." },
-            { type: "condicion", text: "La revisión de expedientes en bodega reveló que el 78% de las guías de despacho están físicamente disponibles pero sin digitalizar, acumulándose en promedio 340 documentos por semana pendientes de carga al sistema. El 65% corresponde al turno de tarde (14:00-18:00 hrs.), período de mayor actividad de despacho." },
-            { type: "causa", text: "El área de bodega opera con dotación reducida durante el peak de despacho (14:00-18:00 hrs.), período en que se concentra el 65% de los despachos diarios, lo que impide que el personal destine tiempo a la digitalización oportuna de los documentos de soporte generados." },
-            { type: "riesgo", text: "La falta de documentación adjunta podría comprometer la posición de la empresa en disputas comerciales y fiscalizaciones del SII, ya que los documentos de respaldo son requeridos para acreditar la efectividad de las ventas declaradas y sustentar el crédito fiscal de los clientes." },
-            { type: "recomendacion", text: "Digitalizar de manera retroactiva los 2,847 documentos de despacho pendientes identificados en la revisión, distribuyendo la carga entre el personal en horarios de menor actividad durante los próximos 60 días, con seguimiento semanal del avance y reporte al jefe de logística." }
+            { type: "titulo", text: "Non-compliance with logistics procedure LOG-009 regarding the attachment of supporting documents to parts and components sales invoices" },
+            { type: "background", text: "The document management system implemented in 2023 enables digital storage of all shipping documents — delivery notes, quality certificates, and packing lists — with full traceability by invoice number, ensuring immediate availability for customer requests or external audits." },
+            { type: "condicion", text: "Warehouse file review revealed that 78% of shipping documents are physically available but not yet digitized, with an average backlog of 340 documents per week pending upload to the system. 65% correspond to the afternoon shift (2:00–6:00 PM), the peak period for dispatch activity." },
+            { type: "causa", text: "The warehouse operates with reduced staffing during the dispatch peak (2:00–6:00 PM), the period that concentrates 65% of daily shipments, which prevents staff from dedicating time to the timely digitization of generated shipping documents." },
+            { type: "riesgo", text: "Missing attached documentation could compromise the company's position in commercial disputes and SII audits, as supporting documents are required to demonstrate the validity of declared sales and support customers' tax credit claims." },
+            { type: "recomendacion", text: "Retroactively digitize the 2,847 pending shipping documents identified in the review, distributing the workload among staff during low-activity hours over the next 60 days, with weekly progress tracking and reporting to the logistics manager." }
         ]
     }
 ];
@@ -985,21 +985,21 @@ const observations = [
 // DATA: Executive Summary Components + Distractors (1 per type)
 // =========================================================
 const execComponents = [
-    { type: "background_audit", label: "Background de la Auditoría", text: "MaquiParts Industrial S.A. es líder regional en distribución de repuestos y componentes para maquinaria pesada en los sectores de minería y construcción. El proceso de facturación de venta de partes y piezas es un proceso core del negocio que sustenta el ciclo de ingresos de la compañía, con un volumen anual de 12,450 facturas por USD $47.8 millones. El objetivo del negocio es mantener una tasa de rechazo inferior al 3% y un DSO no mayor a 45 días para asegurar un flujo de caja saludable.", order: 1, correct: true },
-    { type: "why_audit", label: "Why This Audit", text: "La auditoría fue iniciada en respuesta al incremento sostenido de la tasa de rechazo de facturas, que pasó de 4% en 2024 a 17% en 2025, superando significativamente el umbral de tolerancia del 3%. Adicionalmente, el comité de auditoría identificó este proceso como de alto riesgo en la evaluación anual de riesgos, y se recibieron quejas formales de 3 clientes estratégicos que representan el 35% de los ingresos.", order: 2, correct: true },
-    { type: "scope", label: "Scope", text: "Se revisó el proceso end-to-end de facturación de venta de partes y piezas correspondiente al período enero – diciembre 2025, incluyendo: generación de cotizaciones, validación de precios, referenciación de órdenes de compra, emisión de facturas, documentación de despacho y gestión de rechazos. Se analizaron 2,118 facturas rechazadas y se tomaron muestras representativas por cada causal de rechazo.", order: 3, correct: true },
-    { type: "opinion_negocio", label: "Opinión sobre Objetivos del Negocio", text: "La tasa de rechazo de facturas del 17% supera en más de cinco veces el objetivo del negocio del 3%, comprometiendo directamente la meta de mantener un flujo de caja saludable con un DSO no mayor a 45 días. Las deficiencias en los controles de facturación han generado $8.1M USD en facturación rechazada, deteriorando la relación comercial con clientes estratégicos que representan el 35% de los ingresos y amenazando la posición competitiva de la compañía.", order: 4, correct: true },
-    { type: "opinion_auditoria", label: "Opinión sobre Objetivos de la Auditoría", text: "Los controles internos del proceso de facturación de venta de partes y piezas presentan debilidades significativas en las cuatro áreas evaluadas: validación de precios, gestión de catálogo de partes, control de órdenes de compra y documentación de despacho. Los procesos no operan en conformidad con las políticas internas establecidas, evidenciado por la desactivación no autorizada de controles automáticos del ERP y la falta de actualización del catálogo maestro durante 18 meses. Se identificaron 4 causas raíz principales que requieren atención inmediata, particularmente las 2 observaciones calificadas como alto riesgo.", order: 5, correct: true },
-    { type: "observaciones_resumen", label: "Resumen de Observaciones", text: "Se identificaron 4 observaciones: (1) Discrepancias sistemáticas de precios cotizados vs facturados – Riesgo Alto, con $3.08M afectados y amenaza de pérdida de clientes estratégicos. (2) Errores en números de parte y descripción de componentes – Riesgo Alto, con potencial daño a equipos y riesgo de seguridad. (3) Facturación contra órdenes de compra vencidas – Riesgo Medio, impactando el flujo de caja con $1.78M en demora. (4) Documentación de despacho incompleta – Riesgo Bajo, generando reprocesos administrativos menores.", order: 6, correct: true },
-    { type: "recomendacion_exec", label: "Recomendación General", text: "Se recomienda priorizar la remediación de las observaciones de alto riesgo dentro de los próximos 30 días, enfocándose en la reactivación de controles automáticos del ERP y la actualización del catálogo de partes. Para las observaciones de riesgo medio y bajo, establecer un plan de acción con seguimiento trimestral. Se sugiere una auditoría de seguimiento a los 6 meses para validar la implementación de las recomendaciones.", order: 7, correct: true },
+    { type: "background_audit", label: "Audit Background", text: "MaquiParts Industrial S.A. is a regional leader in the distribution of spare parts and components for heavy machinery in the mining and construction sectors. The parts and components billing process is a core business process that sustains the company's revenue cycle, with an annual volume of 12,450 invoices totaling USD $47.8 million. The business objective is to maintain a rejection rate below 3% and a DSO no greater than 45 days to ensure a healthy cash flow.", order: 1, correct: true },
+    { type: "why_audit", label: "Why This Audit", text: "The audit was initiated in response to a sustained increase in the invoice rejection rate, which rose from 4% in 2024 to 17% in 2025, significantly exceeding the 3% tolerance threshold. Additionally, the audit committee identified this process as high-risk in the annual risk assessment, and formal complaints were received from 3 strategic customers representing 35% of revenue.", order: 2, correct: true },
+    { type: "scope", label: "Scope", text: "The end-to-end parts and components billing process for the period January – December 2025 was reviewed, including: quotation generation, price validation, purchase order referencing, invoice issuance, shipping documentation, and rejection management. The 2,118 rejected invoices were analyzed and representative samples were taken for each rejection category.", order: 3, correct: true },
+    { type: "opinion_negocio", label: "Opinion on Business Objectives", text: "The 17% invoice rejection rate exceeds the business objective of 3% by more than five times, directly undermining the goal of maintaining healthy cash flow with a DSO no greater than 45 days. Deficiencies in billing controls have generated USD $8.1M in rejected invoicing, deteriorating commercial relationships with strategic customers representing 35% of revenue and threatening the company's competitive position.", order: 4, correct: true },
+    { type: "opinion_auditoria", label: "Opinion on Audit Objectives", text: "The internal controls of the parts and components billing process show significant weaknesses in the four areas evaluated: price validation, parts catalog management, purchase order control, and shipping documentation. Processes are not operating in conformity with established internal policies, as evidenced by the unauthorized disabling of ERP automatic controls and the failure to update the master catalog for 18 months. Four main root causes were identified requiring immediate attention, particularly the 2 findings rated as high risk.", order: 5, correct: true },
+    { type: "observaciones_resumen", label: "Findings Summary", text: "4 findings were identified: (1) Systematic discrepancies between quoted and invoiced prices – HIGH Risk, with $3.08M affected and threat of losing strategic customers. (2) Errors in part numbers and component descriptions – HIGH Risk, with potential equipment damage and safety risk. (3) Invoicing against expired purchase orders – MEDIUM Risk, impacting cash flow with $1.78M in delays. (4) Incomplete shipping documentation – LOW Risk, generating minor administrative rework.", order: 6, correct: true },
+    { type: "recomendacion_exec", label: "General Recommendation", text: "It is recommended to prioritize remediation of the high-risk findings within the next 30 days, focusing on reactivating ERP automatic controls and updating the parts catalog. For medium- and low-risk findings, establish an action plan with quarterly follow-up. A follow-up audit is suggested at 6 months to validate implementation of the recommendations.", order: 7, correct: true },
     // Distractors — plausible but not part of a standard IPPF executive summary
-    { type: "distractor", label: "Alcance Excluido y Limitaciones", text: "La presente auditoría no incluyó el proceso de facturación de servicios de mantenimiento y postventa, el cual representa el 23% de los ingresos totales. Asimismo, se excluyeron las transacciones con clientes de exportación, que operan bajo un marco contractual diferente y serán revisadas en una auditoría separada programada para el segundo semestre de 2026.", order: -1, correct: false },
-    { type: "distractor", label: "Respuesta de la Gerencia", text: "La gerencia general reconoce las debilidades identificadas y ha manifestado su compromiso con la implementación de las recomendaciones propuestas. El Gerente de Operaciones ha sido designado responsable ejecutivo del plan de mejora, con reporte mensual al Directorio sobre el avance de las acciones correctivas acordadas.", order: -1, correct: false },
-    { type: "distractor", label: "Opinión sobre Procesos Complementarios", text: "Los controles del proceso de gestión de inventario y almacenamiento de partes y piezas operan de manera adecuada y en conformidad con los procedimientos internos. Las existencias se encuentran correctamente valorizadas y los registros del ERP reflejan fielmente las cantidades físicas verificadas mediante conteo selectivo durante la ejecución del trabajo.", order: -1, correct: false },
-    { type: "distractor", label: "Contexto del Mercado", text: "El sector de distribución de repuestos para maquinaria pesada en Latinoamérica registró un crecimiento del 8.3% en 2025, impulsado por el aumento en la actividad minera. En este contexto, los errores en los procesos de facturación representan un riesgo reputacional relevante en un mercado donde la confiabilidad operativa es un diferenciador competitivo clave.", order: -1, correct: false },
-    { type: "distractor", label: "Marco Regulatorio Aplicable", text: "El proceso de facturación está sujeto a la normativa tributaria chilena (Ley 19.983 y Circular SII N°1/2003 sobre factura electrónica), los estándares de codificación de partes industriales de la norma ISO 8601, y los requerimientos de la norma ISO 9001:2015 en materia de control de documentos y trazabilidad de registros.", order: -1, correct: false },
-    { type: "distractor", label: "Hallazgos de Auditorías Anteriores", text: "La auditoría de facturación realizada en 2022 identificó 2 observaciones de riesgo medio sobre conciliación de cuentas por cobrar, cerradas satisfactoriamente en 2023. No obstante, el deterioro observado en 2025 indica que las mejoras implementadas no se sostuvieron en el tiempo, evidenciando la ausencia de un mecanismo de monitoreo continuo.", order: -1, correct: false },
-    { type: "distractor", label: "Composición y Recursos del Equipo", text: "La auditoría fue ejecutada por 3 auditores internos con certificación CIA y experiencia promedio de 8 años en procesos financieros y operativos. El trabajo de campo se realizó durante 6 semanas entre enero y febrero 2026, utilizando 238 de las 240 horas presupuestadas y herramientas de análisis de datos como ACL Analytics y Power BI.", order: -1, correct: false }
+    { type: "distractor", label: "Excluded Scope and Limitations", text: "This audit did not include the billing process for maintenance and after-sales services, which represents 23% of total revenue. Export customer transactions were also excluded, as they operate under a different contractual framework and will be reviewed in a separate audit scheduled for the second half of 2026.", order: -1, correct: false },
+    { type: "distractor", label: "Management Response", text: "Senior management acknowledges the identified weaknesses and has expressed its commitment to implementing the proposed recommendations. The Operations Manager has been designated as the executive owner of the improvement plan, with monthly reporting to the Board of Directors on the progress of agreed corrective actions.", order: -1, correct: false },
+    { type: "distractor", label: "Opinion on Complementary Processes", text: "The controls over the inventory management and storage process for parts and components operate adequately and in conformity with internal procedures. Inventory is correctly valued and ERP records faithfully reflect the physical quantities verified through selective counts during the engagement.", order: -1, correct: false },
+    { type: "distractor", label: "Market Context", text: "The heavy machinery spare parts distribution sector in Latin America recorded 8.3% growth in 2025, driven by increased mining activity. In this context, errors in billing processes represent a significant reputational risk in a market where operational reliability is a key competitive differentiator.", order: -1, correct: false },
+    { type: "distractor", label: "Applicable Regulatory Framework", text: "The billing process is subject to Chilean tax regulations (Law 19,983 and SII Circular No. 1/2003 on electronic invoicing), ISO 8601 industrial parts coding standards, and ISO 9001:2015 requirements regarding document control and record traceability.", order: -1, correct: false },
+    { type: "distractor", label: "Prior Audit Findings", text: "The 2022 billing audit identified 2 medium-risk findings on accounts receivable reconciliation, satisfactorily closed in 2023. However, the deterioration observed in 2025 indicates that the improvements implemented were not sustained over time, evidencing the absence of a continuous monitoring mechanism.", order: -1, correct: false },
+    { type: "distractor", label: "Team Composition and Resources", text: "The audit was performed by 3 internal auditors with CIA certification and an average of 8 years of experience in financial and operational processes. Fieldwork was conducted over 6 weeks between January and February 2026, using 238 of the 240 budgeted hours and data analytics tools including ACL Analytics and Power BI.", order: -1, correct: false }
 ];
 
 // =========================================================
@@ -1007,30 +1007,30 @@ const execComponents = [
 // =========================================================
 const numericData = [
     // Correct data
-    { label: "Facturas emitidas", value: "12,450", correct: true },
-    { label: "Facturas rechazadas", value: "2,118", correct: true },
-    { label: "Tasa de rechazo", value: "17%", correct: true },
-    { label: "Monto rechazado", value: "$8.1M USD", correct: true },
-    { label: "Clientes afectados", value: "87 de 142", correct: true },
-    { label: "Demora promedio reproceso", value: "45 días", correct: true },
-    { label: "Costo de reproceso estimado", value: "$340K USD", correct: true },
-    { label: "Observaciones emitidas", value: "4", correct: true },
-    { label: "Rating Alto", value: "2 observaciones", correct: true },
-    { label: "Rating Medio", value: "1 observación", correct: true },
-    { label: "Rating Bajo", value: "1 observación", correct: true },
-    { label: "Período auditado", value: "Ene - Dic 2025", correct: true },
+    { label: "Invoices issued", value: "12,450", correct: true },
+    { label: "Invoices rejected", value: "2,118", correct: true },
+    { label: "Rejection rate", value: "17%", correct: true },
+    { label: "Amount rejected", value: "$8.1M USD", correct: true },
+    { label: "Affected customers", value: "87 of 142", correct: true },
+    { label: "Avg. rework delay", value: "45 days", correct: true },
+    { label: "Estimated rework cost", value: "$340K USD", correct: true },
+    { label: "Findings issued", value: "4", correct: true },
+    { label: "HIGH Rating", value: "2 findings", correct: true },
+    { label: "MEDIUM Rating", value: "1 finding", correct: true },
+    { label: "LOW Rating", value: "1 finding", correct: true },
+    { label: "Audit Period", value: "Jan - Dec 2025", correct: true },
     // Distractors
-    { label: "Empleados de la compañía", value: "523", correct: false },
-    { label: "Antigüedad promedio empleados", value: "6.3 años", correct: false },
-    { label: "Satisfacción del cliente", value: "7.2 / 10", correct: false },
-    { label: "Cuota de mercado", value: "18.5%", correct: false },
-    { label: "Rotación de personal", value: "12% anual", correct: false },
-    { label: "Presupuesto de TI", value: "$2.1M USD", correct: false },
-    { label: "Número de bodegas", value: "8 ubicaciones", correct: false },
-    { label: "Proyección ingresos 2026", value: "+12%", correct: false },
-    { label: "Proveedores activos", value: "234", correct: false },
-    { label: "Capacitaciones realizadas", value: "47 sesiones", correct: false },
-    { label: "Auditorías previas", value: "3 en últimos 5 años", correct: false },
+    { label: "Company employees", value: "523", correct: false },
+    { label: "Avg. employee tenure", value: "6.3 years", correct: false },
+    { label: "Customer satisfaction", value: "7.2 / 10", correct: false },
+    { label: "Market share", value: "18.5%", correct: false },
+    { label: "Staff turnover", value: "12% annual", correct: false },
+    { label: "IT budget", value: "$2.1M USD", correct: false },
+    { label: "Number of warehouses", value: "8 locations", correct: false },
+    { label: "Revenue projection 2026", value: "+12%", correct: false },
+    { label: "Active suppliers", value: "234", correct: false },
+    { label: "Training sessions conducted", value: "47 sessions", correct: false },
+    { label: "Prior audits", value: "3 in last 5 years", correct: false },
     { label: "NPS Score", value: "42", correct: false }
 ];
 
@@ -1134,13 +1134,13 @@ function createDragCard(card, id, mode) {
 
 function getTypeLabel(type) {
     const labels = {
-        'titulo': 'Título', 'background': 'Background / Criterio',
-        'condicion': 'Condición', 'causa': 'Causa Raíz',
-        'riesgo': 'Riesgo', 'recomendacion': 'Recomendación',
-        'background_audit': 'Background Auditoría', 'why_audit': 'Why This Audit',
-        'scope': 'Scope / Alcance',
-        'opinion_negocio': 'Opinión Obj. Negocio', 'opinion_auditoria': 'Opinión Obj. Auditoría', 'observaciones_resumen': 'Observaciones',
-        'recomendacion_exec': 'Recomendación General', 'distractor': 'DISTRACTOR'
+        'titulo': 'Title', 'background': 'Background / Criterion',
+        'condicion': 'Condition', 'causa': 'Root Cause',
+        'riesgo': 'Risk', 'recomendacion': 'Recommendation',
+        'background_audit': 'Audit Background', 'why_audit': 'Why This Audit',
+        'scope': 'Scope',
+        'opinion_negocio': 'Opinion on Business Objectives', 'opinion_auditoria': 'Opinion on Audit Objectives', 'observaciones_resumen': 'Findings Summary',
+        'recomendacion_exec': 'General Recommendation', 'distractor': 'DISTRACTOR'
     };
     return labels[type] || type;
 }
@@ -1229,7 +1229,7 @@ function validateObservation() {
     const obs = observations[currentObs];
 
     if (cards.length === 0) {
-        alert('Debes arrastrar al menos los componentes correctos al panel de la observación.');
+        alert('You must drag at least the correct components to the finding panel.');
         return;
     }
 
@@ -1240,7 +1240,7 @@ function validateObservation() {
     if (distractorsIncluded.length > 0) {
         errors.push({
             type: 'distractor',
-            message: `Incluiste ${distractorsIncluded.length} componente(s) distractor(es). Los distractores típicamente son vagos, sin datos específicos, usan "falta de" en el título, o proponen soluciones genéricas no SMART.`
+            message: `You included ${distractorsIncluded.length} distractor component(s). Distractors are typically vague, lack specific data, use "lack of" in the title, or propose generic non-SMART solutions.`
         });
     }
 
@@ -1252,7 +1252,7 @@ function validateObservation() {
     if (missingTypes.length > 0) {
         errors.push({
             type: 'missing',
-            message: `Faltan componentes: ${missingTypes.map(t => getTypeLabel(t)).join(', ')}. Una observación IPPF requiere los 6 componentes.`
+            message: `Missing components: ${missingTypes.map(t => getTypeLabel(t)).join(', ')}. An IPPF finding requires all 6 components.`
         });
     }
 
@@ -1265,7 +1265,7 @@ function validateObservation() {
     if (orderErrors.length > 0) {
         errors.push({
             type: 'order',
-            message: `El orden no es correcto. Orden IPPF: Título → Background → Condición → Causa Raíz → Riesgo → Recomendación. Cada componente fluye lógicamente al siguiente.`
+            message: `The order is incorrect. IPPF order: Title → Background / Criterion → Condition → Root Cause → Risk → Recommendation. Each component flows logically into the next.`
         });
     }
 
@@ -1277,19 +1277,19 @@ function validateObservation() {
         const isCorrectCard = card.dataset.correct === 'true';
 
         if (!userLabel) {
-            labelErrors.push({ card, realType, userLabel: '(sin asignar)', isCorrectCard });
+            labelErrors.push({ card, realType, userLabel: '(unassigned)', isCorrectCard });
         } else if (isCorrectCard && userLabel !== realType) {
             labelErrors.push({ card, realType, userLabel, isCorrectCard });
         }
     });
 
     if (labelErrors.length > 0) {
-        const unassigned = labelErrors.filter(e => e.userLabel === '(sin asignar)');
-        const wrong = labelErrors.filter(e => e.userLabel !== '(sin asignar)');
+        const unassigned = labelErrors.filter(e => e.userLabel === '(unassigned)');
+        const wrong = labelErrors.filter(e => e.userLabel !== '(unassigned)');
         let msg = '';
-        if (unassigned.length > 0) msg += `${unassigned.length} componente(s) sin etiqueta asignada. `;
-        if (wrong.length > 0) msg += `${wrong.length} componente(s) con etiqueta incorrecta. `;
-        msg += 'Debes identificar correctamente cada componente.';
+        if (unassigned.length > 0) msg += `${unassigned.length} component(s) with no label assigned. `;
+        if (wrong.length > 0) msg += `${wrong.length} component(s) with an incorrect label. `;
+        msg += 'You must correctly identify each component.';
         errors.push({ type: 'labels', message: msg });
     }
 
@@ -1309,12 +1309,12 @@ function validateObservation() {
                 card.classList.add('correct');
             } else {
                 typeSpan.className = 'card-type revealed-incorrect';
-                typeSpan.textContent = `✗ ${userLabel ? getTypeLabel(userLabel) : '???'} → Correcto: ${getTypeLabel(realType)}`;
+                typeSpan.textContent = `✗ ${userLabel ? getTypeLabel(userLabel) : '???'} → Correct: ${getTypeLabel(realType)}`;
                 card.classList.add('incorrect');
             }
         } else {
             typeSpan.className = 'card-type revealed-distractor';
-            typeSpan.textContent = `✗ DISTRACTOR — No pertenece a la observación`;
+            typeSpan.textContent = `✗ DISTRACTOR — Does not belong to this finding`;
             card.classList.add('incorrect');
         }
 
@@ -1332,10 +1332,10 @@ function validateObservation() {
         typeSpan.classList.remove('hidden-label');
         if (isCorrectCard) {
             typeSpan.className = 'card-type revealed-incorrect';
-            typeSpan.textContent = `⚠ ${getTypeLabel(realType)} — Debió incluirse`;
+            typeSpan.textContent = `⚠ ${getTypeLabel(realType)} — Should have been included`;
         } else {
             typeSpan.className = 'card-type revealed-correct';
-            typeSpan.textContent = `✓ Correcto descartarlo (distractor)`;
+            typeSpan.textContent = `✓ Correctly discarded (distractor)`;
         }
         if (select) select.disabled = true;
     });
@@ -1389,30 +1389,30 @@ function validateObservation() {
 function showObsFeedback(obs, errors, attemptNum) {
     const fb = document.getElementById('level1Feedback');
     fb.classList.remove('hidden');
-    const attemptLabel = attemptNum > 1 ? ` (Intento ${attemptNum})` : '';
+    const attemptLabel = attemptNum > 1 ? ` (Attempt ${attemptNum})` : '';
 
     if (errors.length === 0) {
         fb.innerHTML = `
             <div class="feedback-panel success fade-in">
-                <h3>✅ ¡Observación ${obs.id} correcta!${attemptLabel}</h3>
-                <div class="feedback-item fb-success">Excelente. Componentes completos, bien clasificados, en orden correcto y sin distractores.${attemptNum > 1 ? ' Corregiste exitosamente los errores del intento anterior.' : ''}</div>
-                <div class="ippf-ref">Cumple con Norma IPPF 2410.A1 — Comunicación de resultados del trabajo</div>
+                <h3>✅ Finding ${obs.id} correct!${attemptLabel}</h3>
+                <div class="feedback-item fb-success">Excellent. All components present, correctly classified, in the right order, and no distractors.${attemptNum > 1 ? ' You successfully corrected the errors from the previous attempt.' : ''}</div>
+                <div class="ippf-ref">Complies with IPPF Standard 2410.A1 — Communicating engagement results</div>
             </div>`;
     } else {
-        const iconMap = { distractor: '🚫 Distractor incluido', missing: '📋 Componentes faltantes', order: '🔄 Orden incorrecto', labels: '🏷️ Clasificación incorrecta' };
+        const iconMap = { distractor: '🚫 Distractor included', missing: '📋 Missing components', order: '🔄 Incorrect order', labels: '🏷️ Incorrect classification' };
         fb.innerHTML = `
             <div class="feedback-panel error fade-in">
-                <h3>⚠️ Observación ${obs.id} — Errores detectados${attemptLabel}</h3>
+                <h3>⚠️ Finding ${obs.id} — Errors detected${attemptLabel}</h3>
                 ${errors.map(e => `<div class="feedback-item fb-error"><strong>${iconMap[e.type] || e.type}:</strong> ${e.message}</div>`).join('')}
                 <div class="correct-order-display">
-                    <strong>Orden y clasificación correcta:</strong>
+                    <strong>Correct order and classification:</strong>
                     ${obs.components.map((c, i) => `
                         <div class="order-item">
                             <div class="order-num-sm">${i + 1}</div>
                             <div><strong>${getTypeLabel(c.type)}:</strong> ${c.text.substring(0, 100)}...</div>
                         </div>`).join('')}
                 </div>
-                <p style="margin-top:10px;color:var(--info);font-weight:600;">Corrige el orden y vuelve a validar.</p>
+                <p style="margin-top:10px;color:var(--info);font-weight:600;">Correct the order and validate again.</p>
             </div>`;
     }
 }
@@ -1438,10 +1438,10 @@ function checkLevel1Progress() {
         const errorObs = Object.entries(obsResults).filter(([,r]) => !r.correct);
         fb.innerHTML += `
             <div class="feedback-panel fade-in" style="border-left-color: var(--warning); margin-top: 15px;">
-                <h3>🔄 Modo Corrección Activado</h3>
-                <p>Revisa el feedback, haz clic en "Reiniciar" en cada observación con errores, y vuelve a validar.</p>
+                <h3>🔄 Correction Mode Activated</h3>
+                <p>Review the feedback, click "Reset" on each finding with errors, and validate again.</p>
                 <ul style="margin-left:20px; margin-top:5px;">
-                    ${errorObs.map(([id,]) => `<li>Observación ${id}</li>`).join('')}
+                    ${errorObs.map(([id,]) => `<li>Finding ${id}</li>`).join('')}
                 </ul>
             </div>`;
         completedObs = new Set([0, 1, 2, 3]);
@@ -1457,8 +1457,8 @@ function checkLevel1Progress() {
             if (existing) existing.remove();
             fb.innerHTML += `
                 <div class="feedback-panel fade-in correction-status" style="border-left-color: var(--warning); margin-top: 15px;">
-                    <h3>🔄 Pendientes de corrección:</h3>
-                    <ul style="margin-left:20px;">${remaining.map(([id,]) => `<li>Observación ${id}</li>`).join('')}</ul>
+                    <h3>🔄 Pending corrections:</h3>
+                    <ul style="margin-left:20px;">${remaining.map(([id,]) => `<li>Finding ${id}</li>`).join('')}</ul>
                 </div>`;
         }
         return;
@@ -1493,7 +1493,7 @@ function goToLevel2() {
     document.getElementById('step1').classList.remove('active');
     document.getElementById('step1').classList.add('completed');
     document.getElementById('step2').classList.add('active');
-    document.getElementById('levelBadge').textContent = 'Nivel 2 — Rating de Riesgo';
+    document.getElementById('levelBadge').textContent = 'Level 2 — Risk Rating';
     window.scrollTo(0, 0);
     renderRatingCards();
 }
@@ -1516,8 +1516,8 @@ function renderRatingCards() {
                             `<button class="scale-btn" id="sb${obs.id}_${di}_${v}" onclick="setDimRating(${obs.id},${di},${v})">${v}</button>`
                         ).join('')}
                     </div>
-                    <div class="scale-end-labels"><span>Sin impacto</span><span>Crítico / Significativo</span></div>
-                    <div class="scale-desc" id="sd${obs.id}_${di}">Selecciona un valor del 1 al 5</div>
+                    <div class="scale-end-labels"><span>No impact</span><span>Critical / Significant</span></div>
+                    <div class="scale-desc" id="sd${obs.id}_${di}">Select a value from 1 to 5</div>
                 </div>
             </div>`).join('');
 
@@ -1525,21 +1525,21 @@ function renderRatingCards() {
         <div class="rating-card" id="ratingCard${obs.id}">
             <div class="obs-title">${obs.name}</div>
             <div class="obs-summary">
-                <strong>Condición:</strong> ${cond}<br><br>
-                <strong>Riesgo identificado:</strong> ${riesgo}
+                <strong>Condition:</strong> ${cond}<br><br>
+                <strong>Identified Risk:</strong> ${riesgo}
             </div>
             <div class="dim-rating-section">${dimsHtml}</div>
             <div class="grade-result-bar">
                 <div>
-                    <div class="grade-score-label">Puntuación acumulada</div>
+                    <div class="grade-score-label">Cumulative score</div>
                     <div class="grade-score-num"><span id="gs${obs.id}">0</span><span style="font-size:0.85rem;color:var(--text-light);font-weight:400;">/25</span></div>
                     <div class="grade-score-track">
                         <div class="grade-score-fill" id="gsf${obs.id}" style="width:0%;background:#e2e8f0;"></div>
                     </div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-size:0.71rem;color:var(--text-light);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;">Grade calculado</div>
-                    <div class="grade-badge-live grade-live-none" id="gb${obs.id}">— Sin calificar —</div>
+                    <div style="font-size:0.71rem;color:var(--text-light);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;">Calculated grade</div>
+                    <div class="grade-badge-live grade-live-none" id="gb${obs.id}">— Not rated —</div>
                 </div>
             </div>
         </div>`;
@@ -1579,12 +1579,12 @@ function updateGradeDisplay(obsId) {
 
     const badge = document.getElementById(`gb${obsId}`);
     const gradeLabels = {
-        high: '🔴 HIGH — Urgente',
-        medium: '🟡 MEDIUM — Próximo plazo',
-        low: '🟢 LOW — Mejora'
+        high: '🔴 HIGH — Urgent',
+        medium: '🟡 MEDIUM — Near-term',
+        low: '🟢 LOW — Improvement'
     };
     badge.className = `grade-badge-live grade-live-${grade || 'none'}`;
-    badge.textContent = grade ? gradeLabels[grade] : `${rated}/5 criterios calificados`;
+    badge.textContent = grade ? gradeLabels[grade] : `${rated}/5 criteria rated`;
 }
 
 function validateRatings() {
@@ -1594,7 +1594,7 @@ function validateRatings() {
         return [0,1,2,3,4].some(i => !dims[i]);
     });
     if (incomplete.length > 0) {
-        alert('Debes calificar los 5 criterios en todas las observaciones.\nFaltan: ' + incomplete.map(o => o.name).join(', '));
+        alert('You must rate all 5 criteria for every finding.\nMissing: ' + incomplete.map(o => o.name).join(', '));
         return;
     }
 
@@ -1631,15 +1631,15 @@ function validateRatings() {
         ratings: JSON.parse(JSON.stringify(userRatings))
     });
 
-    const attemptLabel = attemptNum > 1 ? ` (Intento ${attemptNum})` : '';
+    const attemptLabel = attemptNum > 1 ? ` (Attempt ${attemptNum})` : '';
     const fb = document.getElementById('level2Feedback');
     fb.classList.remove('hidden');
 
     if (errors.length === 0) {
         fb.innerHTML = `
             <div class="feedback-panel success fade-in">
-                <h3>✅ ¡Todos los grades son correctos!${attemptLabel}</h3>
-                <div class="feedback-item fb-success">Excelente. Tu puntuación por criterios refleja correctamente las Grade Definitions del Appendix A.${attemptNum > 1 ? ' Corregiste exitosamente los ratings.' : ''}</div>
+                <h3>✅ All grades are correct!${attemptLabel}</h3>
+                <div class="feedback-item fb-success">Excellent. Your criterion scores correctly reflect the Grade Definitions in Appendix A.${attemptNum > 1 ? ' You successfully corrected the ratings.' : ''}</div>
                 ${observations.map(obs => {
                     const dims = userRatings[obs.id];
                     const sum = [0,1,2,3,4].map(i => dims[i]).reduce((a,b) => a+b, 0);
@@ -1650,13 +1650,13 @@ function validateRatings() {
     } else {
         fb.innerHTML = `
             <div class="feedback-panel error fade-in">
-                <h3>⚠️ Algunos grades no son correctos${attemptLabel}</h3>
+                <h3>⚠️ Some grades are incorrect${attemptLabel}</h3>
                 ${errors.map(e => `
                     <div class="feedback-item fb-error">
-                        <strong>${e.name}:</strong> Puntuación <strong>${e.sum}/25</strong> → grade calculado <strong>${gradeLabels[e.computed]}</strong>, correcto es <strong>${gradeLabels[e.correct]}</strong>.
+                        <strong>${e.name}:</strong> Score <strong>${e.sum}/25</strong> → calculated grade <strong>${gradeLabels[e.computed]}</strong>, correct grade is <strong>${gradeLabels[e.correct]}</strong>.
                         <br><em>${e.explanation}</em>
                     </div>`).join('')}
-                <p style="margin-top:12px; color:var(--info); font-weight:600;">Ajusta las puntuaciones por criterio y vuelve a validar.</p>
+                <p style="margin-top:12px; color:var(--info); font-weight:600;">Adjust the criterion scores and validate again.</p>
             </div>`;
     }
     saveCurrentProgress();
@@ -1671,7 +1671,7 @@ function goToLevel3() {
     document.getElementById('step2').classList.remove('active');
     document.getElementById('step2').classList.add('completed');
     document.getElementById('step3').classList.add('active');
-    document.getElementById('levelBadge').textContent = 'Nivel 3 — Resumen Ejecutivo';
+    document.getElementById('levelBadge').textContent = 'Level 3 — Executive Summary';
     window.scrollTo(0, 0);
     loadExecSummary();
 }
@@ -1729,7 +1729,7 @@ function validateExecSummary() {
     const dataCards = [...dataTarget.querySelectorAll('.data-card')];
 
     if (cards.length === 0) {
-        alert('Debes arrastrar los componentes al panel del resumen ejecutivo.');
+        alert('You must drag the components to the executive summary panel.');
         return;
     }
 
@@ -1738,7 +1738,7 @@ function validateExecSummary() {
     // 1. Check text component distractors
     const textDistractors = cards.filter(c => c.dataset.correct === 'false');
     if (textDistractors.length > 0) {
-        errors.push({ type: 'distractor', message: `Incluiste ${textDistractors.length} componente(s) de texto distractor(es). Un resumen ejecutivo IPPF no incluye: historia corporativa, análisis de competencia, metodología detallada, agradecimientos ni proyecciones financieras.` });
+        errors.push({ type: 'distractor', message: `You included ${textDistractors.length} text distractor component(s). An IPPF executive summary does not include: corporate history, competitive analysis, detailed methodology, acknowledgments, or financial projections.` });
     }
 
     // 2. Check missing text components
@@ -1746,7 +1746,7 @@ function validateExecSummary() {
     const expectedExec = ['background_audit', 'why_audit', 'scope', 'opinion_negocio', 'opinion_auditoria', 'observaciones_resumen', 'recomendacion_exec'];
     const missing = expectedExec.filter(type => !correctCards.find(c => c.dataset.type === type));
     if (missing.length > 0) {
-        errors.push({ type: 'missing', message: `Faltan: ${missing.map(t => getTypeLabel(t)).join(', ')}.` });
+        errors.push({ type: 'missing', message: `Missing: ${missing.map(t => getTypeLabel(t)).join(', ')}.` });
     }
 
     // 3. Check order
@@ -1756,7 +1756,7 @@ function validateExecSummary() {
         if (correctOrder[i] < correctOrder[i - 1]) orderErrors.push(i);
     }
     if (orderErrors.length > 0) {
-        errors.push({ type: 'order', message: `Orden incorrecto. Debe ser: Background → Why This Audit → Scope → Opinión Obj. Negocio → Opinión Obj. Auditoría → Observaciones → Recomendación.` });
+        errors.push({ type: 'order', message: `Incorrect order. Must be: Background → Why This Audit → Scope → Opinion on Business Objectives → Opinion on Audit Objectives → Findings Summary → General Recommendation.` });
     }
 
     // 4. Check label assignments
@@ -1766,17 +1766,17 @@ function validateExecSummary() {
         const realType = card.dataset.type;
         const isCorrect = card.dataset.correct === 'true';
         if (!userLabel) {
-            labelErrors.push({ card, realType, userLabel: '(sin asignar)', isCorrect });
+            labelErrors.push({ card, realType, userLabel: '(unassigned)', isCorrect });
         } else if (isCorrect && userLabel !== realType) {
             labelErrors.push({ card, realType, userLabel, isCorrect });
         }
     });
     if (labelErrors.length > 0) {
-        const unassigned = labelErrors.filter(e => e.userLabel === '(sin asignar)').length;
-        const wrong = labelErrors.filter(e => e.userLabel !== '(sin asignar)').length;
+        const unassigned = labelErrors.filter(e => e.userLabel === '(unassigned)').length;
+        const wrong = labelErrors.filter(e => e.userLabel !== '(unassigned)').length;
         let msg = '';
-        if (unassigned > 0) msg += `${unassigned} sin etiqueta. `;
-        if (wrong > 0) msg += `${wrong} con etiqueta incorrecta. `;
+        if (unassigned > 0) msg += `${unassigned} without a label. `;
+        if (wrong > 0) msg += `${wrong} with an incorrect label. `;
         errors.push({ type: 'labels', message: msg });
     }
 
@@ -1787,10 +1787,10 @@ function validateExecSummary() {
     const missingData = totalCorrectData - correctData.length;
 
     if (dataDistractors.length > 0) {
-        errors.push({ type: 'data_distractor', message: `Incluiste ${dataDistractors.length} dato(s) numérico(s) no relevantes para el informe: ${dataDistractors.map(d => d.dataset.label).join(', ')}.` });
+        errors.push({ type: 'data_distractor', message: `You included ${dataDistractors.length} numeric data point(s) not relevant to the report: ${dataDistractors.map(d => d.dataset.label).join(', ')}.` });
     }
     if (missingData > 0) {
-        errors.push({ type: 'data_missing', message: `Faltan ${missingData} dato(s) numérico(s) relevantes para el panel del informe.` });
+        errors.push({ type: 'data_missing', message: `${missingData} relevant numeric data point(s) are missing from the report panel.` });
     }
 
     // Reveal labels on target cards
@@ -1808,12 +1808,12 @@ function validateExecSummary() {
                 card.classList.add('correct');
             } else {
                 typeSpan.className = 'card-type revealed-incorrect';
-                typeSpan.textContent = `✗ ${userLabel ? getTypeLabel(userLabel) : '???'} → Correcto: ${getTypeLabel(realType)}`;
+                typeSpan.textContent = `✗ ${userLabel ? getTypeLabel(userLabel) : '???'} → Correct: ${getTypeLabel(realType)}`;
                 card.classList.add('incorrect');
             }
         } else {
             typeSpan.className = 'card-type revealed-distractor';
-            typeSpan.textContent = `✗ DISTRACTOR — No pertenece al resumen ejecutivo`;
+            typeSpan.textContent = `✗ DISTRACTOR — Does not belong in the executive summary`;
             card.classList.add('incorrect');
         }
         if (select) select.disabled = true;
@@ -1829,10 +1829,10 @@ function validateExecSummary() {
         typeSpan.classList.remove('hidden-label');
         if (isCorrect) {
             typeSpan.className = 'card-type revealed-incorrect';
-            typeSpan.textContent = `⚠ ${getTypeLabel(realType)} — Debió incluirse`;
+            typeSpan.textContent = `⚠ ${getTypeLabel(realType)} — Should have been included`;
         } else {
             typeSpan.className = 'card-type revealed-correct';
-            typeSpan.textContent = `✓ Correcto descartarlo`;
+            typeSpan.textContent = `✓ Correctly discarded`;
         }
         if (select) select.disabled = true;
     });
@@ -1875,33 +1875,33 @@ function validateExecSummary() {
     });
     saveCurrentProgress();
 
-    const attemptLabel = attemptNum > 1 ? ` (Intento ${attemptNum})` : '';
+    const attemptLabel = attemptNum > 1 ? ` (Attempt ${attemptNum})` : '';
     const fb = document.getElementById('level3Feedback');
     fb.classList.remove('hidden');
 
     if (errors.length === 0) {
         fb.innerHTML = `
             <div class="feedback-panel success fade-in">
-                <h3>✅ ¡Resumen Ejecutivo correcto!${attemptLabel}</h3>
-                <div class="feedback-item fb-success">Componentes completos, bien clasificados, en orden correcto, datos numéricos correctos y sin distractores. Cumple IPPF 2400, 2410 y 2420.${attemptNum > 1 ? ' Corregiste exitosamente los errores.' : ''}</div>
+                <h3>✅ Executive Summary correct!${attemptLabel}</h3>
+                <div class="feedback-item fb-success">All components present, correctly classified, in the right order, correct numeric data, and no distractors. Complies with IPPF Standards 2400, 2410, and 2420.${attemptNum > 1 ? ' You successfully corrected the errors.' : ''}</div>
             </div>`;
         document.getElementById('level3Complete').classList.remove('hidden');
         document.getElementById('level3Complete').innerHTML = `
             <div class="btn-group" style="justify-content: center; margin-top: 20px;">
-                <button class="btn btn-success" onclick="showFinalScreen()">🏆 Ver Resultados Finales</button>
+                <button class="btn btn-success" onclick="showFinalScreen()">🏆 View Final Results</button>
             </div>`;
     } else {
-        const iconMap = { distractor: '🚫 Distractor de texto', missing: '📋 Componentes faltantes', order: '🔄 Orden incorrecto', labels: '🏷️ Clasificación incorrecta', data_distractor: '🚫 Dato numérico no relevante', data_missing: '📊 Datos numéricos faltantes' };
+        const iconMap = { distractor: '🚫 Text distractor', missing: '📋 Missing components', order: '🔄 Incorrect order', labels: '🏷️ Incorrect classification', data_distractor: '🚫 Irrelevant numeric data', data_missing: '📊 Missing numeric data' };
         fb.innerHTML = `
             <div class="feedback-panel error fade-in">
-                <h3>⚠️ Errores en el Resumen Ejecutivo${attemptLabel}</h3>
+                <h3>⚠️ Errors in the Executive Summary${attemptLabel}</h3>
                 ${errors.map(e => `<div class="feedback-item fb-error"><strong>${iconMap[e.type] || e.type}:</strong> ${e.message}</div>`).join('')}
                 <div class="correct-order-display">
-                    <strong>Orden correcto:</strong>
+                    <strong>Correct order:</strong>
                     ${execComponents.filter(c => c.correct).sort((a,b) => a.order - b.order).map((c, i) => `
                         <div class="order-item"><div class="order-num-sm">${i + 1}</div><div><strong>${c.label}:</strong> ${c.text.substring(0, 80)}...</div></div>`).join('')}
                 </div>
-                <p style="margin-top:10px;color:var(--info);font-weight:600;">Haz clic en "Reiniciar" para corregir. Tu historial se conserva.</p>
+                <p style="margin-top:10px;color:var(--info);font-weight:600;">Click "Reset" to correct. Your history is preserved.</p>
             </div>`;
         correctionModeExec = true;
     }
@@ -1915,7 +1915,7 @@ function showFinalScreen() {
     document.getElementById('finalScreen').classList.add('active');
     document.getElementById('step3').classList.remove('active');
     document.getElementById('step3').classList.add('completed');
-    document.getElementById('levelBadge').textContent = '🏆 Completado';
+    document.getElementById('levelBadge').textContent = '🏆 Completed';
     window.scrollTo(0, 0);
 
     // Calculate first-attempt scores vs final scores
@@ -1951,41 +1951,41 @@ function showFinalScreen() {
     document.getElementById('finalScores').innerHTML = `
         <div class="score-display">
             <div class="score-circle ${scoreClass}">${firstAvg}%</div>
-            <h3>Puntaje Primer Intento</h3>
-            <p style="color:var(--text-light); font-size:0.85rem; margin-top:4px;">Este es tu score real — refleja tu conocimiento antes de ver las correcciones</p>
+            <h3>First-Attempt Score</h3>
+            <p style="color:var(--text-light); font-size:0.85rem; margin-top:4px;">This is your real score — it reflects your knowledge before seeing the corrections</p>
         </div>
         <div class="stats-row">
-            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level1}%</div><div class="stat-label">Nivel 1 (1er intento)</div></div>
-            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level2}%</div><div class="stat-label">Nivel 2 (1er intento)</div></div>
-            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level3}%</div><div class="stat-label">Nivel 3 (1er intento)</div></div>
-            <div class="stat-card"><div class="stat-value">${scores.level1}%</div><div class="stat-label">Nivel 1 (final)</div></div>
-            <div class="stat-card"><div class="stat-value">${scores.level2}%</div><div class="stat-label">Nivel 2 (final)</div></div>
-            <div class="stat-card"><div class="stat-value">${scores.level3}%</div><div class="stat-label">Nivel 3 (final)</div></div>
+            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level1}%</div><div class="stat-label">Level 1 (1st attempt)</div></div>
+            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level2}%</div><div class="stat-label">Level 2 (1st attempt)</div></div>
+            <div class="stat-card"><div class="stat-value">${firstAttemptScores.level3}%</div><div class="stat-label">Level 3 (1st attempt)</div></div>
+            <div class="stat-card"><div class="stat-value">${scores.level1}%</div><div class="stat-label">Level 1 (final)</div></div>
+            <div class="stat-card"><div class="stat-value">${scores.level2}%</div><div class="stat-label">Level 2 (final)</div></div>
+            <div class="stat-card"><div class="stat-value">${scores.level3}%</div><div class="stat-label">Level 3 (final)</div></div>
         </div>
         <div class="stats-row" style="margin-top:5px;">
-            <div class="stat-card"><div class="stat-value">${totalAttempts}</div><div class="stat-label">Total Intentos</div></div>
-            <div class="stat-card"><div class="stat-value">${totalFirstAttemptErrors}</div><div class="stat-label">Secciones con Error Inicial</div></div>
-            <div class="stat-card"><div class="stat-value">${finalAvg}%</div><div class="stat-label">Score Final (post-corrección)</div></div>
+            <div class="stat-card"><div class="stat-value">${totalAttempts}</div><div class="stat-label">Total Attempts</div></div>
+            <div class="stat-card"><div class="stat-value">${totalFirstAttemptErrors}</div><div class="stat-label">Sections with Initial Error</div></div>
+            <div class="stat-card"><div class="stat-value">${finalAvg}%</div><div class="stat-label">Final Score (post-correction)</div></div>
         </div>`;
 
     // Build detailed history
     let historyHTML = '';
 
     // Level 1 history
-    historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">📝 Nivel 1 — Historial de Observaciones</h3>';
+    historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">📝 Level 1 — Findings History</h3>';
     Object.entries(attemptHistory.level1).forEach(([obsId, attempts]) => {
-        const obsName = observations.find(o => o.id == obsId)?.name || `Observación ${obsId}`;
+        const obsName = observations.find(o => o.id == obsId)?.name || `Finding ${obsId}`;
         historyHTML += `<div style="margin-bottom:15px;">`;
-        historyHTML += `<strong>${obsName}</strong> — ${attempts.length} intento(s)<br>`;
+        historyHTML += `<strong>${obsName}</strong> — ${attempts.length} attempt(s)<br>`;
         attempts.forEach(att => {
             if (att.correct) {
-                historyHTML += `<div class="feedback-item fb-success" style="margin:4px 0;">Intento ${att.attempt}: ✅ Correcto (${att.score}%)</div>`;
+                historyHTML += `<div class="feedback-item fb-success" style="margin:4px 0;">Attempt ${att.attempt}: ✅ Correct (${att.score}%)</div>`;
             } else {
                 const errorTypes = att.errors.map(e => {
-                    const icons = { distractor:'🚫 Distractor', missing:'📋 Faltantes', order:'🔄 Orden', labels:'🏷️ Clasificación' };
+                    const icons = { distractor:'🚫 Distractor', missing:'📋 Missing', order:'🔄 Order', labels:'🏷️ Classification' };
                     return icons[e.type] || e.type;
                 }).join(', ');
-                historyHTML += `<div class="feedback-item fb-error" style="margin:4px 0;">Intento ${att.attempt}: ❌ Score ${att.score}% — ${errorTypes}</div>`;
+                historyHTML += `<div class="feedback-item fb-error" style="margin:4px 0;">Attempt ${att.attempt}: ❌ Score ${att.score}% — ${errorTypes}</div>`;
             }
         });
         historyHTML += '</div>';
@@ -1993,29 +1993,29 @@ function showFinalScreen() {
 
     // Level 2 history
     if (attemptHistory.level2.length > 0) {
-        historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">⚖️ Nivel 2 — Historial de Ratings</h3>';
+        historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">⚖️ Level 2 — Ratings History</h3>';
         attemptHistory.level2.forEach(att => {
             if (att.correct) {
-                historyHTML += `<div class="feedback-item fb-success">Intento ${att.attempt}: ✅ Todos los ratings correctos (${att.score}%)</div>`;
+                historyHTML += `<div class="feedback-item fb-success">Attempt ${att.attempt}: ✅ All ratings correct (${att.score}%)</div>`;
             } else {
-                const wrongRatings = att.errors.map(e => `${e.name}: asignó ${e.userRating.toUpperCase()}, correcto ${e.correctRating.toUpperCase()}`).join('; ');
-                historyHTML += `<div class="feedback-item fb-error">Intento ${att.attempt}: ❌ Score ${att.score}% — ${wrongRatings}</div>`;
+                const wrongRatings = att.errors.map(e => `${e.name}: assigned ${e.userRating.toUpperCase()}, correct ${e.correctRating.toUpperCase()}`).join('; ');
+                historyHTML += `<div class="feedback-item fb-error">Attempt ${att.attempt}: ❌ Score ${att.score}% — ${wrongRatings}</div>`;
             }
         });
     }
 
     // Level 3 history
     if (attemptHistory.level3.length > 0) {
-        historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">📊 Nivel 3 — Historial de Resumen Ejecutivo</h3>';
+        historyHTML += '<h3 style="margin:20px 0 10px; color:var(--primary);">📊 Level 3 — Executive Summary History</h3>';
         attemptHistory.level3.forEach(att => {
             if (att.correct) {
-                historyHTML += `<div class="feedback-item fb-success">Intento ${att.attempt}: ✅ Resumen correcto (${att.score}%)</div>`;
+                historyHTML += `<div class="feedback-item fb-success">Attempt ${att.attempt}: ✅ Summary correct (${att.score}%)</div>`;
             } else {
                 const errorTypes = att.errors.map(e => {
-                    const icons = { distractor:'🚫 Distractor texto', missing:'📋 Faltantes', order:'🔄 Orden', labels:'🏷️ Clasificación', data_distractor:'🚫 Dato no relevante', data_missing:'📊 Datos faltantes' };
+                    const icons = { distractor:'🚫 Text distractor', missing:'📋 Missing', order:'🔄 Order', labels:'🏷️ Classification', data_distractor:'🚫 Irrelevant data', data_missing:'📊 Missing data' };
                     return icons[e.type] || e.type;
                 }).join(', ');
-                historyHTML += `<div class="feedback-item fb-error">Intento ${att.attempt}: ❌ Score ${att.score}% — ${errorTypes}</div>`;
+                historyHTML += `<div class="feedback-item fb-error">Attempt ${att.attempt}: ❌ Score ${att.score}% — ${errorTypes}</div>`;
             }
         });
     }
@@ -2024,11 +2024,11 @@ function showFinalScreen() {
 
     // Recommendations
     let recs = [];
-    if (firstAttemptScores.level1 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Nivel 1:</strong> Una observación IPPF requiere 6 componentes conectados lógicamente. El Título debe ser directo (sin "falta de"). El Background establece el criterio. La Condición presenta datos cuantitativos. La Causa Raíz explica el por qué. El Riesgo describe impacto concreto. La Recomendación debe ser SMART. Los distractores típicamente son vagos, sin datos o con soluciones genéricas.</div>`);
-    if (firstAttemptScores.level2 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Nivel 2:</strong> Usa las Grade Definitions del Appendix A. HIGH = debilidad fundamental, sin control mitigante, objetivo de control no se cumple. MEDIUM = efecto importante pero con controles mitigantes parciales, objetivo puede cumplirse parcialmente. LOW = mejora deseable pero no vital, impacto mínimo en eficiencia.</div>`);
-    if (firstAttemptScores.level3 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Nivel 3:</strong> El resumen ejecutivo debe ser autosuficiente. Incluye solo información relevante a la auditoría (no historia, competencia, metodología, agradecimientos ni proyecciones). Los datos numéricos deben reflejar la dimensión de lo auditado, no métricas corporativas generales.</div>`);
-    if (firstAvg === 100) recs.push(`<div class="feedback-item fb-success"><strong>🌟 ¡Desempeño excepcional!</strong> Completaste todo al primer intento. Dominas la construcción de observaciones, evaluación de riesgo y redacción del resumen ejecutivo según IPPF.</div>`);
-    else if (finalAvg === 100 && firstAvg < 100) recs.push(`<div class="feedback-item fb-info"><strong>📈 Buena capacidad de aprendizaje:</strong> Aunque tuviste errores iniciales, lograste corregirlos todos. Revisa las áreas donde cometiste errores al primer intento para reforzar ese conocimiento.</div>`);
+    if (firstAttemptScores.level1 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Level 1:</strong> An IPPF finding requires 6 logically connected components. The Title must be direct (without "lack of"). The Background / Criterion establishes the standard. The Condition presents quantitative data. The Root Cause explains the why. The Risk describes concrete impact. The Recommendation must be SMART. Distractors are typically vague, lack specific data, or propose generic solutions.</div>`);
+    if (firstAttemptScores.level2 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Level 2:</strong> Use the Grade Definitions in Appendix A. HIGH = fundamental weakness, no mitigating control, control objective not achieved. MEDIUM = important effect but with partial mitigating controls, objective may be partially achieved. LOW = improvement desirable but not vital, minimal impact on efficiency.</div>`);
+    if (firstAttemptScores.level3 < 100) recs.push(`<div class="feedback-item fb-info"><strong>Level 3:</strong> The executive summary must be self-contained. Include only information relevant to the audit (not corporate history, competitive analysis, methodology, acknowledgments, or projections). Numeric data should reflect the scope of what was audited, not general corporate metrics.</div>`);
+    if (firstAvg === 100) recs.push(`<div class="feedback-item fb-success"><strong>🌟 Exceptional performance!</strong> You completed everything on the first attempt. You have mastered finding construction, risk assessment, and executive summary writing per IPPF.</div>`);
+    else if (finalAvg === 100 && firstAvg < 100) recs.push(`<div class="feedback-item fb-info"><strong>📈 Strong learning ability:</strong> Although you had initial errors, you successfully corrected them all. Review the areas where you made first-attempt errors to reinforce that knowledge.</div>`);
 
     document.getElementById('finalRecommendations').innerHTML = recs.join('');
     saveCurrentProgress();
@@ -2043,7 +2043,7 @@ function restartAll() {
     document.getElementById('level1').classList.add('active');
     document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active', 'completed'));
     document.getElementById('step1').classList.add('active');
-    document.getElementById('levelBadge').textContent = 'Nivel 1 — Observaciones';
+    document.getElementById('levelBadge').textContent = 'Level 1 — Findings';
     ['level1Feedback','level1Complete','level2Feedback','level2Complete','level3Feedback','level3Complete'].forEach(id =>
         document.getElementById(id).classList.add('hidden'));
     window.scrollTo(0, 0);
