@@ -273,8 +273,15 @@
         .exec-sidebar .sidebar-stat .value { font-weight: 600; color: var(--primary); }
         /* Data pool for Level 3 */
         .data-pool-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0;
         }
+        .data-section-label {
+            font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.6px; color: white; padding: 5px 12px;
+            border-radius: 5px; margin: 14px 0 8px; display: inline-block;
+        }
+        .data-section-label.dim { background: var(--info); }
+        .data-section-label.res { background: var(--success); }
         .data-pool, .data-target {
             min-height: 150px; border: 2px dashed var(--border);
             border-radius: var(--radius); padding: 10px;
@@ -596,8 +603,8 @@
                 <strong>Your mission:</strong> Build the executive summary of the audit report.
                 <ol style="margin: 8px 0 0 20px; font-size: 0.88rem;">
                     <li><strong>Read each text</strong>, assign it the correct component label and drag it to the right panel in order</li>
-                    <li><strong>Select the correct numeric data</strong> from the data pool for the report's sidebar panel</li>
-                    <li>Discard the distractors in both panels</li>
+                    <li><strong>Audit Dimension:</strong> select the figures that define the scope and universe of what was audited</li>
+                    <li><strong>Audit Results:</strong> select the figures that reflect findings, impact, and outcomes — discard corporate metrics that do not belong</li>
                 </ol>
                 <p style="margin-top:8px"><strong>Expected order:</strong> Background → Why This Audit → Scope → Opinion on Business Objectives → Opinion on Audit Objectives → Findings → Recommendation</p>
             </div>
@@ -621,15 +628,29 @@
 
                 <div class="card">
                     <div class="card-title"><div class="icon">📊</div> Numeric Data for the Report</div>
-                    <p style="font-size:0.85rem; margin-bottom:10px; color:var(--text-light);">Select the correct and relevant data to include in the report's sidebar panel. Drag to the right panel only those that apply.</p>
+                    <p style="font-size:0.85rem; margin-bottom:4px; color:var(--text-light);">For each section, drag to the right panel only the figures that belong there. Discard anything irrelevant.</p>
+
+                    <div class="data-section-label dim">📐 Audit Dimension — Scope &amp; Universe</div>
                     <div class="data-pool-container">
                         <div>
-                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">AVAILABLE DATA</h4>
-                            <div class="data-pool" id="dataPool"></div>
+                            <h4 style="font-size:0.78rem; color:var(--text-light); margin-bottom:6px;">AVAILABLE FIGURES</h4>
+                            <div class="data-pool" id="dimPool"></div>
                         </div>
                         <div>
-                            <h4 style="font-size:0.8rem; color:var(--text-light); margin-bottom:6px;">DATA SELECTED FOR THE REPORT</h4>
-                            <div class="data-target" id="dataTarget"></div>
+                            <h4 style="font-size:0.78rem; color:var(--text-light); margin-bottom:6px;">SELECTED FOR DIMENSION</h4>
+                            <div class="data-target" id="dimTarget"></div>
+                        </div>
+                    </div>
+
+                    <div class="data-section-label res">📋 Audit Results — Findings &amp; Impact</div>
+                    <div class="data-pool-container">
+                        <div>
+                            <h4 style="font-size:0.78rem; color:var(--text-light); margin-bottom:6px;">AVAILABLE FIGURES</h4>
+                            <div class="data-pool" id="resPool"></div>
+                        </div>
+                        <div>
+                            <h4 style="font-size:0.78rem; color:var(--text-light); margin-bottom:6px;">SELECTED FOR RESULTS</h4>
+                            <div class="data-target" id="resTarget"></div>
                         </div>
                     </div>
                 </div>
@@ -1003,35 +1024,42 @@ const execComponents = [
 ];
 
 // =========================================================
-// DATA: Numeric data for Level 3 sidebar (correct + distractors)
+// DATA: Numeric data for Level 3 — split by section
 // =========================================================
-const numericData = [
-    // Correct data
-    { label: "Invoices issued", value: "12,450", correct: true },
+// Audit Dimension: figures describing the scope / universe audited
+const dimensionData = [
+    { label: "Total invoices processed", value: "12,450", correct: true },
+    { label: "Total invoice amount", value: "$47.8M USD", correct: true },
+    { label: "Audit period", value: "Jan – Dec 2025", correct: true },
+    { label: "Active customers", value: "142", correct: true },
+    // Distractors — look relevant but describe operations, not the audit scope
+    { label: "Number of employees", value: "523", correct: false },
+    { label: "Number of warehouses", value: "8 locations", correct: false },
+    { label: "IT budget", value: "$2.1M USD", correct: false },
+    { label: "Active suppliers", value: "234", correct: false },
+    { label: "Years in operation", value: "38 years", correct: false },
+    { label: "Revenue projection 2026", value: "+12%", correct: false }
+];
+
+// Audit Results: figures describing findings, impact, and outcomes
+const resultsData = [
     { label: "Invoices rejected", value: "2,118", correct: true },
     { label: "Rejection rate", value: "17%", correct: true },
-    { label: "Amount rejected", value: "$8.1M USD", correct: true },
-    { label: "Affected customers", value: "87 of 142", correct: true },
+    { label: "Total rejected amount", value: "$8.1M USD", correct: true },
+    { label: "Customers affected", value: "87 of 142", correct: true },
     { label: "Avg. rework delay", value: "45 days", correct: true },
     { label: "Estimated rework cost", value: "$340K USD", correct: true },
     { label: "Findings issued", value: "4", correct: true },
-    { label: "HIGH Rating", value: "2 findings", correct: true },
-    { label: "MEDIUM Rating", value: "1 finding", correct: true },
-    { label: "LOW Rating", value: "1 finding", correct: true },
-    { label: "Audit Period", value: "Jan - Dec 2025", correct: true },
-    // Distractors
-    { label: "Company employees", value: "523", correct: false },
-    { label: "Avg. employee tenure", value: "6.3 years", correct: false },
+    { label: "HIGH Risk findings", value: "2", correct: true },
+    { label: "MEDIUM Risk findings", value: "1", correct: true },
+    { label: "LOW Risk findings", value: "1", correct: true },
+    // Distractors — corporate metrics, not audit findings
     { label: "Customer satisfaction", value: "7.2 / 10", correct: false },
+    { label: "NPS Score", value: "42", correct: false },
     { label: "Market share", value: "18.5%", correct: false },
-    { label: "Staff turnover", value: "12% annual", correct: false },
-    { label: "IT budget", value: "$2.1M USD", correct: false },
-    { label: "Number of warehouses", value: "8 locations", correct: false },
-    { label: "Revenue projection 2026", value: "+12%", correct: false },
-    { label: "Active suppliers", value: "234", correct: false },
-    { label: "Training sessions conducted", value: "47 sessions", correct: false },
-    { label: "Prior audits", value: "3 in last 5 years", correct: false },
-    { label: "NPS Score", value: "42", correct: false }
+    { label: "Staff turnover", value: "12% annually", correct: false },
+    { label: "Training sessions held", value: "47 sessions", correct: false },
+    { label: "Prior audits (last 5 yrs)", value: "3", correct: false }
 ];
 
 // =========================================================
@@ -1156,7 +1184,7 @@ function setupDragAndDrop() {
         card.addEventListener('dragend', handleDragEnd);
     });
 
-    ['dndPool', 'dndTarget', 'execPool', 'execTarget', 'dataPool', 'dataTarget'].forEach(id => {
+    ['dndPool', 'dndTarget', 'execPool', 'execTarget', 'dimPool', 'dimTarget', 'resPool', 'resTarget'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             el.addEventListener('dragover', handleDragOver);
@@ -1692,26 +1720,27 @@ function loadExecSummary() {
         pool.appendChild(el);
     });
 
-    // Load numeric data
-    const dataPool = document.getElementById('dataPool');
-    const dataTarget = document.getElementById('dataTarget');
-
-    let allData = [...numericData];
-    shuffle(allData);
-
-    dataPool.innerHTML = '';
-    dataTarget.innerHTML = '';
-
-    allData.forEach((d, i) => {
+    // Load numeric data — two sections
+    function makeDataCard(d, id) {
         const div = document.createElement('div');
         div.className = 'data-card';
         div.draggable = true;
-        div.id = `data-${i}`;
+        div.id = id;
         div.dataset.correct = d.correct;
         div.dataset.label = d.label;
         div.innerHTML = `<span class="data-label">${d.label}</span><span class="data-value">${d.value}</span>`;
-        dataPool.appendChild(div);
-    });
+        return div;
+    }
+
+    const dimPool = document.getElementById('dimPool');
+    const dimTarget = document.getElementById('dimTarget');
+    dimPool.innerHTML = ''; dimTarget.innerHTML = '';
+    shuffle([...dimensionData]).forEach((d, i) => dimPool.appendChild(makeDataCard(d, `dim-${i}`)));
+
+    const resPool = document.getElementById('resPool');
+    const resTarget = document.getElementById('resTarget');
+    resPool.innerHTML = ''; resTarget.innerHTML = '';
+    shuffle([...resultsData]).forEach((d, i) => resPool.appendChild(makeDataCard(d, `res-${i}`)));
 
     setupDragAndDrop();
 }
@@ -1725,8 +1754,8 @@ function resetExecSummary() {
 function validateExecSummary() {
     const target = document.getElementById('execTarget');
     const cards = [...target.querySelectorAll('.drag-card')];
-    const dataTarget = document.getElementById('dataTarget');
-    const dataCards = [...dataTarget.querySelectorAll('.data-card')];
+    const dimCards = [...document.getElementById('dimTarget').querySelectorAll('.data-card')];
+    const resCards = [...document.getElementById('resTarget').querySelectorAll('.data-card')];
 
     if (cards.length === 0) {
         alert('You must drag the components to the executive summary panel.');
@@ -1780,17 +1809,24 @@ function validateExecSummary() {
         errors.push({ type: 'labels', message: msg });
     }
 
-    // 5. Check numeric data
-    const dataDistractors = dataCards.filter(c => c.dataset.correct === 'false');
-    const correctData = dataCards.filter(c => c.dataset.correct === 'true');
-    const totalCorrectData = numericData.filter(d => d.correct).length;
-    const missingData = totalCorrectData - correctData.length;
-
-    if (dataDistractors.length > 0) {
-        errors.push({ type: 'data_distractor', message: `You included ${dataDistractors.length} numeric data point(s) not relevant to the report: ${dataDistractors.map(d => d.dataset.label).join(', ')}.` });
+    // 5. Check Audit Dimension data
+    const dimDistractors = dimCards.filter(c => c.dataset.correct === 'false');
+    const missingDim = dimensionData.filter(d => d.correct).length - dimCards.filter(c => c.dataset.correct === 'true').length;
+    if (dimDistractors.length > 0) {
+        errors.push({ type: 'dim_distractor', message: `Audit Dimension: you included ${dimDistractors.length} non-relevant figure(s): ${dimDistractors.map(d => d.dataset.label).join(', ')}.` });
     }
-    if (missingData > 0) {
-        errors.push({ type: 'data_missing', message: `${missingData} relevant numeric data point(s) are missing from the report panel.` });
+    if (missingDim > 0) {
+        errors.push({ type: 'dim_missing', message: `Audit Dimension: ${missingDim} relevant scope figure(s) are missing.` });
+    }
+
+    // 6. Check Audit Results data
+    const resDistractors = resCards.filter(c => c.dataset.correct === 'false');
+    const missingRes = resultsData.filter(d => d.correct).length - resCards.filter(c => c.dataset.correct === 'true').length;
+    if (resDistractors.length > 0) {
+        errors.push({ type: 'res_distractor', message: `Audit Results: you included ${resDistractors.length} non-relevant figure(s): ${resDistractors.map(d => d.dataset.label).join(', ')}.` });
+    }
+    if (missingRes > 0) {
+        errors.push({ type: 'res_missing', message: `Audit Results: ${missingRes} relevant findings/impact figure(s) are missing.` });
     }
 
     // Reveal labels on target cards
@@ -1837,13 +1873,15 @@ function validateExecSummary() {
         if (select) select.disabled = true;
     });
 
-    // Mark data cards
-    dataCards.forEach(card => {
+    // Mark data cards — targets
+    [...dimCards, ...resCards].forEach(card => {
         card.classList.add(card.dataset.correct === 'true' ? 'correct' : 'incorrect');
     });
-    const dataPool = document.getElementById('dataPool');
-    [...dataPool.querySelectorAll('.data-card')].forEach(card => {
-        card.classList.add(card.dataset.correct === 'true' ? 'incorrect' : 'correct');
+    // Mark data cards — pools (left behind correct = should've been moved)
+    ['dimPool','resPool'].forEach(id => {
+        [...document.getElementById(id).querySelectorAll('.data-card')].forEach(card => {
+            card.classList.add(card.dataset.correct === 'true' ? 'incorrect' : 'correct');
+        });
     });
 
     // Order numbers
@@ -1856,14 +1894,16 @@ function validateExecSummary() {
         }
     });
 
-    // Score
+    // Score (max 15: 7 components + no text distractors + order + 2 labels + dim clean + dim complete + res clean + res complete)
     let sc = 7 - missing.length;
     if (textDistractors.length === 0) sc++;
     if (orderErrors.length === 0) sc++;
     if (labelErrors.length === 0) sc += 2;
-    if (dataDistractors.length === 0) sc++;
-    if (missingData === 0) sc++;
-    scores.level3 = Math.round((sc / 13) * 100);
+    if (dimDistractors.length === 0) sc++;
+    if (missingDim === 0) sc++;
+    if (resDistractors.length === 0) sc++;
+    if (missingRes === 0) sc++;
+    scores.level3 = Math.round((sc / 15) * 100);
 
     // Record attempt
     const attemptNum = attemptHistory.level3.length + 1;
@@ -1891,7 +1931,7 @@ function validateExecSummary() {
                 <button class="btn btn-success" onclick="showFinalScreen()">🏆 View Final Results</button>
             </div>`;
     } else {
-        const iconMap = { distractor: '🚫 Text distractor', missing: '📋 Missing components', order: '🔄 Incorrect order', labels: '🏷️ Incorrect classification', data_distractor: '🚫 Irrelevant numeric data', data_missing: '📊 Missing numeric data' };
+        const iconMap = { distractor: '🚫 Text distractor', missing: '📋 Missing components', order: '🔄 Incorrect order', labels: '🏷️ Incorrect classification', dim_distractor: '🚫 Non-relevant Dimension figure', dim_missing: '📐 Missing Dimension figures', res_distractor: '🚫 Non-relevant Results figure', res_missing: '📋 Missing Results figures' };
         fb.innerHTML = `
             <div class="feedback-panel error fade-in">
                 <h3>⚠️ Errors in the Executive Summary${attemptLabel}</h3>
