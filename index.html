@@ -690,9 +690,9 @@
 // =========================================================
 
 function getUsers() { return JSON.parse(localStorage.getItem('audit_users') || '{}'); }
-function getSession() { return JSON.parse(localStorage.getItem('audit_session') || 'null'); }
-function setSession(s) { localStorage.setItem('audit_session', JSON.stringify(s)); }
-function clearSession() { localStorage.removeItem('audit_session'); }
+function getSession() { return JSON.parse(localStorage.getItem('audit_session_auditor') || 'null'); }
+function setSession(s) { localStorage.setItem('audit_session_auditor', JSON.stringify(s)); }
+function clearSession() { localStorage.removeItem('audit_session_auditor'); }
 function getUserProgress(u) { return JSON.parse(localStorage.getItem('audit_progress_' + u) || 'null'); }
 function setUserProgress(u, data) { localStorage.setItem('audit_progress_' + u, JSON.stringify(data)); }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
