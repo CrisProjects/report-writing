@@ -125,12 +125,12 @@
             color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;
         }
         .dnd-pool {
-            min-height: 200px; background: #f7fafc; border: 2px dashed var(--border);
+            min-height: 320px; background: #f7fafc; border: 2px dashed var(--border);
             border-radius: var(--radius); padding: 10px;
             display: flex; flex-direction: column; gap: 8px;
         }
         .dnd-target {
-            min-height: 400px; background: #f0fff4; border: 2px dashed var(--success);
+            min-height: 680px; background: #f0fff4; border: 2px dashed var(--success);
             border-radius: var(--radius); padding: 10px;
             display: flex; flex-direction: column; gap: 8px;
         }
@@ -905,12 +905,12 @@ const observations = [
             { type: "recomendacion", text: "Reactivar la validación automática de precios en el ERP dentro de los próximos 15 días. Implementar un proceso de conciliación semanal entre lista de precios y cotizaciones vigentes, asignando a un responsable del área comercial. Establecer un control de doble verificación para facturas superiores a USD $10,000 antes del 30 de junio 2026.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Falta de controles en el proceso de facturación de la empresa" },
-            { type: "background", text: "La empresa cuenta con un sistema ERP que gestiona múltiples procesos de negocio y que fue implementado hace varios años con el objetivo de mejorar la eficiencia operativa general." },
-            { type: "condicion", text: "Los empleados del área de facturación no tienen la capacitación adecuada para realizar su trabajo de manera eficiente y esto genera diversos problemas operativos en toda la organización." },
-            { type: "causa", text: "La causa principal es que la gerencia no ha invertido suficiente presupuesto en tecnología y sistemas durante los últimos años, lo que ha generado atrasos generalizados." },
-            { type: "riesgo", text: "Existe el riesgo general de que la empresa enfrente dificultades financieras si no mejora todos sus procesos internos en el futuro cercano." },
-            { type: "recomendacion", text: "Se recomienda que la empresa contrate una consultoría externa para revisar todos los procesos de negocio y proponer mejoras integrales en toda la organización." }
+            { type: "titulo", text: "Incremento sostenido en la tasa de rechazo de facturas durante 2025 por múltiples causas operativas en el ciclo de ingresos" },
+            { type: "background", text: "El procedimiento de gestión de cambios TI-008 establece que toda modificación a parámetros del ERP debe ser autorizada formalmente por el Comité de Tecnología y documentada en el sistema de control de cambios antes de su implementación en producción." },
+            { type: "condicion", text: "Del total de 2,118 facturas rechazadas, la región norte concentró el 42% de los casos (890 facturas), siendo el segmento minería el más afectado. El tiempo promedio de resolución fue de 45 días, con un costo administrativo estimado de USD $160 por factura reprocesada." },
+            { type: "causa", text: "El personal del área de facturación no fue capacitado en el nuevo módulo de precios implementado durante la migración de datos de marzo 2025, lo que generó errores en la aplicación manual de tarifas al momento de emitir las facturas." },
+            { type: "riesgo", text: "El incremento en el tiempo de procesamiento de facturas genera un impacto negativo en la satisfacción del cliente, según la última encuesta de NPS que registró una caída de 0.8 puntos respecto al año anterior, afectando la renovación de contratos." },
+            { type: "recomendacion", text: "Implementar un programa de capacitación semestral para el 100% del personal de facturación en el uso correcto del módulo de precios del ERP, con evaluación de conocimientos posterior y certificación interna antes del 30 de junio 2026." }
         ]
     },
     {
@@ -927,12 +927,12 @@ const observations = [
             { type: "recomendacion", text: "Depurar y actualizar el catálogo maestro de partes eliminando los 1,240 códigos obsoletos antes del 31 de mayo 2026. Implementar validación automática de números de parte con autocompletado en el módulo de facturación del ERP, con fecha límite 30 de julio 2026. Capacitar al 100% del personal de facturación en el nuevo catálogo dentro de los próximos 30 días.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Problemas generales de calidad en la gestión del catálogo de productos de la empresa" },
-            { type: "background", text: "La compañía tiene una política general de calidad que menciona que todos los procesos deben ser eficientes y que los errores deben minimizarse en todas las áreas de la organización." },
-            { type: "condicion", text: "Se detectaron varios problemas en el área de sistemas que afectan la operación general, incluyendo lentitud en las consultas y tiempos de respuesta inadecuados del servidor." },
-            { type: "causa", text: "El personal del área de sistemas no tiene las competencias técnicas necesarias y la rotación de personal ha sido alta en los últimos meses." },
-            { type: "riesgo", text: "Si no se mejoran los procesos tecnológicos, la empresa podría perder competitividad en el mercado frente a sus principales competidores." },
-            { type: "recomendacion", text: "Se recomienda mejorar los procesos de la empresa para que sean más eficientes y así reducir los errores que se producen actualmente en todas las áreas." }
+            { type: "titulo", text: "Inconsistencias en el catálogo maestro de partes detectadas tras la migración al nuevo sistema ERP en febrero 2025" },
+            { type: "background", text: "El procedimiento de gestión de proveedores PROV-003 establece que todo componente de maquinaria pesada debe contar con homologación del fabricante OEM y certificado de trazabilidad antes de ser incorporado al catálogo activo, requiriendo validación cruzada semestral con los listados oficiales de cada fabricante." },
+            { type: "condicion", text: "La revisión del catálogo maestro identificó 1,240 códigos obsoletos activos, de los cuales 387 corresponden a proveedores que ya no operan con la compañía y 453 tienen precios desactualizados por más de 12 meses. Estos códigos generaron 312 órdenes de reposición incorrectas durante el período." },
+            { type: "causa", text: "El proveedor principal de maquinaria realizó una actualización masiva de sus números de parte en enero 2025, notificando a la empresa con solo 10 días de anticipación, tiempo insuficiente para actualizar el catálogo maestro antes del inicio del período auditado." },
+            { type: "riesgo", text: "La falta de actualización del catálogo podría comprometer el cumplimiento de los compromisos de garantía con clientes, ya que los certificados de calidad referencian los números OEM correctos y su discrepancia podría invalidar reclamaciones de garantía ante los fabricantes." },
+            { type: "recomendacion", text: "Establecer un proceso de revisión trimestral del catálogo maestro con responsable designado en logística, que valide la vigencia de todos los códigos activos contra los catálogos actualizados de los 5 principales fabricantes, con un plazo inicial de depuración de 60 días." }
         ]
     },
     {
@@ -949,12 +949,12 @@ const observations = [
             { type: "recomendacion", text: "Implementar validación automática de vigencia y saldo de OC en el ERP antes del 30 de septiembre 2026. Establecer alertas automáticas al equipo comercial cuando una OC alcance el 80% de consumo o falten 15 días para su vencimiento. Designar un responsable en el área de crédito para la revisión semanal del estado de OC activas.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Deficiencias en la gestión comercial y relación con clientes de la empresa" },
-            { type: "background", text: "Las mejores prácticas internacionales sugieren que las empresas deben mantener buenas relaciones con sus clientes y asegurar que los procesos comerciales funcionen de manera óptima." },
-            { type: "condicion", text: "Se observó que el equipo comercial tiene una carga de trabajo excesiva y que no cuenta con suficiente personal para atender adecuadamente a todos los clientes de la cartera." },
-            { type: "causa", text: "Los clientes no envían sus órdenes de compra a tiempo porque tienen procesos internos lentos y burocráticos que la empresa no puede controlar." },
-            { type: "riesgo", text: "El riesgo es que la empresa podría tener problemas financieros si no mejora sus procesos de facturación y cobranza en el futuro cercano." },
-            { type: "recomendacion", text: "Contratar más personal en el área comercial y de cobranzas para poder gestionar de mejor manera el portafolio de clientes y sus órdenes de compra." }
+            { type: "titulo", text: "Debilidades en el proceso de gestión y seguimiento de órdenes de compra de clientes en el ciclo de facturación" },
+            { type: "background", text: "Las condiciones generales de venta de MaquiParts Industrial S.A. establecen que la empresa es responsable de verificar que los documentos comerciales que respaldan cada transacción se encuentren vigentes antes de proceder con el despacho, siendo este un requisito previo a la emisión de la factura." },
+            { type: "condicion", text: "El análisis del portafolio revela que 47 de los 87 clientes afectados corresponden a empresas mineras con ciclos de compra trimestrales, concentrando sus OC en períodos específicos. El monto promedio de las facturas rechazadas por OC vencidas ascendió a USD $3,820, con una resolución promedio de 62 días." },
+            { type: "causa", text: "Los clientes no notifican oportunamente la renovación de sus órdenes de compra, y el proceso de seguimiento depende de gestión informal por parte de cada ejecutivo comercial sin un mecanismo centralizado de control de vigencias ni alertas automáticas." },
+            { type: "riesgo", text: "La demora en la cobranza podría generar provisiones contables adicionales al cierre del ejercicio si los montos pendientes no son recuperados en el plazo de 90 días establecido en la política de crédito CYC-005, afectando el resultado del período y los índices de liquidez." },
+            { type: "recomendacion", text: "Implementar reuniones mensuales de seguimiento entre el área comercial y cobranzas para revisar el estado de las OC activas de los 20 principales clientes, anticipando vencimientos con al menos 30 días de antelación, con responsable designado y reporte a la gerencia comercial." }
         ]
     },
     {
@@ -971,12 +971,12 @@ const observations = [
             { type: "recomendacion", text: "Incorporar un checklist digital obligatorio en el módulo de facturación que verifique la completitud de los documentos adjuntos antes de permitir la emisión. Evaluar la implementación de digitalización en punto de despacho mediante dispositivos móviles. Plazo sugerido: primer trimestre 2027.", order: 6 }
         ],
         distractors: [
-            { type: "titulo", text: "Falta de documentación adecuada en el proceso logístico y de despacho de la compañía" },
-            { type: "background", text: "La empresa cuenta con varias bodegas de almacenamiento distribuidas en diferentes localidades del país, cada una con su propio equipo de operaciones y sistemas de gestión de inventario." },
-            { type: "condicion", text: "Se observó que el área de logística no cumple con varios procedimientos internos y las bodegas no están ordenadas correctamente, lo que genera ineficiencias generales en la cadena de suministro." },
-            { type: "causa", text: "La empresa no ha invertido en tecnología de digitalización porque el presupuesto de TI ha sido recortado por la gerencia general durante los últimos dos años fiscales." },
-            { type: "riesgo", text: "Si la empresa no moderniza sus procesos logísticos, podría quedar rezagada respecto a la competencia y perder participación de mercado en el mediano plazo." },
-            { type: "recomendacion", text: "Realizar una reingeniería completa del proceso logístico incluyendo rediseño de bodegas, implementación de WMS y automatización de todos los procesos de despacho." }
+            { type: "titulo", text: "Incumplimiento del procedimiento logístico LOG-009 en la adjunción de documentos de soporte a las facturas de venta de partes y piezas" },
+            { type: "background", text: "El sistema de gestión documental implementado en 2023 permite el almacenamiento digital de todos los documentos de despacho —guías de remisión, certificados de calidad y packing lists— con trazabilidad completa por número de factura, garantizando la disponibilidad inmediata ante requerimientos del cliente o fiscalizaciones externas." },
+            { type: "condicion", text: "La revisión de expedientes en bodega reveló que el 78% de las guías de despacho están físicamente disponibles pero sin digitalizar, acumulándose en promedio 340 documentos por semana pendientes de carga al sistema. El 65% corresponde al turno de tarde (14:00-18:00 hrs.), período de mayor actividad de despacho." },
+            { type: "causa", text: "El área de bodega opera con dotación reducida durante el peak de despacho (14:00-18:00 hrs.), período en que se concentra el 65% de los despachos diarios, lo que impide que el personal destine tiempo a la digitalización oportuna de los documentos de soporte generados." },
+            { type: "riesgo", text: "La falta de documentación adjunta podría comprometer la posición de la empresa en disputas comerciales y fiscalizaciones del SII, ya que los documentos de respaldo son requeridos para acreditar la efectividad de las ventas declaradas y sustentar el crédito fiscal de los clientes." },
+            { type: "recomendacion", text: "Digitalizar de manera retroactiva los 2,847 documentos de despacho pendientes identificados en la revisión, distribuyendo la carga entre el personal en horarios de menor actividad durante los próximos 60 días, con seguimiento semanal del avance y reporte al jefe de logística." }
         ]
     }
 ];
@@ -992,14 +992,14 @@ const execComponents = [
     { type: "opinion_auditoria", label: "Opinión sobre Objetivos de la Auditoría", text: "Los controles internos del proceso de facturación de venta de partes y piezas presentan debilidades significativas en las cuatro áreas evaluadas: validación de precios, gestión de catálogo de partes, control de órdenes de compra y documentación de despacho. Los procesos no operan en conformidad con las políticas internas establecidas, evidenciado por la desactivación no autorizada de controles automáticos del ERP y la falta de actualización del catálogo maestro durante 18 meses. Se identificaron 4 causas raíz principales que requieren atención inmediata, particularmente las 2 observaciones calificadas como alto riesgo.", order: 5, correct: true },
     { type: "observaciones_resumen", label: "Resumen de Observaciones", text: "Se identificaron 4 observaciones: (1) Discrepancias sistemáticas de precios cotizados vs facturados – Riesgo Alto, con $3.08M afectados y amenaza de pérdida de clientes estratégicos. (2) Errores en números de parte y descripción de componentes – Riesgo Alto, con potencial daño a equipos y riesgo de seguridad. (3) Facturación contra órdenes de compra vencidas – Riesgo Medio, impactando el flujo de caja con $1.78M en demora. (4) Documentación de despacho incompleta – Riesgo Bajo, generando reprocesos administrativos menores.", order: 6, correct: true },
     { type: "recomendacion_exec", label: "Recomendación General", text: "Se recomienda priorizar la remediación de las observaciones de alto riesgo dentro de los próximos 30 días, enfocándose en la reactivación de controles automáticos del ERP y la actualización del catálogo de partes. Para las observaciones de riesgo medio y bajo, establecer un plan de acción con seguimiento trimestral. Se sugiere una auditoría de seguimiento a los 6 meses para validar la implementación de las recomendaciones.", order: 7, correct: true },
-    // Distractors — one per component type
-    { type: "distractor", label: "Historia de la Compañía", text: "MaquiParts Industrial S.A. fue fundada en 1987 y ha crecido significativamente durante las últimas tres décadas, expandiéndose a 5 países de la región. La empresa cuenta con más de 500 empleados y su sede principal está ubicada en Santiago. Su visión es ser el proveedor de referencia en Latinoamérica.", order: -1, correct: false },
-    { type: "distractor", label: "Análisis de la Competencia", text: "En el mercado actual existen al menos 12 competidores directos en la distribución de repuestos de maquinaria pesada. La cuota de mercado de MaquiParts ha disminuido un 2% respecto al año anterior, lo que indica la necesidad de mejorar la estrategia comercial y de marketing.", order: -1, correct: false },
-    { type: "distractor", label: "Plan Estratégico", text: "Se recomienda que la gerencia general considere una reestructuración completa del departamento comercial, incluyendo cambios en la estructura organizacional, revisión de todos los procesos de la compañía, e implementación de un programa de transformación digital integral.", order: -1, correct: false },
-    { type: "distractor", label: "Satisfacción del Cliente", text: "La última encuesta de satisfacción del cliente realizada en 2024 arrojó un índice de 7.2 sobre 10, lo que representa una disminución de 0.5 puntos respecto al año anterior. Los principales aspectos a mejorar según los clientes son los tiempos de entrega y la atención post-venta.", order: -1, correct: false },
-    { type: "distractor", label: "Metodología de Auditoría", text: "La auditoría fue realizada siguiendo la metodología estándar del departamento de auditoría interna, que incluye planificación, ejecución de pruebas, documentación de papeles de trabajo, revisión de calidad y emisión del informe. Se utilizaron herramientas de análisis de datos como ACL y Excel.", order: -1, correct: false },
-    { type: "distractor", label: "Agradecimientos", text: "El equipo de auditoría interna agradece la colaboración del personal de las áreas de facturación, logística, comercial y sistemas de información durante la ejecución del trabajo. Su disposición facilitó la obtención oportuna de la información requerida.", order: -1, correct: false },
-    { type: "distractor", label: "Proyecciones Financieras", text: "Según las proyecciones del área de finanzas, los ingresos de la compañía crecerán un 12% en 2026, impulsados por nuevos contratos en el sector minero. El EBITDA proyectado es de USD $15.2 millones, representando un margen del 28%.", order: -1, correct: false }
+    // Distractors — plausible but not part of a standard IPPF executive summary
+    { type: "distractor", label: "Alcance Excluido y Limitaciones", text: "La presente auditoría no incluyó el proceso de facturación de servicios de mantenimiento y postventa, el cual representa el 23% de los ingresos totales. Asimismo, se excluyeron las transacciones con clientes de exportación, que operan bajo un marco contractual diferente y serán revisadas en una auditoría separada programada para el segundo semestre de 2026.", order: -1, correct: false },
+    { type: "distractor", label: "Respuesta de la Gerencia", text: "La gerencia general reconoce las debilidades identificadas y ha manifestado su compromiso con la implementación de las recomendaciones propuestas. El Gerente de Operaciones ha sido designado responsable ejecutivo del plan de mejora, con reporte mensual al Directorio sobre el avance de las acciones correctivas acordadas.", order: -1, correct: false },
+    { type: "distractor", label: "Opinión sobre Procesos Complementarios", text: "Los controles del proceso de gestión de inventario y almacenamiento de partes y piezas operan de manera adecuada y en conformidad con los procedimientos internos. Las existencias se encuentran correctamente valorizadas y los registros del ERP reflejan fielmente las cantidades físicas verificadas mediante conteo selectivo durante la ejecución del trabajo.", order: -1, correct: false },
+    { type: "distractor", label: "Contexto del Mercado", text: "El sector de distribución de repuestos para maquinaria pesada en Latinoamérica registró un crecimiento del 8.3% en 2025, impulsado por el aumento en la actividad minera. En este contexto, los errores en los procesos de facturación representan un riesgo reputacional relevante en un mercado donde la confiabilidad operativa es un diferenciador competitivo clave.", order: -1, correct: false },
+    { type: "distractor", label: "Marco Regulatorio Aplicable", text: "El proceso de facturación está sujeto a la normativa tributaria chilena (Ley 19.983 y Circular SII N°1/2003 sobre factura electrónica), los estándares de codificación de partes industriales de la norma ISO 8601, y los requerimientos de la norma ISO 9001:2015 en materia de control de documentos y trazabilidad de registros.", order: -1, correct: false },
+    { type: "distractor", label: "Hallazgos de Auditorías Anteriores", text: "La auditoría de facturación realizada en 2022 identificó 2 observaciones de riesgo medio sobre conciliación de cuentas por cobrar, cerradas satisfactoriamente en 2023. No obstante, el deterioro observado en 2025 indica que las mejoras implementadas no se sostuvieron en el tiempo, evidenciando la ausencia de un mecanismo de monitoreo continuo.", order: -1, correct: false },
+    { type: "distractor", label: "Composición y Recursos del Equipo", text: "La auditoría fue ejecutada por 3 auditores internos con certificación CIA y experiencia promedio de 8 años en procesos financieros y operativos. El trabajo de campo se realizó durante 6 semanas entre enero y febrero 2026, utilizando 238 de las 240 horas presupuestadas y herramientas de análisis de datos como ACL Analytics y Power BI.", order: -1, correct: false }
 ];
 
 // =========================================================
