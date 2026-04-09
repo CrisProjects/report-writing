@@ -716,6 +716,7 @@
 // =========================================================
 
 function getUsers() { return JSON.parse(localStorage.getItem('audit_users') || '{}'); }
+function saveUsers(u) { localStorage.setItem('audit_users', JSON.stringify(u)); }
 function getSession() { return JSON.parse(localStorage.getItem('audit_session_auditor') || 'null'); }
 function setSession(s) { localStorage.setItem('audit_session_auditor', JSON.stringify(s)); }
 function clearSession() { localStorage.removeItem('audit_session_auditor'); }
@@ -770,7 +771,34 @@ function doLogout() {
     document.getElementById('loginOverlay').style.display = 'flex';
 }
 
+function handleJoinLink() {
+    const params = new URLSearchParams(window.location.search);
+    const join = params.get('join');
+    if (!join) return false;
+    try {
+        const { u, n, p, c } = JSON.parse(atob(join));
+        if (!u || !n || !p) return false;
+        // Register auditor in this device's localStorage
+        const users = getUsers();
+        users[u] = { name: n, password: p, createdAt: c || new Date().toISOString() };
+        saveUsers(users);
+        // Auto-login
+        setSession({ username: u, role: 'auditor', name: n });
+        // Clean URL (remove ?join=... parameter)
+        window.history.replaceState({}, '', window.location.pathname);
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+
 function checkAuth() {
+    // Handle magic link first — registers + logs in the auditor automatically
+    if (handleJoinLink()) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        initAuditorApp();
+        return;
+    }
     const session = getSession();
     if (session && session.role === 'auditor') {
         document.getElementById('loginOverlay').style.display = 'none';

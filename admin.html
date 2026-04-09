@@ -214,15 +214,27 @@
 
 <!-- CREDENTIALS MODAL -->
 <div id="credModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeCredModal()">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width:520px;">
         <h3>🔑 Access Credentials</h3>
+
+        <!-- Magic link — primary sharing method -->
+        <div style="background:#ebf8ff;border:2px solid #3182ce;border-radius:10px;padding:16px;margin-bottom:16px;">
+            <div style="font-size:0.75rem;font-weight:700;color:#2b6cb0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">⚡ Magic Link — Recommended</div>
+            <p style="font-size:0.82rem;color:#2d3748;margin-bottom:10px;">Send this link to the auditor. When they open it, they'll be automatically registered and logged in on their device — no manual setup needed.</p>
+            <div style="background:white;border:1px solid #bee3f8;border-radius:6px;padding:10px;font-size:0.75rem;font-family:monospace;color:#2b6cb0;word-break:break-all;margin-bottom:10px;" id="magicLinkDisplay"></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="copyMagicLink()">🔗 Copy Magic Link</button>
+            <div id="copyMagicMsg" style="color:var(--success);font-size:0.81rem;text-align:center;margin-top:6px;display:none;">✅ Magic link copied to clipboard</div>
+        </div>
+
+        <!-- Manual credentials — fallback -->
+        <div style="font-size:0.75rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Manual credentials (fallback)</div>
         <div class="cred-field"><div class="cred-lbl">Name</div><div class="cred-val" id="credName"></div></div>
         <div class="cred-field"><div class="cred-lbl">Username</div><div class="cred-val" id="credUsername"></div></div>
         <div class="cred-field"><div class="cred-lbl">Password</div><div class="cred-val" id="credPassword"></div></div>
-        <div style="margin:0 0 14px;font-size:0.8rem;color:var(--text-light);">Login URL: <strong id="credUrl"></strong></div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="copyCredentials()">📋 Copy credentials</button>
-        <div id="copyMsg" style="color:var(--success);font-size:0.82rem;text-align:center;margin-bottom:8px;display:none;">✅ Copied to clipboard</div>
-        <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="closeCredModal()">Close</button>
+        <div style="margin:0 0 10px;font-size:0.79rem;color:var(--text-light);">Login URL: <strong id="credUrl"></strong></div>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="copyCredentials()">📋 Copy manual credentials</button>
+        <div id="copyMsg" style="color:var(--success);font-size:0.81rem;text-align:center;margin-bottom:8px;display:none;">✅ Copied to clipboard</div>
+        <button class="btn" style="width:100%;justify-content:center;background:#f7fafc;border:1px solid var(--border);" onclick="closeCredModal()">Close</button>
     </div>
 </div>
 
@@ -529,6 +541,13 @@ function generatePassword() {
 }
 
 // ---- Credentials Modal ----
+function getMagicLink(uname) {
+    const u = getUsers()[uname]; if (!u) return '';
+    const payload = btoa(JSON.stringify({ u: uname, n: u.name, p: u.password, c: u.createdAt }));
+    const base = window.location.origin + window.location.pathname.replace('admin.html', '');
+    return base + 'index.html?join=' + payload;
+}
+
 function showCredentials(uname) {
     const u=getUsers()[uname]; if(!u) return;
     document.getElementById('credName').textContent=u.name;
@@ -536,16 +555,28 @@ function showCredentials(uname) {
     document.getElementById('credPassword').textContent=u.password;
     const base=window.location.origin+window.location.pathname.replace('admin.html','');
     document.getElementById('credUrl').textContent=base+'index.html';
+    document.getElementById('magicLinkDisplay').textContent=getMagicLink(uname);
     document.getElementById('copyMsg').style.display='none';
+    document.getElementById('copyMagicMsg').style.display='none';
     document.getElementById('credModal').style.display='flex';
 }
+
 function closeCredModal(){document.getElementById('credModal').style.display='none';}
+
+function copyMagicLink() {
+    const link = document.getElementById('magicLinkDisplay').textContent;
+    navigator.clipboard.writeText(link).then(()=>{
+        const m=document.getElementById('copyMagicMsg'); m.style.display='block';
+        setTimeout(()=>m.style.display='none',3000);
+    }).catch(()=>prompt('Copy this magic link:',link));
+}
+
 function copyCredentials(){
     const name=document.getElementById('credName').textContent;
     const user=document.getElementById('credUsername').textContent;
     const pass=document.getElementById('credPassword').textContent;
     const url=document.getElementById('credUrl').textContent;
-    const txt=`IPPF Audit Training Platform\nName: ${name}\nUsername: ${user}\nPassword: ${pass}\nURL: ${url}`;
+    const txt=`IPPF Audit Training Platform\nName: ${name}\nUsername: ${user}\nPassword: ${pass}\nLogin URL: ${url}`;
     navigator.clipboard.writeText(txt).then(()=>{
         const m=document.getElementById('copyMsg'); m.style.display='block';
         setTimeout(()=>m.style.display='none',2500);
