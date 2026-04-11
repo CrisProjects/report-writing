@@ -733,24 +733,25 @@ if (self !== top) { top.location = self.location; }
 // AUTH SYSTEM & ADMIN PANEL
 // =========================================================
 
-function getUsers() { return JSON.parse(localStorage.getItem('audit_users') || '{}'); }
-function saveUsers(u) { localStorage.setItem('audit_users', JSON.stringify(u)); }
-function getSession() { return JSON.parse(localStorage.getItem('audit_session_auditor') || 'null'); }
-function setSession(s) { localStorage.setItem('audit_session_auditor', JSON.stringify(s)); }
-function clearSession() { localStorage.removeItem('audit_session_auditor'); }
-function getUserProgress(u) { return JSON.parse(localStorage.getItem('audit_progress_' + u) || 'null'); }
-function setUserProgress(u, data) { localStorage.setItem('audit_progress_' + u, JSON.stringify(data)); }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-function doLogin() {
+// In-memory session — authoritative session lives in the server-side cookie
+let currentSession = null;
+
+async function doLogin() {
     const user = document.getElementById('loginUsername').value.trim().toLowerCase();
     const pass = document.getElementById('loginPassword').value;
     const errEl = document.getElementById('loginError');
     errEl.style.display = 'none';
 
-    const users = getUsers();
-    if (users[user] && users[user].password === pass) {
-        setSession({ username: user, role: 'auditor', name: users[user].name });
+    const r = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+    });
+
+    if (r.ok) {
+        currentSession = await r.json();
         document.getElementById('loginOverlay').style.display = 'none';
         initAuditorApp();
         return;
@@ -762,8 +763,9 @@ function doLogin() {
     errEl.style.display = 'block';
 }
 
-function doLogout() {
-    clearSession();
+async function doLogout() {
+    await fetch('/api/logout', { method: 'POST' });
+    currentSession = null;
 
     // Reset in-memory app state
     currentObs = 0; completedObs = new Set(); obsResults = {};
@@ -789,42 +791,51 @@ function doLogout() {
     document.getElementById('loginOverlay').style.display = 'flex';
 }
 
-// Pending join payload — set when magic link is detected, cleared on confirm/decline
+// Pending magic-link token — cleared on confirm/decline
 let _pendingJoin = null;
 
 function handleJoinLink() {
     const params = new URLSearchParams(window.location.search);
-    const join = params.get('join');
-    if (!join) return false;
-    try {
-        const { u, n, p, c } = JSON.parse(atob(join));
-        if (!u || !n || !p) return false;
-        if (!/^[a-z0-9_]+$/.test(u)) return false;
-        if (typeof n !== 'string' || !n.trim()) return false;
-        // Store payload and show confirmation — do NOT log in yet
-        _pendingJoin = { u, n, p, c };
-        document.getElementById('joinConfirmName').textContent = n;
-        document.getElementById('joinConfirmOverlay').style.display = 'flex';
-        document.getElementById('loginOverlay').style.display = 'none';
-        // Clean URL so the join token is not left in history
-        window.history.replaceState({}, '', window.location.pathname);
-        return true;
-    } catch(e) {
-        return false;
-    }
+    const token = params.get('join');
+    if (!token) return false;
+    // Remove token from URL immediately
+    window.history.replaceState({}, '', window.location.pathname);
+    // Validate with server (async — UI will update when resolved)
+    fetch(`/api/join/${encodeURIComponent(token)}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+            if (!data || !data.name) {
+                document.getElementById('loginError').textContent = 'This invitation link is invalid or has expired.';
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('loginOverlay').style.display = 'flex';
+                return;
+            }
+            _pendingJoin = { token, name: data.name };
+            document.getElementById('joinConfirmName').textContent = data.name;
+            document.getElementById('joinConfirmOverlay').style.display = 'flex';
+            document.getElementById('loginOverlay').style.display = 'none';
+        })
+        .catch(() => {
+            document.getElementById('loginOverlay').style.display = 'flex';
+        });
+    return true;
 }
 
-function confirmJoinLink() {
+async function confirmJoinLink() {
     if (!_pendingJoin) return;
-    const { u, n, p, c } = _pendingJoin;
+    const { token } = _pendingJoin;
     _pendingJoin = null;
-    // Register auditor in this device's localStorage and log in
-    const users = getUsers();
-    users[u] = { name: n, password: p, createdAt: c || new Date().toISOString() };
-    saveUsers(users);
-    setSession({ username: u, role: 'auditor', name: n });
-    document.getElementById('joinConfirmOverlay').style.display = 'none';
-    initAuditorApp();
+    const r = await fetch(`/api/join/${encodeURIComponent(token)}`, { method: 'POST' });
+    if (r.ok) {
+        currentSession = await r.json();
+        document.getElementById('joinConfirmOverlay').style.display = 'none';
+        initAuditorApp();
+    } else {
+        document.getElementById('joinConfirmOverlay').style.display = 'none';
+        document.getElementById('loginError').textContent = 'This invitation link has already been used or has expired.';
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('loginOverlay').style.display = 'flex';
+    }
 }
 
 function declineJoinLink() {
@@ -833,45 +844,48 @@ function declineJoinLink() {
     document.getElementById('loginOverlay').style.display = 'flex';
 }
 
-function checkAuth() {
-    // Handle magic link first — shows confirmation screen before logging in
+async function checkAuth() {
     if (handleJoinLink()) return;
-    const session = getSession();
-    if (session && session.role === 'auditor') {
-        document.getElementById('loginOverlay').style.display = 'none';
-        initAuditorApp();
-    } else {
-        if (session) clearSession(); // session from another page, discard it
-        document.getElementById('loginOverlay').style.display = 'flex';
+    const r = await fetch('/api/me');
+    if (r.ok) {
+        currentSession = await r.json();
+        if (currentSession.role === 'auditor') {
+            document.getElementById('loginOverlay').style.display = 'none';
+            initAuditorApp();
+            return;
+        }
     }
+    document.getElementById('loginOverlay').style.display = 'flex';
 }
 
 function initAuditorApp() {
     document.getElementById('appContent').style.display = 'block';
-    const session = getSession();
     const hdr = document.querySelector('.header');
     const ui = document.createElement('div');
     ui.style.cssText = 'display:flex;align-items:center;gap:8px;margin-left:auto;';
-    ui.innerHTML = `<span class="header-badge" style="background:rgba(255,255,255,0.15);">👤 ${escHtml(session.name)}</span><button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:none;font-size:0.78rem;padding:5px 12px;" onclick="doLogout()">Log out</button>`;
+    ui.innerHTML = `<span class="header-badge" style="background:rgba(255,255,255,0.15);">👤 ${escHtml(currentSession.name)}</span><button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:none;font-size:0.78rem;padding:5px 12px;" onclick="doLogout()">Log out</button>`;
     hdr.appendChild(ui);
     init();
 }
 
 // ---- Progress persistence ----
 function saveCurrentProgress() {
-    const session = getSession();
-    if (!session || session.role !== 'auditor') return;
+    if (!currentSession || currentSession.role !== 'auditor') return;
     const fsActive = document.getElementById('finalScreen') && document.getElementById('finalScreen').classList.contains('active');
     const l3Active = document.getElementById('level3') && document.getElementById('level3').classList.contains('active');
     const l2Active = document.getElementById('level2') && document.getElementById('level2').classList.contains('active');
     const currentLevel = fsActive ? 'final' : l3Active ? '3' : l2Active ? '2' : '1';
-    setUserProgress(session.username, {
-        scores: { ...scores },
-        attemptHistory: JSON.parse(JSON.stringify(attemptHistory)),
-        currentLevel,
-        completed: !!fsActive,
-        lastActivity: new Date().toISOString()
-    });
+    fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            scores: { ...scores },
+            attemptHistory: JSON.parse(JSON.stringify(attemptHistory)),
+            currentLevel,
+            completed: !!fsActive,
+            lastActivity: new Date().toISOString()
+        })
+    }).catch(e => console.warn('Progress save failed:', e));
 }
 
 

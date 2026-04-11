@@ -239,34 +239,37 @@
     </div>
 </div>
 
+<script src="/socket.io/socket.io.js"></script>
 <script>
 // Frame-busting — prevent clickjacking
 if (self !== top) { top.location = self.location; }
 
 // =========================================================
-// SHARED STORAGE HELPERS
+// SHARED HELPERS
 // =========================================================
-const ADMIN_CREDS = { username: 'admin', password: 'Admin2024!', name: 'Administrator' };
-
-function getUsers() { return JSON.parse(localStorage.getItem('audit_users') || '{}'); }
-function saveUsers(u) { localStorage.setItem('audit_users', JSON.stringify(u)); }
-function getSession() { return JSON.parse(localStorage.getItem('audit_session_admin') || 'null'); }
-function setSession(s) { localStorage.setItem('audit_session_admin', JSON.stringify(s)); }
-function clearSession() { localStorage.removeItem('audit_session_admin'); }
-function getUserProgress(u) { return JSON.parse(localStorage.getItem('audit_progress_' + u) || 'null'); }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+let currentSession = null;
+let usersCache = []; // [{username, name, createdAt, progress}]
+let socket = null;
 
 // =========================================================
 // AUTH
 // =========================================================
-function doLogin() {
+async function doLogin() {
     const user = document.getElementById('loginUsername').value.trim().toLowerCase();
     const pass = document.getElementById('loginPassword').value;
     const errEl = document.getElementById('loginError');
     errEl.style.display = 'none';
 
-    if (user === ADMIN_CREDS.username && pass === ADMIN_CREDS.password) {
-        setSession({ username: user, role: 'admin', name: ADMIN_CREDS.name });
+    const r = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+    });
+
+    if (r.ok) {
+        currentSession = await r.json();
         document.getElementById('loginOverlay').style.display = 'none';
         showAdminPanel();
         return;
@@ -274,8 +277,10 @@ function doLogin() {
     errEl.style.display = 'block';
 }
 
-function doLogout() {
-    clearSession();
+async function doLogout() {
+    await fetch('/api/logout', { method: 'POST' });
+    currentSession = null;
+    usersCache = [];
     document.getElementById('adminPanel').style.display = 'none';
     document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('adminTab-dashboard').classList.add('active');
@@ -286,27 +291,45 @@ function doLogout() {
     document.getElementById('loginOverlay').style.display = 'flex';
 }
 
-function checkAuth() {
-    const session = getSession();
-    if (session && session.role === 'admin') {
-        document.getElementById('loginOverlay').style.display = 'none';
-        showAdminPanel();
-    } else {
-        if (session && session.role !== 'admin') clearSession();
-        document.getElementById('loginOverlay').style.display = 'flex';
+async function checkAuth() {
+    const r = await fetch('/api/me');
+    if (r.ok) {
+        currentSession = await r.json();
+        if (currentSession.role === 'admin') {
+            document.getElementById('loginOverlay').style.display = 'none';
+            showAdminPanel();
+            return;
+        }
     }
+    document.getElementById('loginOverlay').style.display = 'flex';
 }
 
 // =========================================================
 // ADMIN PANEL
 // =========================================================
-function showAdminPanel() {
+async function showAdminPanel() {
     document.getElementById('adminPanel').style.display = 'block';
-    document.getElementById('adminWelcome').textContent = 'Welcome, ' + getSession().name;
-    const base = window.location.origin + window.location.pathname.replace('admin.html', '');
-    document.getElementById('credUrl').textContent = base + 'index.html';
+    document.getElementById('adminWelcome').textContent = 'Welcome, ' + currentSession.name;
+    await fetchUsers();
     renderAdminDashboard();
     renderAuditorList();
+
+    // Connect Socket.IO for real-time progress updates
+    if (!socket) {
+        socket = io();
+        socket.emit('join_admin');
+        socket.on('progress_update', ({ username, progress }) => {
+            const u = usersCache.find(u => u.username === username);
+            if (u) u.progress = progress;
+            const dash = document.getElementById('adminTab-dashboard');
+            if (dash && dash.classList.contains('active')) renderAdminDashboard();
+        });
+        socket.on('user_deleted', ({ username }) => {
+            usersCache = usersCache.filter(u => u.username !== username);
+            renderAdminDashboard();
+            renderAuditorList();
+        });
+    }
 }
 
 function showAdminTab(tab, btn) {
@@ -316,6 +339,11 @@ function showAdminTab(tab, btn) {
     if (btn) btn.classList.add('active');
     if (tab === 'dashboard') renderAdminDashboard();
     if (tab === 'auditores') renderAuditorList();
+}
+
+async function fetchUsers() {
+    const r = await fetch('/api/users');
+    if (r.ok) usersCache = await r.json();
 }
 
 // ---- Helpers ----
@@ -337,12 +365,11 @@ function scoreCell(score, att) {
 
 // ---- Dashboard ----
 function renderAdminDashboard() {
-    const users = getUsers();
-    const entries = Object.entries(users);
+    const entries = usersCache;
     let completed=0, inProg=0, notStarted=0;
     const allAvgs=[];
-    entries.forEach(([u]) => {
-        const p = getUserProgress(u);
+    entries.forEach(u => {
+        const p = u.progress;
         if (!p) notStarted++;
         else if (p.completed) completed++;
         else inProg++;
@@ -361,8 +388,7 @@ function renderAdminDashboard() {
         document.getElementById('progressTableContainer').innerHTML = '<p style="padding:25px;text-align:center;color:var(--text-light);">No auditors yet. Create them in the "Auditors" tab.</p>';
         renderRanking(); renderGroupStats(); renderBarCharts(); return;
     }
-    const rows = entries.map(([uname, data]) => {
-        const p = getUserProgress(uname);
+    const rows = entries.map(({ username: uname, name, progress: p }) => {
         const status = !p ? '<span class="badge badge-gray">Not started</span>'
             : p.completed ? '<span class="badge badge-success">Completed ✓</span>'
             : `<span class="badge badge-info">Level ${p.currentLevel}</span>`;
@@ -372,7 +398,7 @@ function renderAdminDashboard() {
         const avg=calcAvgScore(p);
         const avgH=avg!==null?`<strong style="color:${avg>=80?'var(--success)':avg>=60?'var(--warning)':'var(--accent)'};">${avg}%</strong>`:'—';
         return `<tr>
-            <td><strong>${escHtml(data.name)}</strong></td>
+            <td><strong>${escHtml(name)}</strong></td>
             <td style="font-family:monospace;font-size:0.79rem;color:var(--text-light);">${escHtml(uname)}</td>
             <td>${status}</td>
             <td>${scoreCell(p&&p.scores?p.scores.level1:0,l1a)}</td>
@@ -393,13 +419,11 @@ function renderAdminDashboard() {
 
 function renderRanking() {
     const container = document.getElementById('rankingContainer');
-    const entries = Object.entries(getUsers());
-    if (!entries.length) { container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No auditors yet.</p>'; return; }
-    const ranked = entries.map(([u,data]) => {
-        const p=getUserProgress(u);
+    if (!usersCache.length) { container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No auditors yet.</p>'; return; }
+    const ranked = usersCache.map(({ name, progress: p }) => {
         const avg=calcAvgScore(p);
         const att=p?Object.values(p.attemptHistory.level1||{}).reduce((s,a)=>s+a.length,0)+(p.attemptHistory.level2||[]).length+(p.attemptHistory.level3||[]).length:0;
-        return {name:data.name,avg,att,done:p?.completed};
+        return {name, avg, att, done: p?.completed};
     }).sort((a,b)=>{if(a.avg===null&&b.avg===null)return 0;if(a.avg===null)return 1;if(b.avg===null)return -1;return b.avg-a.avg;});
     const medals=['🥇','🥈','🥉'];
     const rows=ranked.map((r,i)=>{
@@ -419,9 +443,8 @@ function renderRanking() {
 
 function renderGroupStats() {
     const container=document.getElementById('groupStatsContainer');
-    const entries=Object.entries(getUsers());
-    if(!entries.length){container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No data yet.</p>';return;}
-    const progs=entries.map(([u])=>getUserProgress(u)).filter(Boolean);
+    if(!usersCache.length){container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No data yet.</p>';return;}
+    const progs=usersCache.map(u=>u.progress).filter(Boolean);
     const l1=progs.map(p=>p.scores.level1).filter(s=>s>0);
     const l2=progs.map(p=>p.scores.level2).filter(s=>s>0);
     const l3=progs.map(p=>p.scores.level3).filter(s=>s>0);
@@ -429,7 +452,7 @@ function renderGroupStats() {
     const max=arr=>arr.length?Math.max(...arr):null;
     const min=arr=>arr.length?Math.min(...arr):null;
     const a1=avg(l1),a2=avg(l2),a3=avg(l3);
-    const compRate=entries.length?Math.round(progs.filter(p=>p.completed).length/entries.length*100):0;
+    const compRate=usersCache.length?Math.round(progs.filter(p=>p.completed).length/usersCache.length*100):0;
     const totalAtt=progs.reduce((s,p)=>s+Object.values(p.attemptHistory.level1||{}).reduce((x,a)=>x+a.length,0)+(p.attemptHistory.level2||[]).length+(p.attemptHistory.level3||[]).length,0);
     const avgAtt=progs.length?(totalAtt/progs.length).toFixed(1):'—';
     const fv=(v,s='%')=>v!==null?v+s:'—';
@@ -446,7 +469,7 @@ function renderGroupStats() {
                 </div>`).join('')}
         </div>
         <div class="gs-row"><span class="gs-lbl">Completion rate</span><span class="gs-val">${compRate}%</span></div>
-        <div class="gs-row"><span class="gs-lbl">With any result</span><span class="gs-val">${progs.length} / ${entries.length}</span></div>
+        <div class="gs-row"><span class="gs-lbl">With any result</span><span class="gs-val">${progs.length} / ${usersCache.length}</span></div>
         <div class="gs-row"><span class="gs-lbl">Best L1 / L2 / L3</span><span class="gs-val">${fv(max(l1))} / ${fv(max(l2))} / ${fv(max(l3))}</span></div>
         <div class="gs-row"><span class="gs-lbl">Lowest L1 / L2 / L3</span><span class="gs-val">${fv(min(l1))} / ${fv(min(l2))} / ${fv(min(l3))}</span></div>
         <div class="gs-row"><span class="gs-lbl">Avg. attempts/auditor</span><span class="gs-val">${avgAtt}</span></div>
@@ -455,10 +478,9 @@ function renderGroupStats() {
 
 function renderBarCharts() {
     const container=document.getElementById('barChartContainer');
-    const entries=Object.entries(getUsers());
-    const withData=entries.filter(([u])=>getUserProgress(u));
+    const withData=usersCache.filter(u=>u.progress);
     if(!withData.length){container.innerHTML='<p style="padding:15px;text-align:center;color:var(--text-light);">No progress data yet.</p>';return;}
-    const auds=withData.map(([u,d])=>({name:d.name,p:getUserProgress(u)})).sort((a,b)=>(calcAvgScore(b.p)||0)-(calcAvgScore(a.p)||0));
+    const auds=withData.map(({name,progress:p})=>({name,p})).sort((a,b)=>(calcAvgScore(b.p)||0)-(calcAvgScore(a.p)||0));
     const levels=[
         {key:'level1',label:'Level 1 — Findings',color:'#3182ce'},
         {key:'level2',label:'Level 2 — Risk Rating',color:'#38a169'},
@@ -482,16 +504,15 @@ function renderBarCharts() {
 
 // ---- Auditor Management ----
 function renderAuditorList() {
-    const entries=Object.entries(getUsers());
+    const entries=usersCache;
     if(!entries.length){document.getElementById('auditorListContainer').innerHTML='<p style="padding:25px;text-align:center;color:var(--text-light);">No registered auditors yet.</p>';return;}
-    const rows=entries.map(([uname,data])=>{
-        const p=getUserProgress(uname);
+    const rows=entries.map(({username:uname,name,createdAt,progress:p})=>{
         const badge=!p?'<span class="badge badge-gray">Not started</span>':p.completed?'<span class="badge badge-success">Completed ✓</span>':'<span class="badge badge-info">In progress</span>';
         return `<tr>
-            <td><strong>${escHtml(data.name)}</strong></td>
+            <td><strong>${escHtml(name)}</strong></td>
             <td style="font-family:monospace;">${escHtml(uname)}</td>
             <td>${badge}</td>
-            <td style="font-size:0.78rem;color:var(--text-light);">${fmtDate(data.createdAt)}</td>
+            <td style="font-size:0.78rem;color:var(--text-light);">${fmtDate(createdAt)}</td>
             <td>
                 <button class="btn btn-outline" style="padding:4px 10px;font-size:0.75rem;margin-right:5px;" onclick="showCredentials('${escHtml(uname)}')">🔑 View access</button>
                 <button class="btn btn-danger" style="padding:4px 10px;font-size:0.75rem;" onclick="deleteAuditor('${escHtml(uname)}')">🗑 Delete</button>
@@ -503,38 +524,41 @@ function renderAuditorList() {
         <tbody>${rows}</tbody></table>`;
 }
 
-function createAuditor() {
+async function createAuditor() {
     const name=document.getElementById('newAuditorName').value.trim();
     const uname=document.getElementById('newAuditorUsername').value.trim().toLowerCase();
     const pass=document.getElementById('newAuditorPassword').value.trim();
     const errEl=document.getElementById('createError');
     const okEl=document.getElementById('createSuccess');
     errEl.style.display='none'; okEl.style.display='none';
-    if(!name||!uname||!pass){errEl.textContent='Please fill in all fields.';errEl.style.display='block';return;}
-    if(pass.length<12){errEl.textContent='Password must be at least 12 characters.';errEl.style.display='block';return;}
-    if(uname==='admin'){errEl.textContent='"admin" is a reserved username.';errEl.style.display='block';return;}
-    if(!/^[a-z0-9_]+$/.test(uname)){errEl.textContent='Username: only lowercase letters, numbers, and _.';errEl.style.display='block';return;}
-    const users=getUsers();
-    if(users[uname]){errEl.textContent='That username already exists.';errEl.style.display='block';return;}
-    users[uname]={name,password:pass,createdAt:new Date().toISOString()};
-    saveUsers(users);
+
+    const r = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, username: uname, password: pass })
+    });
+    const data = await r.json();
+    if (!r.ok) { errEl.textContent = data.error; errEl.style.display='block'; return; }
+
     document.getElementById('newAuditorName').value='';
     document.getElementById('newAuditorUsername').value='';
     document.getElementById('newAuditorPassword').value='';
     okEl.textContent=`✅ Auditor "${name}" created. Username: "${uname}"`;
     okEl.style.display='block';
     setTimeout(()=>okEl.style.display='none',5000);
+    await fetchUsers();
     renderAuditorList(); renderAdminDashboard();
 }
 
-function deleteAuditor(uname) {
-    const users=getUsers();
-    if(!users[uname]) return;
-    if(!confirm(`Delete auditor "${users[uname].name}" (${uname})?\nTheir progress will be permanently lost.`)) return;
-    delete users[uname];
-    saveUsers(users);
-    localStorage.removeItem('audit_progress_'+uname);
-    renderAuditorList(); renderAdminDashboard();
+async function deleteAuditor(uname) {
+    const user = usersCache.find(u => u.username === uname);
+    if (!user) return;
+    if (!confirm(`Delete auditor "${user.name}" (${uname})?\nTheir progress will be permanently lost.`)) return;
+    const r = await fetch(`/api/users/${encodeURIComponent(uname)}`, { method: 'DELETE' });
+    if (r.ok) {
+        usersCache = usersCache.filter(u => u.username !== uname);
+        renderAuditorList(); renderAdminDashboard();
+    }
 }
 
 function generatePassword() {
@@ -545,27 +569,29 @@ function generatePassword() {
 }
 
 // ---- Credentials Modal ----
-function getMagicLink(uname) {
-    const u = getUsers()[uname]; if (!u) return '';
-    const payload = btoa(JSON.stringify({ u: uname, n: u.name, p: u.password, c: u.createdAt }));
-    const base = window.location.origin + window.location.pathname.replace('admin.html', '');
-    return base + 'index.html?join=' + payload;
-}
-
-function showCredentials(uname) {
-    const u=getUsers()[uname]; if(!u) return;
-    document.getElementById('credName').textContent=u.name;
-    document.getElementById('credUsername').textContent=uname;
-    document.getElementById('credPassword').textContent=u.password;
-    const base=window.location.origin+window.location.pathname.replace('admin.html','');
-    document.getElementById('credUrl').textContent=base+'index.html';
-    document.getElementById('magicLinkDisplay').textContent=getMagicLink(uname);
+async function showCredentials(uname) {
+    const user = usersCache.find(u => u.username === uname);
+    if (!user) return;
+    document.getElementById('credName').textContent = user.name;
+    document.getElementById('credUsername').textContent = uname;
+    document.getElementById('credPassword').textContent = '•••••••••••• (securely stored — share access via magic link)';
+    const base = window.location.origin + window.location.pathname.replace('admin.html','');
+    document.getElementById('credUrl').textContent = base + 'index.html';
+    document.getElementById('magicLinkDisplay').textContent = 'Generating…';
     document.getElementById('copyMsg').style.display='none';
     document.getElementById('copyMagicMsg').style.display='none';
     document.getElementById('credModal').style.display='flex';
+
+    const r = await fetch(`/api/users/${encodeURIComponent(uname)}/magic-link`, { method: 'POST' });
+    if (r.ok) {
+        const { url } = await r.json();
+        document.getElementById('magicLinkDisplay').textContent = url;
+    } else {
+        document.getElementById('magicLinkDisplay').textContent = 'Error generating link — try again.';
+    }
 }
 
-function closeCredModal(){document.getElementById('credModal').style.display='none';}
+function closeCredModal(){ document.getElementById('credModal').style.display='none'; }
 
 function copyMagicLink() {
     const link = document.getElementById('magicLinkDisplay').textContent;
@@ -578,9 +604,8 @@ function copyMagicLink() {
 function copyCredentials(){
     const name=document.getElementById('credName').textContent;
     const user=document.getElementById('credUsername').textContent;
-    const pass=document.getElementById('credPassword').textContent;
     const url=document.getElementById('credUrl').textContent;
-    const txt=`IPPF Audit Training Platform\nName: ${name}\nUsername: ${user}\nPassword: ${pass}\nLogin URL: ${url}`;
+    const txt=`IPPF Audit Training Platform\nName: ${name}\nUsername: ${user}\nLogin URL: ${url}`;
     navigator.clipboard.writeText(txt).then(()=>{
         const m=document.getElementById('copyMsg'); m.style.display='block';
         setTimeout(()=>m.style.display='none',2500);
