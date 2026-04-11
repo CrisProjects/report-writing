@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none';">
     <title>IPPF Audit Training — Administrator</title>
     <style>
         :root {
@@ -239,6 +240,9 @@
 </div>
 
 <script>
+// Frame-busting — prevent clickjacking
+if (self !== top) { top.location = self.location; }
+
 // =========================================================
 // SHARED STORAGE HELPERS
 // =========================================================
@@ -507,7 +511,7 @@ function createAuditor() {
     const okEl=document.getElementById('createSuccess');
     errEl.style.display='none'; okEl.style.display='none';
     if(!name||!uname||!pass){errEl.textContent='Please fill in all fields.';errEl.style.display='block';return;}
-    if(pass.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';return;}
+    if(pass.length<12){errEl.textContent='Password must be at least 12 characters.';errEl.style.display='block';return;}
     if(uname==='admin'){errEl.textContent='"admin" is a reserved username.';errEl.style.display='block';return;}
     if(!/^[a-z0-9_]+$/.test(uname)){errEl.textContent='Username: only lowercase letters, numbers, and _.';errEl.style.display='block';return;}
     const users=getUsers();
@@ -536,7 +540,7 @@ function deleteAuditor(uname) {
 function generatePassword() {
     const chars='ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
     let p='';
-    for(let i=0;i<8;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+    for(let i=0;i<12;i++) p+=chars[Math.floor(Math.random()*chars.length)];
     document.getElementById('newAuditorPassword').value=p;
 }
 

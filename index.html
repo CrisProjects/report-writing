@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none';">
     <title>IPPF Audit Training - Audit Findings</title>
     <style>
         :root {
@@ -433,6 +434,20 @@
 <body>
 
 <!-- ===================== LOGIN ===================== -->
+<div id="joinConfirmOverlay" class="login-overlay" style="display:none;">
+    <div class="login-card">
+        <div class="logo">🔗</div>
+        <h2>Access Invitation</h2>
+        <p class="subtitle">You have been invited to access the IPPF Audit Training Platform.</p>
+        <div style="background:var(--bg);border-radius:var(--radius);padding:16px;margin:16px 0;text-align:left;">
+            <p style="font-size:0.88rem;color:var(--text-light);margin-bottom:4px;">You will be logged in as:</p>
+            <p style="font-size:1.1rem;font-weight:700;color:var(--primary);" id="joinConfirmName"></p>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;margin-bottom:10px;" onclick="confirmJoinLink()">Accept and continue →</button>
+        <button class="btn" style="width:100%;justify-content:center;padding:12px;background:var(--bg);color:var(--text);border:1px solid var(--border);" onclick="declineJoinLink()">Decline — log in manually</button>
+    </div>
+</div>
+
 <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
         <div class="logo">🔍</div>
@@ -711,6 +726,9 @@
 </div><!-- /appContent -->
 
 <script>
+// Frame-busting — prevent clickjacking
+if (self !== top) { top.location = self.location; }
+
 // =========================================================
 // AUTH SYSTEM & ADMIN PANEL
 // =========================================================
@@ -771,6 +789,9 @@ function doLogout() {
     document.getElementById('loginOverlay').style.display = 'flex';
 }
 
+// Pending join payload — set when magic link is detected, cleared on confirm/decline
+let _pendingJoin = null;
+
 function handleJoinLink() {
     const params = new URLSearchParams(window.location.search);
     const join = params.get('join');
@@ -778,13 +799,14 @@ function handleJoinLink() {
     try {
         const { u, n, p, c } = JSON.parse(atob(join));
         if (!u || !n || !p) return false;
-        // Register auditor in this device's localStorage
-        const users = getUsers();
-        users[u] = { name: n, password: p, createdAt: c || new Date().toISOString() };
-        saveUsers(users);
-        // Auto-login
-        setSession({ username: u, role: 'auditor', name: n });
-        // Clean URL (remove ?join=... parameter)
+        if (!/^[a-z0-9_]+$/.test(u)) return false;
+        if (typeof n !== 'string' || !n.trim()) return false;
+        // Store payload and show confirmation — do NOT log in yet
+        _pendingJoin = { u, n, p, c };
+        document.getElementById('joinConfirmName').textContent = n;
+        document.getElementById('joinConfirmOverlay').style.display = 'flex';
+        document.getElementById('loginOverlay').style.display = 'none';
+        // Clean URL so the join token is not left in history
         window.history.replaceState({}, '', window.location.pathname);
         return true;
     } catch(e) {
@@ -792,13 +814,28 @@ function handleJoinLink() {
     }
 }
 
+function confirmJoinLink() {
+    if (!_pendingJoin) return;
+    const { u, n, p, c } = _pendingJoin;
+    _pendingJoin = null;
+    // Register auditor in this device's localStorage and log in
+    const users = getUsers();
+    users[u] = { name: n, password: p, createdAt: c || new Date().toISOString() };
+    saveUsers(users);
+    setSession({ username: u, role: 'auditor', name: n });
+    document.getElementById('joinConfirmOverlay').style.display = 'none';
+    initAuditorApp();
+}
+
+function declineJoinLink() {
+    _pendingJoin = null;
+    document.getElementById('joinConfirmOverlay').style.display = 'none';
+    document.getElementById('loginOverlay').style.display = 'flex';
+}
+
 function checkAuth() {
-    // Handle magic link first — registers + logs in the auditor automatically
-    if (handleJoinLink()) {
-        document.getElementById('loginOverlay').style.display = 'none';
-        initAuditorApp();
-        return;
-    }
+    // Handle magic link first — shows confirmation screen before logging in
+    if (handleJoinLink()) return;
     const session = getSession();
     if (session && session.role === 'auditor') {
         document.getElementById('loginOverlay').style.display = 'none';
