@@ -88,6 +88,25 @@ def require_role(*roles):
     return user
 
 
+# ── One-time setup endpoint ───────────────────────────────────────────────────
+
+@app.route('/setup/<token>')
+def setup(token):
+    """
+    Visit /setup/<SETUP_TOKEN> to create tables and admin user.
+    Set SETUP_TOKEN as an env var in Railway before calling this.
+    Remove or change SETUP_TOKEN after setup is complete.
+    """
+    expected = os.environ.get('SETUP_TOKEN')
+    if not expected or token != expected:
+        abort(403)
+    try:
+        init_db()
+        return '<h2>✅ Database tables created and admin user initialised.</h2><p>You can now <a href="/admin.html">log in to the admin panel</a>.</p>', 200
+    except Exception as e:
+        return f'<h2>❌ Setup failed</h2><pre>{e}</pre>', 500
+
+
 # ── Static pages ──────────────────────────────────────────────────────────────
 
 @app.route('/')
