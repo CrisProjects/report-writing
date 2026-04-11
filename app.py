@@ -301,6 +301,37 @@ def api_save_progress():
     return jsonify({'ok': True})
 
 
+# ── Admin password change ─────────────────────────────────────────────────────
+
+@app.route('/api/admin/change-password', methods=['POST'])
+def api_change_password():
+    user = require_role('admin')
+    data = request.get_json(force=True)
+    current = (data.get('current') or '').strip().encode()
+    new_pw  = (data.get('new') or '').strip()
+
+    if not current or not new_pw:
+        return jsonify({'error': 'Both fields are required'}), 400
+    if len(new_pw) < 12:
+        return jsonify({'error': 'New password must be at least 12 characters'}), 400
+
+    conn = get_db()
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT password_hash FROM users WHERE username = %s', (user['username'],))
+            row = cur.fetchone()
+            if not row or not bcrypt.checkpw(current, row['password_hash'].encode()):
+                return jsonify({'error': 'Current password is incorrect'}), 401
+            new_hash = bcrypt.hashpw(new_pw.encode(), bcrypt.gensalt()).decode()
+            cur.execute('UPDATE users SET password_hash = %s WHERE username = %s',
+                        (new_hash, user['username']))
+        conn.commit()
+    finally:
+        conn.close()
+
+    return jsonify({'ok': True})
+
+
 # ── Magic link join ───────────────────────────────────────────────────────────
 
 @app.route('/api/join/<token>', methods=['GET'])

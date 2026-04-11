@@ -151,6 +151,7 @@
             <div class="admin-nav">
                 <button class="admin-nav-btn active" onclick="showAdminTab('dashboard',this)">📊 Dashboard</button>
                 <button class="admin-nav-btn" onclick="showAdminTab('auditores',this)">👥 Auditors</button>
+                <button class="admin-nav-btn" onclick="showAdminTab('settings',this)">⚙️ Settings</button>
             </div>
             <button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);font-size:0.82rem;padding:7px 14px;" onclick="doLogout()">Log out</button>
         </div>
@@ -208,6 +209,27 @@
             <div class="card">
                 <div class="card-title"><div class="icon">👥</div> Registered Auditors</div>
                 <div id="auditorListContainer"></div>
+            </div>
+        </div>
+        <!-- Settings -->
+        <div id="adminTab-settings" class="admin-tab-panel">
+            <div class="card" style="max-width:480px;">
+                <div class="card-title"><div class="icon">🔒</div> Change Admin Password</div>
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label>Current Password</label>
+                    <input type="password" id="cpCurrent" placeholder="••••••••••••" autocomplete="current-password">
+                </div>
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label>New Password <small style="color:var(--text-light);">(min. 12 characters)</small></label>
+                    <input type="password" id="cpNew" placeholder="••••••••••••" autocomplete="new-password">
+                </div>
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="cpConfirm" placeholder="••••••••••••" autocomplete="new-password">
+                </div>
+                <div id="cpError" style="color:var(--accent);font-size:0.85rem;margin-bottom:10px;display:none;"></div>
+                <div id="cpSuccess" style="color:var(--success);font-size:0.85rem;margin-bottom:10px;display:none;">✅ Password changed successfully.</div>
+                <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
             </div>
         </div>
     </div>
@@ -566,6 +588,41 @@ function generatePassword() {
     let p='';
     for(let i=0;i<12;i++) p+=chars[Math.floor(Math.random()*chars.length)];
     document.getElementById('newAuditorPassword').value=p;
+}
+
+// ---- Change Password ----
+async function changePassword() {
+    const current = document.getElementById('cpCurrent').value;
+    const newPw   = document.getElementById('cpNew').value;
+    const confirm = document.getElementById('cpConfirm').value;
+    const errEl   = document.getElementById('cpError');
+    const okEl    = document.getElementById('cpSuccess');
+    errEl.style.display = 'none';
+    okEl.style.display  = 'none';
+
+    if (!current || !newPw || !confirm) {
+        errEl.textContent = 'Please fill in all fields.'; errEl.style.display = 'block'; return;
+    }
+    if (newPw !== confirm) {
+        errEl.textContent = 'New passwords do not match.'; errEl.style.display = 'block'; return;
+    }
+    if (newPw.length < 12) {
+        errEl.textContent = 'New password must be at least 12 characters.'; errEl.style.display = 'block'; return;
+    }
+
+    const r = await fetch('/api/admin/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ current, new: newPw })
+    });
+    const data = await r.json();
+    if (!r.ok) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
+
+    document.getElementById('cpCurrent').value = '';
+    document.getElementById('cpNew').value = '';
+    document.getElementById('cpConfirm').value = '';
+    okEl.style.display = 'block';
+    setTimeout(() => okEl.style.display = 'none', 4000);
 }
 
 // ---- Credentials Modal ----
