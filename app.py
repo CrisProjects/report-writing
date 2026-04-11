@@ -51,14 +51,23 @@ def init_db():
                     used_at    TIMESTAMPTZ
                 );
             """)
-            # Create admin user from env var — won't overwrite if already exists
-            admin_pass = os.environ.get('ADMIN_PASSWORD', 'Admin2024!').encode()
-            admin_hash = bcrypt.hashpw(admin_pass, bcrypt.gensalt()).decode()
-            cur.execute("""
-                INSERT INTO users (username, name, password_hash, role)
-                VALUES ('admin', 'Administrator', %s, 'admin')
-                ON CONFLICT (username) DO NOTHING
-            """, (admin_hash,))
+            # If ADMIN_PASSWORD env var is explicitly set, always update the hash on startup.
+            # If not set, only create the admin user on first run (don't overwrite).
+            admin_pass_env = os.environ.get('ADMIN_PASSWORD')
+            if admin_pass_env:
+                admin_hash = bcrypt.hashpw(admin_pass_env.encode(), bcrypt.gensalt()).decode()
+                cur.execute("""
+                    INSERT INTO users (username, name, password_hash, role)
+                    VALUES ('admin', 'Administrator', %s, 'admin')
+                    ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash
+                """, (admin_hash,))
+            else:
+                default_hash = bcrypt.hashpw(b'Admin2024!', bcrypt.gensalt()).decode()
+                cur.execute("""
+                    INSERT INTO users (username, name, password_hash, role)
+                    VALUES ('admin', 'Administrator', %s, 'admin')
+                    ON CONFLICT (username) DO NOTHING
+                """, (default_hash,))
         conn.commit()
     finally:
         conn.close()
