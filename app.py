@@ -2,6 +2,7 @@ import os
 import json
 import secrets
 import re
+import sqlite3
 from datetime import datetime, timedelta, timezone
 
 import bcrypt
@@ -19,18 +20,92 @@ socketio = SocketIO(app, cors_allowed_origins='*', async_mode='gevent')
 
 # Railway sets DATABASE_URL as postgres://, psycopg2 needs postgresql://
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
+USE_SQLITE = not bool(DATABASE_URL)
+SQLITE_PATH = os.environ.get('SQLITE_DB', 'local.db')
 
 
-# ── Database ──────────────────────────────────────────────────────────────────
+# ── Database helpers ───────────────────────────────────────────────────────────
 
 def get_db():
+    if USE_SQLITE:
+        conn = sqlite3.connect(SQLITE_PATH)
+        conn.row_factory = sqlite3.Row
+        conn.execute('PRAGMA foreign_keys = ON')
+        return conn
     return psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
 
+
+def q(query):
+    """Adapt a PostgreSQL-style query to SQLite syntax when USE_SQLITE is set."""
+    if not USE_SQLITE:
+        return query
+    return query.replace('%s', '?').replace('NOW()', "datetime('now')")
+
+
+def parse_dt(val):
+    """Return a timezone-aware datetime from a psycopg2 datetime or an SQLite text value."""
+    if val is None:
+        return None
+    if isinstance(val, datetime):
+        return val if val.tzinfo else val.replace(tzinfo=timezone.utc)
+    s = str(val).strip().replace(' ', 'T')
+    if '+' not in s[10:] and not s.endswith('Z'):
+        s += '+00:00'
+    return datetime.fromisoformat(s)
+
+
+def to_iso(val):
+    """Return an ISO-8601 string from a psycopg2 datetime object or an SQLite text value."""
+    if val is None:
+        return None
+    if isinstance(val, str):
+        return val.replace(' ', 'T')
+    return val.isoformat()
+
+
+def load_json(val):
+    """Parse JSON from either a dict (psycopg2 JSONB) or a string (SQLite TEXT)."""
+    if val is None:
+        return None
+    return json.loads(val) if isinstance(val, str) else val
+
+
+# Exception type for duplicate-key violations (differs between backends)
+_DuplicateError = sqlite3.IntegrityError if USE_SQLITE else psycopg2.errors.UniqueViolation
+
+
+# ── Database initialisation ────────────────────────────────────────────────────
 
 def init_db():
     conn = get_db()
     try:
-        with conn.cursor() as cur:
+        cur = conn.cursor()
+        if USE_SQLITE:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS users (
+                    username      TEXT PRIMARY KEY,
+                    name          TEXT NOT NULL,
+                    password_hash TEXT NOT NULL,
+                    role          TEXT NOT NULL DEFAULT 'auditor',
+                    created_at    TEXT DEFAULT (datetime('now'))
+                )
+            """)
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS progress (
+                    username   TEXT PRIMARY KEY REFERENCES users(username) ON DELETE CASCADE,
+                    data       TEXT,
+                    updated_at TEXT DEFAULT (datetime('now'))
+                )
+            """)
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS magic_tokens (
+                    token      TEXT PRIMARY KEY,
+                    username   TEXT REFERENCES users(username) ON DELETE CASCADE,
+                    created_at TEXT DEFAULT (datetime('now')),
+                    used_at    TEXT
+                )
+            """)
+        else:
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     username     TEXT PRIMARY KEY,
@@ -51,29 +126,30 @@ def init_db():
                     used_at    TIMESTAMPTZ
                 );
             """)
-            # If ADMIN_PASSWORD env var is explicitly set, always update the hash on startup.
-            # If not set, only create the admin user on first run (don't overwrite).
-            admin_pass_env = os.environ.get('ADMIN_PASSWORD')
-            if admin_pass_env:
-                admin_hash = bcrypt.hashpw(admin_pass_env.encode(), bcrypt.gensalt()).decode()
-                cur.execute("""
-                    INSERT INTO users (username, name, password_hash, role)
-                    VALUES ('admin', 'Administrator', %s, 'admin')
-                    ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash
-                """, (admin_hash,))
-            else:
-                default_hash = bcrypt.hashpw(b'Admin2024!', bcrypt.gensalt()).decode()
-                cur.execute("""
-                    INSERT INTO users (username, name, password_hash, role)
-                    VALUES ('admin', 'Administrator', %s, 'admin')
-                    ON CONFLICT (username) DO NOTHING
-                """, (default_hash,))
+
+        # If ADMIN_PASSWORD env var is explicitly set, always update the hash on startup.
+        # If not set, only create the admin user on first run (don't overwrite).
+        admin_pass_env = os.environ.get('ADMIN_PASSWORD')
+        if admin_pass_env:
+            admin_hash = bcrypt.hashpw(admin_pass_env.encode(), bcrypt.gensalt()).decode()
+            cur.execute(q("""
+                INSERT INTO users (username, name, password_hash, role)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash
+            """), ('admin', 'Administrator', admin_hash, 'admin'))
+        else:
+            default_hash = bcrypt.hashpw(b'Admin2024!', bcrypt.gensalt()).decode()
+            cur.execute(q("""
+                INSERT INTO users (username, name, password_hash, role)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (username) DO NOTHING
+            """), ('admin', 'Administrator', default_hash, 'admin'))
         conn.commit()
     finally:
         conn.close()
 
 
-# ── Auth helpers ──────────────────────────────────────────────────────────────
+# ── Auth helpers ───────────────────────────────────────────────────────────────
 
 def current_user():
     return session.get('user')
@@ -88,7 +164,7 @@ def require_role(*roles):
     return user
 
 
-# ── One-time setup endpoint ───────────────────────────────────────────────────
+# ── One-time setup endpoint ────────────────────────────────────────────────────
 
 @app.route('/setup/<token>')
 def setup(token):
@@ -102,12 +178,20 @@ def setup(token):
         abort(403)
     try:
         init_db()
-        return '<h2>✅ Database tables created and admin user initialised.</h2><p>You can now <a href="/admin.html">log in to the admin panel</a>.</p>', 200
+        return '<h2>&#x2705; Database tables created and admin user initialised.</h2><p>You can now <a href="/admin.html">log in to the admin panel</a>.</p>', 200
     except Exception as e:
-        return f'<h2>❌ Setup failed</h2><pre>{e}</pre>', 500
+        return f'<h2>&#x274C; Setup failed</h2><pre>{e}</pre>', 500
 
 
-# ── Static pages ──────────────────────────────────────────────────────────────
+# ── Test endpoint ──────────────────────────────────────────────────────────────
+
+@app.route('/test')
+def test():
+    backend = 'SQLite' if USE_SQLITE else 'PostgreSQL'
+    return f'<h1 style="font-family:sans-serif;color:green">App is working!</h1><p>Port forwarding is OK. Backend: {backend}</p>', 200
+
+
+# ── Static pages ───────────────────────────────────────────────────────────────
 
 @app.route('/')
 @app.route('/index.html')
@@ -120,7 +204,7 @@ def serve_admin():
     return send_from_directory('.', 'admin.html')
 
 
-# ── Auth API ──────────────────────────────────────────────────────────────────
+# ── Auth API ───────────────────────────────────────────────────────────────────
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -133,12 +217,12 @@ def api_login():
 
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute(
-                'SELECT username, name, role, password_hash FROM users WHERE username = %s',
-                (username,)
-            )
-            row = cur.fetchone()
+        cur = conn.cursor()
+        cur.execute(
+            q('SELECT username, name, role, password_hash FROM users WHERE username = %s'),
+            (username,)
+        )
+        row = cur.fetchone()
     finally:
         conn.close()
 
@@ -147,8 +231,8 @@ def api_login():
 
     session['user'] = {
         'username': row['username'],
-        'role': row['role'],
-        'name': row['name'],
+        'role':     row['role'],
+        'name':     row['name'],
     }
     return jsonify(session['user'])
 
@@ -167,32 +251,32 @@ def api_me():
     return jsonify(user)
 
 
-# ── Users API (admin only) ────────────────────────────────────────────────────
+# ── Users API (admin only) ─────────────────────────────────────────────────────
 
 @app.route('/api/users', methods=['GET'])
 def api_get_users():
     require_role('admin')
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT u.username, u.name, u.created_at,
-                       p.data AS progress, p.updated_at
-                FROM users u
-                LEFT JOIN progress p ON p.username = u.username
-                WHERE u.role = 'auditor'
-                ORDER BY u.created_at
-            """)
-            rows = cur.fetchall()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT u.username, u.name, u.created_at,
+                   p.data AS progress, p.updated_at
+            FROM users u
+            LEFT JOIN progress p ON p.username = u.username
+            WHERE u.role = 'auditor'
+            ORDER BY u.created_at
+        """)
+        rows = cur.fetchall()
     finally:
         conn.close()
 
     return jsonify([
         {
-            'username': r['username'],
-            'name': r['name'],
-            'createdAt': r['created_at'].isoformat() if r['created_at'] else None,
-            'progress': r['progress'],
+            'username':  r['username'],
+            'name':      r['name'],
+            'createdAt': to_iso(r['created_at']),
+            'progress':  load_json(r['progress']),
         }
         for r in rows
     ])
@@ -218,16 +302,16 @@ def api_create_user():
     password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            try:
-                cur.execute(
-                    'INSERT INTO users (username, name, password_hash, role) VALUES (%s, %s, %s, %s)',
-                    (username, name, password_hash, 'auditor')
-                )
-                conn.commit()
-            except psycopg2.errors.UniqueViolation:
-                conn.rollback()
-                return jsonify({'error': 'Username already exists'}), 409
+        cur = conn.cursor()
+        try:
+            cur.execute(
+                q('INSERT INTO users (username, name, password_hash, role) VALUES (%s, %s, %s, %s)'),
+                (username, name, password_hash, 'auditor')
+            )
+            conn.commit()
+        except _DuplicateError:
+            conn.rollback()
+            return jsonify({'error': 'Username already exists'}), 409
     finally:
         conn.close()
 
@@ -239,13 +323,13 @@ def api_delete_user(username):
     require_role('admin')
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute(
-                'DELETE FROM users WHERE username = %s AND role = %s',
-                (username, 'auditor')
-            )
-            if cur.rowcount == 0:
-                return jsonify({'error': 'User not found'}), 404
+        cur = conn.cursor()
+        cur.execute(
+            q('DELETE FROM users WHERE username = %s AND role = %s'),
+            (username, 'auditor')
+        )
+        if cur.rowcount == 0:
+            return jsonify({'error': 'User not found'}), 404
         conn.commit()
     finally:
         conn.close()
@@ -259,23 +343,23 @@ def api_magic_link(username):
     require_role('admin')
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute(
-                'SELECT username FROM users WHERE username = %s AND role = %s',
-                (username, 'auditor')
-            )
-            if not cur.fetchone():
-                return jsonify({'error': 'User not found'}), 404
-            # Invalidate previous unused tokens for this user
-            cur.execute(
-                'DELETE FROM magic_tokens WHERE username = %s AND used_at IS NULL',
-                (username,)
-            )
-            token = secrets.token_urlsafe(32)
-            cur.execute(
-                'INSERT INTO magic_tokens (token, username) VALUES (%s, %s)',
-                (token, username)
-            )
+        cur = conn.cursor()
+        cur.execute(
+            q('SELECT username FROM users WHERE username = %s AND role = %s'),
+            (username, 'auditor')
+        )
+        if not cur.fetchone():
+            return jsonify({'error': 'User not found'}), 404
+        # Invalidate previous unused tokens for this user
+        cur.execute(
+            q('DELETE FROM magic_tokens WHERE username = %s AND used_at IS NULL'),
+            (username,)
+        )
+        token = secrets.token_urlsafe(32)
+        cur.execute(
+            q('INSERT INTO magic_tokens (token, username) VALUES (%s, %s)'),
+            (token, username)
+        )
         conn.commit()
     finally:
         conn.close()
@@ -285,20 +369,20 @@ def api_magic_link(username):
     return jsonify({'token': token, 'url': url})
 
 
-# ── Progress API ──────────────────────────────────────────────────────────────
+# ── Progress API ───────────────────────────────────────────────────────────────
 
 @app.route('/api/progress', methods=['GET'])
 def api_get_progress():
     user = require_role('auditor')
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute('SELECT data FROM progress WHERE username = %s', (user['username'],))
-            row = cur.fetchone()
+        cur = conn.cursor()
+        cur.execute(q('SELECT data FROM progress WHERE username = %s'), (user['username'],))
+        row = cur.fetchone()
     finally:
         conn.close()
 
-    return jsonify(row['data'] if row else None)
+    return jsonify(load_json(row['data']) if row else None)
 
 
 @app.route('/api/progress', methods=['POST'])
@@ -308,13 +392,13 @@ def api_save_progress():
 
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute("""
-                INSERT INTO progress (username, data, updated_at)
-                VALUES (%s, %s, NOW())
-                ON CONFLICT (username)
-                DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()
-            """, (user['username'], json.dumps(data)))
+        cur = conn.cursor()
+        cur.execute(q("""
+            INSERT INTO progress (username, data, updated_at)
+            VALUES (%s, %s, NOW())
+            ON CONFLICT (username)
+            DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()
+        """), (user['username'], json.dumps(data)))
         conn.commit()
     finally:
         conn.close()
@@ -329,7 +413,7 @@ def api_save_progress():
     return jsonify({'ok': True})
 
 
-# ── Admin password change ─────────────────────────────────────────────────────
+# ── Admin password change ──────────────────────────────────────────────────────
 
 @app.route('/api/admin/change-password', methods=['POST'])
 def api_change_password():
@@ -345,14 +429,16 @@ def api_change_password():
 
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute('SELECT password_hash FROM users WHERE username = %s', (user['username'],))
-            row = cur.fetchone()
-            if not row or not bcrypt.checkpw(current, row['password_hash'].encode()):
-                return jsonify({'error': 'Current password is incorrect'}), 401
-            new_hash = bcrypt.hashpw(new_pw.encode(), bcrypt.gensalt()).decode()
-            cur.execute('UPDATE users SET password_hash = %s WHERE username = %s',
-                        (new_hash, user['username']))
+        cur = conn.cursor()
+        cur.execute(q('SELECT password_hash FROM users WHERE username = %s'), (user['username'],))
+        row = cur.fetchone()
+        if not row or not bcrypt.checkpw(current, row['password_hash'].encode()):
+            return jsonify({'error': 'Current password is incorrect'}), 401
+        new_hash = bcrypt.hashpw(new_pw.encode(), bcrypt.gensalt()).decode()
+        cur.execute(
+            q('UPDATE users SET password_hash = %s WHERE username = %s'),
+            (new_hash, user['username'])
+        )
         conn.commit()
     finally:
         conn.close()
@@ -360,27 +446,27 @@ def api_change_password():
     return jsonify({'ok': True})
 
 
-# ── Magic link join ───────────────────────────────────────────────────────────
+# ── Magic link join ────────────────────────────────────────────────────────────
 
 @app.route('/api/join/<token>', methods=['GET'])
 def api_join_check(token):
     """Return the invitee's name if the token is valid — no login yet."""
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT t.username, u.name, t.created_at
-                FROM magic_tokens t
-                JOIN users u ON u.username = t.username
-                WHERE t.token = %s AND t.used_at IS NULL
-            """, (token,))
-            row = cur.fetchone()
+        cur = conn.cursor()
+        cur.execute(q("""
+            SELECT t.username, u.name, t.created_at
+            FROM magic_tokens t
+            JOIN users u ON u.username = t.username
+            WHERE t.token = %s AND t.used_at IS NULL
+        """), (token,))
+        row = cur.fetchone()
     finally:
         conn.close()
 
     if not row:
         return jsonify({'error': 'Invalid or already-used link'}), 404
-    if datetime.now(timezone.utc) - row['created_at'] > timedelta(hours=48):
+    if datetime.now(timezone.utc) - parse_dt(row['created_at']) > timedelta(hours=48):
         return jsonify({'error': 'Link has expired (48 h)'}), 410
 
     return jsonify({'username': row['username'], 'name': row['name']})
@@ -391,21 +477,21 @@ def api_join_confirm(token):
     """Auditor confirms — mark token used and create session."""
     conn = get_db()
     try:
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT t.username, u.name, t.created_at
-                FROM magic_tokens t
-                JOIN users u ON u.username = t.username
-                WHERE t.token = %s AND t.used_at IS NULL
-            """, (token,))
-            row = cur.fetchone()
+        cur = conn.cursor()
+        cur.execute(q("""
+            SELECT t.username, u.name, t.created_at
+            FROM magic_tokens t
+            JOIN users u ON u.username = t.username
+            WHERE t.token = %s AND t.used_at IS NULL
+        """), (token,))
+        row = cur.fetchone()
 
-            if not row:
-                return jsonify({'error': 'Invalid or already-used link'}), 404
-            if datetime.now(timezone.utc) - row['created_at'] > timedelta(hours=48):
-                return jsonify({'error': 'Link has expired'}), 410
+        if not row:
+            return jsonify({'error': 'Invalid or already-used link'}), 404
+        if datetime.now(timezone.utc) - parse_dt(row['created_at']) > timedelta(hours=48):
+            return jsonify({'error': 'Link has expired'}), 410
 
-            cur.execute('UPDATE magic_tokens SET used_at = NOW() WHERE token = %s', (token,))
+        cur.execute(q('UPDATE magic_tokens SET used_at = NOW() WHERE token = %s'), (token,))
         conn.commit()
     finally:
         conn.close()
@@ -414,7 +500,7 @@ def api_join_confirm(token):
     return jsonify(session['user'])
 
 
-# ── Socket.IO ─────────────────────────────────────────────────────────────────
+# ── Socket.IO ──────────────────────────────────────────────────────────────────
 
 @socketio.on('join_admin')
 def on_join_admin():
@@ -424,7 +510,10 @@ def on_join_admin():
         emit('joined', {'room': 'admin'})
 
 
-# ── Startup ───────────────────────────────────────────────────────────────────
+# ── Startup ────────────────────────────────────────────────────────────────────
+
+backend_label = f'SQLite ({SQLITE_PATH})' if USE_SQLITE else 'PostgreSQL'
+print(f'Database backend: {backend_label}')
 
 try:
     init_db()
